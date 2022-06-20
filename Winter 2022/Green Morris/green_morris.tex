@@ -1,0 +1,110 @@
+\documentclass[12pt]{article}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,enumerate}
+\usepackage[pdftex]{graphicx}
+\usepackage{epsf}
+
+\renewcommand{\baselinestretch}{1.2}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem*{thm*}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+% \begin{center}
+% {\bf \Large Green-Morris Theorems}
+% \vspace{0.2cm}
+% \hrule
+% \end{center}
+
+\noindent \textbf{Theorem 1.1 (Main Theorem)}
+Fix $\delta>0$ and $K>0$. Then the following hold for all integers $k \geq k_0(\delta, K)$.
+\begin{enumerate}[(i)]
+	\item For any $N\in \naturals$ there are at most
+	\[
+		2^{\delta k}\binom{\frac{1}{2}Kk}{k}N^{\lfloor K+\delta\rfloor}
+	\]
+	sets $A\subset [N]$ with $|A| = k$ and $|A+A|\leq K|A|$.
+
+	\item If $N$ is prime there are at most
+	\[
+		2^{\delta k}\binom{\frac{1}{2}Kk}{k}N^{\lfloor K+\delta \rfloor}
+	\]
+	sets $A\subset \integers/N\integers$ with $|A|=k$ and $|A+A|\leq K|A|$, provided that $Kk\leq (1-\delta)N$.
+\end{enumerate}
+
+\vfill
+
+\noindent \textbf{Theorem 2.1 (Main tool used for proving Theorem 1.1)}
+For every $\epsilon>0$ there exists $\delta = \delta(\epsilon) > 0$ such that the following is true.
+Let $p > p_0(\epsilon)$ be a sufficiently large prime and let $A \subset \integers/p\integers$ be a set.
+There is a dilate $A^* = \lambda A$ of $A$ and a prime $q$, $\epsilon^{-10} \leq q \leq p^{1-\delta}$, such that the following holds. If
+\[
+A^*_i := A^*\cap I_i(q) = A^*\cap \{x\in \integers/p\integers: x/p\in [i/q, (i+1)/q]\}
+\]
+for each $i\leq q$ then, for at least $(1-\epsilon)q^2$ of the pairs $(i,j)\in [q]^2$,
+\[
+\min(|A^*_i|, |A^*_j|)\leq \epsilon p/q \qquad \text{or}\qquad |A^*_i+A^*_j|\geq (2-\epsilon)p/q.
+\]
+
+\vfill
+
+\noindent\textbf{Definitions}
+\begin{enumerate}[(i)]
+	\item \textbf{Balanced Fourier transform.} If $I\subset \integers/p\integers$ is an interval and if $A\subset I$ is a set, then the balanced Fourier transform $\hat{f}_A:\reals/\integers\to \complex$ is defined by
+	\[
+		\hat{f}_A(\theta):= \sum_{x\in I}(1_A(x)-\alpha)e(x\theta),
+	\]
+	where $\alpha = |A|/|I|$ and $e(t) = e^{2\pi i t}$.
+
+	\item \textbf{$\epsilon$-regularity.} We say that a pair $(A, A')$ of subsets of $\integers/p\integers$ is $\epsilon$-regular if for every $\theta \in \reals/\integers$ we have either
+	\[
+		|\hat{f}_A(\theta)|\leq \epsilon|I|\quad \text{or}\quad |\hat{f}_{A'}(\theta)|\leq \epsilon|I'|
+	\]
+	and if $\|\theta\|\leq \min(\frac{1}{\epsilon |I|}, \frac{1}{\epsilon|I'|})$ we have both
+	\[
+		|\hat{f}_A(\theta)|\leq \epsilon |I| \quad\text{and}\quad |\hat{f}_{A'}(\theta)|\leq \epsilon|I'|.
+	\]
+\end{enumerate}
+
+\vfill
+
+\noindent\textbf{Regularity Lemma (Used to prove Theorem 2.1)}
+For every $\epsilon>0$ there exists $\delta = \delta(\epsilon)$ such that the following holds for every sufficiently large prime $p$, and every $A\subset \integers/p\integers$. There is a dilate $A^* = \lambda A$ of $A$ and a prime $q$, $\epsilon^{-10}\leq q\leq p^{1-\delta}$, such that at least $(1-\epsilon)q^2$ of the pairs $(A^*_i, A^*_j)$ are $\epsilon$-regular.
+
+\vfill
+
+
+\noindent\textbf{Counting Lemma (Used with Regularity Lemma to prove Theorem 2.1)}
+Let $\epsilon, L$ be positive constants with $L > 16/\epsilon$. Suppose that $I,I'\subset \integers/p\integers$ are intervals with $|I|,|I'| = L+O(1)$. Suppose also that the pair of sets $A\subset I$ and $A'\subset I'$ is $\epsilon^7$-regular and that $|A|,|A'|\geq \epsilon L$. Then $|A+A'|\geq (2-8\epsilon)L$.
+
+\vfill
+
+
+\end{document}

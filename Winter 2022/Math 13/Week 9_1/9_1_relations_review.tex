@@ -1,0 +1,95 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 9: Equivalence Relations}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+\item Let $f: \reals\to \reals$ be defined by $f(t) = (-t, t^3)$ and let $g: \reals^2\to \reals$ be given by $g(x,y) = \cos(x^2+y^2)$.
+Are these claims valid? If not, explain the error.
+\begin{enumerate}
+	\item The function $g$ surjects onto $\reals$ because $\reals^2$ is a higher dimensional space than $\reals$.
+
+	\vfill
+
+	\item The function $f$ surjects onto $\reals^2$. To see this, take $(-t, t^3)\in \reals^2$. Then $(-t, t^3) = f(t)$, so $f$ is surjective.
+
+	\vfill
+
+	\item The function $f$ surjects because for every $b$ in $B$ there is an $a$ in $A$ such that $f(a) = b$.
+
+	\vfill
+
+	\item $g$ is injective because $g(x,y) = g(x',y')$ implies that $(x,y) = (x',y')$.
+
+	\vfill
+
+	\item $f$ is injective because the only way for $f$ to hit $(-1, 1)$ is to plug in $t=1$.
+	\vfill
+\end{enumerate}
+
+\item Let $\sim$ be the relation on $\reals^2$ defined by $(x,y)\sim (v,w)$ if and only if $x^2+y^2 = v^2+w^2$.
+\begin{enumerate}
+	\item Prove that $\sim$ is an equivalence relation.
+
+	\vfill
+
+	\item Describe the quotient $\reals^2 / \sim$. Think geometrically.
+\end{enumerate}
+
+\vfill
+
+\item Consider the following claim and proof.
+\begin{claim}
+	If a relation is symmetric and transitive, then it is reflexive.
+\end{claim}
+\begin{proof}
+	Suppose $\sim$ is a relation on a set $S$ that is symmetric and transitive.
+	Then for any $x,y$ in $S$, $x\sim y$ implies $y\sim x$ by symmetry.
+	Since $x\sim y$ and $y\sim x$, then $x\sim x$ by transitivity and the relation is reflexive.
+\end{proof}
+Is this proof valid? Why or why not?
+
+\vfill
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,10 @@
+grades.ods
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.xopp
+*.out
+*.toc
+*.SRCINFO

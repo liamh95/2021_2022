@@ -1,0 +1,115 @@
+\documentclass[12pt]{article}  
+%%Read the manual for other options. 
+
+\pagestyle{empty} %%Eliminates page numbers
+%%\input rmb_macros
+%%Collect your favorite macros in a 
+%%separate file
+
+%\input amssym.def
+%\input amssym
+%\input mssymb
+%%Defines additional symbols
+
+
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol}
+\usepackage[pdftex]{graphicx}
+\usepackage{epsf}
+%%Use to include pictures. 
+
+%\newcommand{\comment}[1]{}
+%\newcommand{\sobolev}[2]{W^{#1,#2}}
+%\newcommand{\sobolev}[2]{L^#2_#1}
+%%Some examples of macros or new commands.
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+%%Set margins, defaults are ok. 
+
+\begin{document}
+\begin{flushleft} 
+%%Paragraphs will not be indented in this 
+%%environment
+\centerline{\LARGE{Quiz 4}} 
+\vspace{5 mm}
+{Form A}\hfill  
+%%\hfill forces following text 
+%%to right margin
+{Name \rule {2 in}{0.01in}}\\
+Math 130B, 5 PM
+\\
+%%gives a line of length 2in and 
+%%thickness 0.01in
+{Please justify all your answers}\hfill {April 20, 2022}
+\\
+{Please also write your full name on the back} 
+
+\medskip
+\end{flushleft}
+
+\begin{enumerate}
+
+	\item Let $X$ and $Y$ be independent discrete random variables with probability mass functions given by
+	\begin{align*}
+		\Pr[X = x] &= \frac{1}{n},\quad \text{for }1\leq x\leq n\\
+		\Pr[Y = y] &= 2^{-y},\quad\text{for }y \geq 1.
+	\end{align*}
+	(Here, $x$ and $y$ are integers)
+	\begin{enumerate}
+		\item Find the joint probability mass function, $\Pr[X = x,\ Y = y]$.
+		\vfill
+
+		\item What possible values can the sum $Z = X+Y$ take?
+
+		\vfill
+
+		\item Find the probability mass function for $Z = X+Y$. \textit{Be careful here. There are a couple of cases to consider.}
+	\end{enumerate}
+
+	\vfill\null
+\end{enumerate}
+\pagebreak
+
+
+\begin{flushleft} 
+%%Paragraphs will not be indented in this 
+%%environment
+\centerline{\LARGE{Quiz 4}} 
+\vspace{5 mm}
+{Form B}\hfill  
+%%\hfill forces following text 
+%%to right margin
+{Name \rule {2 in}{0.01in}}\\
+Math 130B, 6 PM
+\\
+%%gives a line of length 2in and 
+%%thickness 0.01in
+{Please justify all your answers}\hfill {April 20, 2022}
+\\
+{Please also write your full name on the back} 
+
+\medskip
+\end{flushleft}
+
+\begin{enumerate}
+
+	\item Let $X$ and $Y$ be independent random variables, both uniformly distributed on the set $\{0, 1, \ldots, n-1\}$, where $n$ is a fixed positive integer.
+	\begin{enumerate}
+		\item Find the joint probability mass function, $\Pr[X = x,\ Y = y]$.
+		\vfill
+
+		\item What possible values can the sum $Z = X+Y$ take?
+
+		\vfill
+
+		\item Find the probability mass function for $Z = X+Y$. \textit{Be careful here. Are some sums more likely than others?}
+	\end{enumerate}
+
+	\vfill\null
+\end{enumerate}
+\end{document}

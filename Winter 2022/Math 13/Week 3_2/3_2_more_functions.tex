@@ -1,0 +1,78 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 3: More on Functions}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}	
+
+	% \item Which of these real life scenarios can be (easily) described by a function? If a function is appropriate, is it one-to-one, onto, or bijective?
+	% \begin{enumerate}
+	% 	\item a
+	% \end{enumerate}
+
+	%\vfill
+
+	\item Let $A$ and $B$ be finite sets. Prove that the following are equivalent (that is, prove that if any one of these statements is true, then the others are as well).
+	\begin{enumerate}
+		\item If $|A|\leq |B|$.
+		\item There is a one-to-one function $f: A\to B$.
+		\item There is an onto function $g: B\to A$.
+	\end{enumerate}
+
+	\vfill
+
+	\item Use the last exercise to show that if $A$ and $B$ are finite sets, then $|A| = |B|$ if and only if there is a bijection $f: A\to B$.
+
+	\vfill
+
+	\item Let $f: A\to B$ and $g: B\to C$ be functions. Prove that:
+	\begin{enumerate}
+		\item If $f$ and $g$ are one-to-one, then so is $g\circ f$.
+		\item If $f$ and $g$ are onto, then so is $g\circ f$.
+		\item If $g\circ f$ is one-to-one, then so is $f$.
+		\item If $g\circ f$ is onto, then so is $g$.
+	\end{enumerate}
+
+	\vfill
+
+\end{enumerate}
+
+\end{document}

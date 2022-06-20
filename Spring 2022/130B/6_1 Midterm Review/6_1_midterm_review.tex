@@ -1,0 +1,91 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Midterm Review Problems}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+	\item A model proposed for NBA basketball supposed that when two teams with roughly the same record play each other, the number of points scored in a quarter by the home team minus the number scored by the visiting team is approximately a normal random variable with mean 1.5 and variance 6.
+	Additionally, the model supposes that the point differentials for the four quarters are independent.
+	Suppose we are working within this model.
+	\begin{enumerate}
+		\item What is the probability that the home team wins?
+		\vfill
+
+		\item What is the conditional probability that the home team wins, given that it is behind by 5 points at halftime.
+		\vfill
+
+		\item What is the conditional probability that the home team wins, given that it is ahead by 5 points at the end of the first quarter?
+	\end{enumerate}
+	\vfill
+
+	\item Let $X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(n)}$ be the ordered values of $n$ independent uniform $(0,1)$ random variables.
+	\begin{enumerate}
+		\item Prove that for $1\leq k \leq n+1$,
+		\[
+			\Pr[X_{(k)} - X_{(k-1)} > t] = (1-t)^n,
+		\]
+		where $X_{(0)} \equiv 0$ and $X_{(n+1)} \equiv 1$.
+		\vfill
+
+		\item What is the distribution for the median of the sample? \textit{That is, find the distribution for the median of $X_{(n)} - X_{(1)}$}.
+	\end{enumerate}
+
+	\vfill\null\pagebreak
+
+	\item Suppose $X$ is a random variable taking only nonnegative integer values. Show that if $\E[X] < 1$, then $\Pr[X = 0] > 0$.
+
+	\vfill
+
+	\item Suppose $X$ and $Y$ are jointly continuous random variables with joint pdf given by
+	\[
+		f(x,y) = ce^{-(x+y)},\quad 0\leq y\leq x <\infty
+	\]
+	\begin{enumerate}
+		\item Find the value of the constant $c$.
+		\vfill
+
+		\item Find the conditional pdf of $Y$ conditioned on $X=x$.
+		\vfill
+
+		\item Are $X$ and $Y$ independent?
+		\vfill
+
+		\item Suppose $U = X+2Y$ and $V = X-Y$. Find the joint pdf of $U$ and $V$. Be sure to specify the domain!
+		\vfill
+	\end{enumerate}
+\end{enumerate}
+
+\end{document}

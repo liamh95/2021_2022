@@ -1,0 +1,162 @@
+\documentclass[12pt]{article}  
+%%Read the manual for other options. 
+
+\pagestyle{empty} %%Eliminates page numbers
+%%\input rmb_macros
+%%Collect your favorite macros in a 
+%%separate file
+
+%\input amssym.def
+%\input amssym
+%\input mssymb
+%%Defines additional symbols
+
+
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol}
+\usepackage[pdftex]{graphicx}
+\usepackage{epsf}
+%%Use to include pictures. 
+
+%\newcommand{\comment}[1]{}
+%\newcommand{\sobolev}[2]{W^{#1,#2}}
+%\newcommand{\sobolev}[2]{L^#2_#1}
+%%Some examples of macros or new commands.
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+%%Set margins, defaults are ok. 
+
+\begin{document}
+\begin{flushleft} 
+%%Paragraphs will not be indented in this 
+%%environment
+\centerline{\LARGE{Quiz 2}} 
+\vspace{5 mm}
+{Form A}\hfill  
+%%\hfill forces following text 
+%%to right margin
+{Name \rule {2 in}{0.01in}}\\
+Math 130B, 5 PM
+\\
+%%gives a line of length 2in and 
+%%thickness 0.01in
+{Please justify all your answers}\hfill {April 6, 2022}
+\\
+{Please also write your full name on the back} 
+
+\medskip
+\end{flushleft}
+
+\begin{enumerate}
+	\item Consider two random variables $X$ and $Y$ with joint probability mass function given in the following table.
+	\begin{center}
+		\begin{tabular}{|c||c|c|c|}
+			\hline
+			& $Y=0$ & $Y=1$ & $Y=2$\\
+			\hline\hline
+			$X=0$ & $\frac{1}{6}$ & $\frac{1}{4}$ & $\frac{1}{8}$\\
+			\hline
+			$X=1$ & $\frac{1}{8}$ & $\frac{1}{6}$ & $\frac{1}{6}$\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\begin{enumerate}
+		\item Find $\Pr[X=0, Y\leq 1]$.
+		\vfill
+
+		\item Find the marginal probability mass functions of $X$ and $Y$.
+
+		% \vfill
+
+		% \item Are $X$ and $Y$ independent?
+	\end{enumerate}
+	\vfill
+
+	\item Let $X$ and $Y$ be two jointly continuous random variables with joint probability density function given by
+	\[
+	f_{X,Y}(x,y) = \begin{cases}
+		x + cy^2, & \text{ if }0\leq x \leq 1,\ 0\leq y\leq 1\\
+		0, & \text{otherwise}
+	\end{cases}.
+	\]
+	\begin{enumerate}
+		\item Find the constant $c$.
+		\vfill
+
+		\item Find $\Pr[0\leq X\leq \frac{1}{2}, 0\leq Y\leq \frac{1}{2}]$.
+	\end{enumerate}
+
+	\vfill\null
+\end{enumerate}
+\pagebreak
+
+
+\begin{flushleft} 
+%%Paragraphs will not be indented in this 
+%%environment
+\centerline{\LARGE{Quiz 2}} 
+\vspace{5 mm}
+{Form B}\hfill  
+%%\hfill forces following text 
+%%to right margin
+{Name \rule {2 in}{0.01in}}\\
+Math 130B, 6 PM
+\\
+%%gives a line of length 2in and 
+%%thickness 0.01in
+{Please justify all your answers}\hfill {April 6, 2022}
+\\
+{Please also write your full name on the back} 
+
+\medskip
+\end{flushleft}
+
+\begin{enumerate}
+
+	\item Let $X$ and $Y$ be two jointly continuous random variables with joint probability density function given by
+	\[
+	f_{X,Y}(x,y) = \begin{cases}
+		cx + 2y^2, & \text{ if }0\leq x \leq 1,\ 0\leq y\leq 1\\
+		0, & \text{otherwise}
+	\end{cases}.
+	\]
+	\begin{enumerate}
+		\item Find the constant $c$.
+		\vfill
+
+		\item Find the marginal probability density functions of $X$ and $Y$.
+	\end{enumerate}
+
+	\vfill
+
+	\item Consider two random variables $X$ and $Y$ with joint probability mass function given in the following table.
+	\begin{center}
+		\begin{tabular}{|c||c|c|c|}
+			\hline
+			& $Y=0$ & $Y=1$ & $Y=2$\\
+			\hline\hline
+			$X=0$ & $\frac{1}{6}$ & $\frac{1}{4}$ & $\frac{1}{8}$\\
+			\hline
+			$X=1$ & $\frac{1}{8}$ & $\frac{1}{6}$ & $\frac{1}{6}$\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\begin{enumerate}
+		\item Find $\Pr[Y=1 \mid X=0]$.
+		\vfill
+
+		\item Are $X$ and $Y$ independent?
+
+		% \vfill
+
+		% \item Are $X$ and $Y$ independent?
+	\end{enumerate}
+
+	\vfill\null
+\end{enumerate}
+\end{document}

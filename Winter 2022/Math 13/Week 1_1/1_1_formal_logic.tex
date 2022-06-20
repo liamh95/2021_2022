@@ -1,0 +1,104 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 1: Formal Logic}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{definition}
+	A function $f: \{0, 1\}^k\to \{0, 1\}$ is called a \textbf{Boolean function with arity} $k$.
+	This notation means that the input of $f$ is a sequence of $k$ 0's and 1's and its output is a single 0 or 1 (think of $0$ as ``FALSE'' and $1$ as ``TRUE''). If $k$ is small, then we sometimes refer to its variables as $P$, $Q$ or $R$. If $k$ is larger, then we refer to its variables as $x_1, x_2, \ldots, x_k$.
+\end{definition}
+
+We can write down Boolean functions in a few ways.
+One that you've seen in lecture is the \textbf{truth table}, which has one column for each input variable and one column for the output.
+In any row, the value in the output column is the result of applying the function to the corresponding input values.
+For example, here's the truth table for the Boolean function OR.
+\begin{center}
+	\begin{tabular}{|c|c||c|}
+		\hline
+		$P$ & $Q$ & $P$ OR $Q$\\
+		\hline
+		\hline
+		0 & 0 & 0\\
+		\hline
+		0 & 1 & 1\\
+		\hline
+		1 & 0 & 1\\
+		\hline
+		1 & 1 & 1\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\begin{enumerate}
+	\item Write the truth table for the Boolean function $Maj_3$, which takes 3 arguments and returns true if at least two of its arguments are true and returns false if at least two of its arguments are false.
+
+	\vfill
+
+	\item Use your truth table from the previous problem to write $Maj_3$ using only $\land$, $\lor$ and $\neg$. Use the same idea to write $\implies$ using only $\land$, $\lor$ and $\neg$.
+
+	\vfill
+
+	\item Use the reasoning from the previous problem to argue that \emph{any} Boolean function can be written using $\land$, $\lor$ and $\neg$.
+
+	\vfill 
+
+	\pagebreak
+
+	\item Let $A = \{1, 2. \{3, 4\}\}$. Which of the following are true and which are false?
+	\begin{enumerate}
+		\item $1\in A$.
+		\item $\{1\}\in A$.
+		\item $3\in A$.
+		\item $\{3\}\in A$.
+		\item $\{3\}\subseteq A$.
+	\end{enumerate}
+
+	\vfill
+
+	\item Let $A$, $B$ and $C$ be sets. Prove that $(A\cup B)\setminus C = (A\setminus C)\cup (B\setminus C)$.
+	\vfill
+
+	\item Can you write the operation of $\cap$ using only the operations $\cup$ and $\setminus$?
+	\vfill
+
+\end{enumerate}
+
+\end{document}

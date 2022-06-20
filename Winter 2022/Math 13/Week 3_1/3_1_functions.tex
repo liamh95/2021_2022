@@ -1,0 +1,86 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 3: Functions}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}	
+
+	% \item Which of these real life scenarios can be (easily) described by a function? If a function is appropriate, is it one-to-one, onto, or bijective?
+	% \begin{enumerate}
+	% 	\item a
+	% \end{enumerate}
+
+	%\vfill
+
+	\item Let $A$ be the set of even integers and let $B$ be the set of odd integers. Prove that the function $f: A\to B$ defined by $f(x) = x+1$ is a bijection. \textit{Proof writing hint: think to yourself ``which things do I need to show in order to prove this?'' then break your proof into parts for each.}
+
+	\vfill
+
+	\item For each of the following functions, $f$, find the image of the function, im $f$.
+	\begin{enumerate}
+		\item $f: \integers\to \integers$ defined by $f(x) = 2x+1$.
+		\item $f: \integers \to \integers$ defined by $f(x)=|x|$.
+		\item $f: \reals \to \reals$ defined by $f(x) = 1/(1+x^2)$.
+	\end{enumerate}
+
+	\vfill
+
+	\item
+	\begin{enumerate}
+		\item Let $a$ and $b$ be real numbers and consider the function $f: \reals \to \reals$ defined by $f(x) = ax+b$. For which values of $a$ and $b$ is $f$ one-to-one? ... onto $\reals$?
+
+		\item Let $a$, $b$ and $c$ be real numbers and consider the function $f: \reals \to \reals$ defined by $f(x) = ax^2+bx+c$. For which values of $a$ and $b$ is $f$ one-to-one? ... onto $\reals$?
+	\end{enumerate}
+
+	\vfill
+
+	\item Let $A$ and $B$ be finite sets and let $f: A\to B$.
+	\begin{enumerate}
+		\item If $|A|>|B|$, prove that $f$ is not one-to-one.
+		\item If $|A|<|B|$, prove that $f$ is not onto.
+		\item If $f$ is a bijection, prove that $|A| = |B|$.
+	\end{enumerate}
+
+	\vfill
+
+\end{enumerate}
+
+\end{document}

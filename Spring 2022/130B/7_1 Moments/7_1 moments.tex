@@ -1,0 +1,76 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Variance, Covariance}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+	\item If $X$ and $Y$ are independent and identically distributed with mean $\mu$ and variance $\sigma^2$, find
+	\[
+		\E[(X-Y)^2].
+	\]
+
+	\vfill
+
+	\item Show that $\E[(X-a)^2]$ is minimized when $a = \E[X]$.
+
+	\vfill
+
+	\item Let $X_1, \ldots, X_n$ be iid continuous random variables. We say that a record value occurs at time $i$, $i\leq n$ if $X_i \geq X_k$ for all $k\leq i$. Show that
+	\begin{enumerate}
+		\item $\E[$number of record values$] = \sum_{i=1}^n 1/i$.
+		\vfill
+
+		\item $\Var[$number of record values$] = \sum_{i=1}^n (i-1)/i^2$.
+	\end{enumerate}
+	\vfill
+
+	\item Suppose that $X$ and $Y$ are identically distributed, but not necessarily independent. Show that $X+Y$ and $X-Y$ are uncorrelated.
+
+	\vfill
+
+	\item A multilevel marketing firm operates as follows. Person 1 starts the firm, then recruits person 2. Persons 1 and 2 then compete to recruit person 3 (who is always recruited in the end). Then persons 1, 2 and 3 compete to recruit person 4, and so on. Suppose that when persons 1 through $i$ compete to recruit person $i+1$, they are all equally likely to succeed (but one of them for sure succeeds). This goes on until $n$ people work at the firm.
+	\begin{enumerate}
+		\item Find the expected number of people $1, \ldots, n$ who did not recruit anyone else.
+
+		\vfill
+
+		\item Come up with an expression for the variance of the number of people who don't recruit anyone.
+	\end{enumerate}
+
+	\vfill
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,99 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 9: Equivalence Relations}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+\item Suppose $A$ is an infinite set such that $|A| < |\naturals|$.
+\begin{enumerate}
+	\item Argue that there exists an injective function $f: A\to \naturals$.
+	\vfill
+
+	\item Let the elements in the image of $f$ in increasing order
+	\[
+	\text{Im}(f) = \{n_1, n_2, \ldots\}.
+	\]
+	Prove that the image is infinite.
+
+	\vfill
+
+	\item Show that for all $k\in \naturals$, there is a unique $a_i\in A$ such that $f(a_k) = n_k$.
+
+	\vfill
+
+	\item Define $g: \naturals \to A$ by $g(k) = a_k$. Prove that $g$ is a bijection.
+
+	\vfill
+
+	\item Why do we obtain a contradiction?
+\end{enumerate}
+
+\vfill
+
+\item What, if anything, is wrong with these proofs?
+\begin{enumerate}
+	\item We prove that the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$. For $P(1)$ we have $1 = \frac{1\cdot 2}{2}$.
+	Now assume that $k=n$ is true.
+	Then we have
+	\[
+		1 + 2 + \cdots + n + (n+1) = P(n) + (n+1) = \frac{n(n+1)}{2} + (n+1) = \frac{(n+1)(n+2)}{2},
+	\]
+	so $k=n+1$ is true.
+
+	\vfill
+
+	\item Suppose $a$ and $b$ are integers with $a\equiv 1\pmod 3$ and $b\equiv 2\pmod 3$. Then $(a+b)\equiv 0\pmod 3$.
+	\begin{proof}
+		Since $a\equiv 1\pmod 3$, then $a = 3k+1$ for some integer $k$. Similarly, $b = 3k+2$. We then have $(a+b) = (3k+1) + (3k+2) = 6k+3 = 3(2k+1)$, which is divisible  by 3. Hence, $a+b\equiv 0\pmod 3$.
+	\end{proof}
+	\vfill
+
+	\item If there's a surjective function $f:$
+	\begin{proof}
+		Assume for the sake of contradiction that $1\leq \frac{1}{a}$. Since $a>1$, we can divide both sides of this equation to obtain $1 > 1/a$, which contradicts our assumption that $1\leq 1/a$.
+	\end{proof}
+	\vfill
+\end{enumerate}
+\end{enumerate}
+
+\end{document}

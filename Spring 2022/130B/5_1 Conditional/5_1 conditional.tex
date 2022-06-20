@@ -1,0 +1,89 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Conditional Distributions}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+	\item The joint density function of $X$ and $Y$ is given by
+	\[
+		f(x,y) = xe^{-x(y+1)},\quad x>0,\ y>0.
+	\]
+	\begin{enumerate}
+		\item Find the conditional density of $X$, given that $Y = y$, and that of $Y$, given $X = x$.
+		\vfill
+
+		\item Find the density function of $Z = XY$.
+	\end{enumerate}
+	\vfill
+
+	\item Find the distribution of the range of a sample of size 2 from a distribution having density function $f(x) = 2x$, $0< x< 1$. What about for $n$ samples? \textit{That is, find the distribution of the largest observation minus the smaller.}
+
+	\vfill
+
+	\item Let $X$ and $Y$ denote the coordinates of a point uniformly chosen inside the circle of radius 1 centered at the origin. Find the joint density function of the polar coordinates $R = X^2 + Y^2$, $\Theta= \tan^{-1}Y/X$.
+
+	\vfill
+
+	\item Suppose that $X$ and $Y$ are independent geometric random variables with the same parameter $p$.
+	\begin{enumerate}
+		\item Without any computations, what do you think is the value of
+		\[
+			\Pr[X = i\mid X+Y=n].
+		\]
+
+		\vfill
+
+		\item Prove your guess.
+	\end{enumerate}	
+
+	\vfill
+
+	\item Let $Z_1, Z_2, \ldots, Z_n$ be independent standard normal random variables and let
+	\[
+		S_n = \sum_{i=1}^n Z_i.
+	\]
+	\begin{enumerate}
+		\item What is the conditional distribution of $S_n$ given that $S_k = y$ for $k = 1, \ldots, n$?
+
+		\vfill
+
+		Show that for $1\leq k\leq n$, the conditional distribution of $S_k$ given that $S_n = x$ is normal with mean $xk/n$ and variance $k(n-k)/n$.
+	\end{enumerate}
+	\vfill\null
+\end{enumerate}
+
+\end{document}

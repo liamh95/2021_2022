@@ -1,0 +1,101 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 7: Number Theory}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+\item Prove that $\sqrt{3}$ is irrational.
+
+\vfill
+
+\item Solve the following equations.
+\begin{enumerate}
+	\item $3x \equiv 4$ in $\integers_{11}$.
+	\item $4x-8 \equiv 9$ in $\integers_{11}$.
+	\item $3x+8 \equiv 1$ in $\integers_{10}$.
+\end{enumerate}
+
+\vfill
+
+\item Solve the following equations. How are these problems different from the previous ones. Find \textit{all} solutions.
+\begin{enumerate}
+	\item $2x \equiv 4$ in $\integers_{10}$.
+	\item $2x \equiv 3$ in $\integers_{10}$.
+	\item $9x \equiv 4$ in $\integers_{12}$.
+	\item $9x \equiv 6$ in $\integers_{12}$.
+\end{enumerate}
+
+\vfill
+
+\item Let $x$ be an integer. Prove that $2\mid x$ and $3\mid x$ if and only if $6\mid x$.
+
+\vfill
+
+\item Let $a$ and $b$ be positive integers. Prove that $a$ and $b$ are relatively prime if and only if there is no prime $p$ such that $p\mid a$ and $p\mid b$.
+
+\vfill
+
+% \item Let $a,b\in \integers$ with $a\geq b > 0$.
+% In this exercise we explore how many steps it takes to compute the greatest common divisor of $a$ and $b$ using the Euclidean algorithm.
+% \begin{enumerate}
+% 	\item Let $c = a\mod b$. Show that $c < a/2$. \textit{Hint: consider two cases -- one where $a<2b$ and one where $a \geq 2b$.}
+
+% 	\item Recall that the Euclidean algorithm produces a sequence of numbers
+% 	\[
+% 		r_0 \geq r_1 \geq r_2 \geq \cdots \geq 0,
+% 	\]
+% 	where $r_0 = a$, $r_1 = b$ and $r_{i+2} = r_i \mod r_{i+1}$.
+% 	Using the previous exercise, conclude that for any $i$, the numbers $r_{i+2}$ and $r_{i+3}$ are less than half as large as $r_i$ and $r_{i+1}$, respectively.
+% 	In other words, show that after $2t$ steps, the numbers we're working with drop by more than a factor of $2^t$.
+
+% 	\item The Euclidean algorithm terminates as soon as we reach a remainder of zero. If $T$ is the last step of the algorithm, conclude that
+% 	\[
+% 		2^{-T}b\leq 1.
+% 	\]
+% 	Solve this for $T$ to obtain a bound for how many steps it takes to run the Euclidean algorithm.
+% \end{enumerate}
+
+% \vfill
+
+\end{enumerate}
+
+\end{document}

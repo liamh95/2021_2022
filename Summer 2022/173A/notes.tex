@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+\usepackage[left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,
+            footskip=0.25in]{geometry}
+\usepackage{graphicx,float,hyperref} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts,geometry,mathtools,enumerate,bbm}
+ 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{examples}[theorem]{Examples}
+\newtheorem{exercises}[theorem]{Exercises}
+\newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
+ 
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+ 
+% \newenvironment{problem}[2][Problem]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+ 
+\begin{document}
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+%Good resources for looking up how to do stuff:
+%Binary operators: http://www.access2science.com/latex/Binary.html
+%General help: http://en.wikibooks.org/wiki/LaTeX/Mathematics
+%Or just google stuff
+ 
+\title{Math 173A}
+\author{Liam Hardiman}
+
+\maketitle
+
+\begin{abstract}
+    I'm writing these lecture notes for UC Irvine's Math 173A course, taught in the summer of 2022.
+    This is a five-ish week course where I plan to get through the first three chapters of Hoffstein, Pipher and Silverman's book \cite{HPS}.
+    The class structure consists of a two hour lecture followed by a one hour discussion section three days a week.
+    I'm aiming to get through two sections of the book per lecture with a midterm after chapter 2.
+
+\end{abstract}
+
+
+\tableofcontents
+
+
+\section{An Introduction to Cryptography}
+\subsection{Simple Substitution Ciphers}
+Informally speaking, a \emph{cipher} is an injective function that maps 
+
+
+
+\begin{thebibliography}{13}
+
+\bibitem{HPS} Hoffstein, Jeffrey, Jill Pipher and Joseph H. Silverman. \href{https://link.springer.com/book/10.1007/978-1-4939-1711-2}{\textit{An Introduction to Mathematical Cryptography}}. Second Edition. Springer New York, NY. 2014.
+% \bibitem{Grav} Gravner, Janko. Online lecture notes, https://www.math.ucdavis.edu/~gravner/MAT135A/resources/lecturenotes.pdf
+
+% \bibitem{Prob and Comp} Mitzenmacher, Michael, and Eli Upfal. Probability and computing: Randomization and probabilistic techniques in algorithms and data analysis. Cambridge university press, 2017.
+% \bibitem{Ross} Ross, Sheldon M. A first course in probability. Vol. 7. Upper Saddle River, NJ: Pearson Prentice Hall, 2006.
+
+
+ 
+\end{thebibliography}
+
+
+\end{document}

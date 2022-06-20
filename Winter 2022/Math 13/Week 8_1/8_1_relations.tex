@@ -1,0 +1,89 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 7: Number Theory}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+\item Prove that a number is a perfect square if and only if it has an odd number of divisors.
+
+\vfill
+
+\item A set $S$ and a relation $\sim$ on $S$ is given. For each example, check if $\sim$ is reflexive, symmetric, and/or transitive. If the relation is an equivalence relation, describe the equivalence classes.
+\begin{enumerate}
+	\item $S = \reals$ where $a\sim b$ if and only if $a\leq b$.
+
+	\vfill
+
+	\item $S = \reals$ where $a\sim b$ if and only if $|a| = |b|$.
+
+	\vfill
+
+	\item $S = \integers$ where $a\sim b$ if and only if $a\mid b$.
+
+	\vfill
+
+	\item $S = 2^\naturals$ where $A\sim B$ if and only if $A\subseteq B$.
+
+	\vfill
+\end{enumerate}
+
+
+\item Is the operation $a\oplus b = a^b$ well-defined for $a,b\in \integers_n$?
+
+\vfill
+
+\item Let $S = \integers \times (\integers \setminus \{0\})$. Define the relation $\sim$ on $S$ where $(a,b)\sim (c,d)$ if and only if $ad=bc$.
+\begin{enumerate}
+	\item Is $(1,5)\sim (-3,-15)$?
+
+	\vfill
+
+	\item Is $(-1,1)\sim (2,3)$?
+
+	\vfill
+
+	\item Prove that $\sim$ is an equivalence relation.
+	\vfill
+\end{enumerate}
+\end{enumerate}
+
+\end{document}

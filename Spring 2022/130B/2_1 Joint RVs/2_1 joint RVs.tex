@@ -1,0 +1,88 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Joint Random Variables}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+%\textbf{Do the fourth problem in each section.}
+\begin{enumerate}
+	\item Two fair dice are rolled. Fined the joint probability mass function of $X$ and $Y$ when
+	\begin{enumerate}
+		\item $X$ is the value on the first die and $Y$ is the larger of the two values.
+		\item $X$ is the smallest and $Y$ is the largest value obtained on the dice.
+	\end{enumerate}
+
+	\vfill
+
+	\item The joint density of $X,Y$ is given by
+	\[
+		f(x,y) = \begin{cases}
+			3x &\text{if }0\leq y \leq x \leq 1\\
+			0 & \text{otherwise}
+		\end{cases}.
+	\]
+	\begin{enumerate}
+		\item Find the marginal densities $f_X$ and $f_Y$.
+
+		\item Compute $Cov(X,Y)$.
+	\end{enumerate}
+
+	\vfill
+
+	\item Let $X$ and $Y$ be independent random variables taking values in the positive integers having the same distribution given by
+	\[
+		\Pr[X=n] = \Pr[Y=n] = 2^{-n}
+	\]
+	for all $n \geq 1$. Find $\Pr[X \text{ divides }Y]$.
+
+	\vfill
+
+	\item Let $X$ and $Y$ be independent continuous random variables with densities $f_X$ and $f_Y$, respectively. Express the density of $XY$ in terms of the densities of $X$ and $Y$.
+
+	\vfill
+
+	\item Suppose that $n$ points are independently chosen at random on the circumference of a circle, and we want the probability that they all lie in a semicircle. That is, we want the probability that there is a line passing through the center of the circle such that all the points are on the same side of that line.
+
+	Let $P_1 \ldots, P_n$ be the $n$ points. Let $A^{(n)}$ denote the event that all the points are contained in some semicircle, and let $A^{(n)}_i$ be the event that all the points lie in the semicircle beginning at the point $P_i$ and going clockwise $180^\circ$ for $i = 1, \ldots, n$.
+	\begin{enumerate}
+		\item Express $A^{(n)}$ in terms of the $A^{(n)}_i$.
+		\item Find $\Pr[A^{(n)}]$ and describe what happens to this as $n\to \infty$.
+	\end{enumerate}
+	\vfill
+
+
+\end{enumerate}
+
+\end{document}

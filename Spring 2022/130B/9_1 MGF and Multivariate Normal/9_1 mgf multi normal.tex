@@ -1,0 +1,83 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - MGFs and Multivariate Normal RVs}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+	\item The moment generating function of $X$ is given by $M_X(t) = \exp[2e^t-2]$ and that of $Y$ by $M_Y(t) = (\frac{3}{4}e^t+\frac{1}{4})^{10}$. If $X$ and $Y$ are independent, what are
+	\begin{enumerate}
+		\item $\Pr[X+Y=2]$?
+		\vfill
+		\item $\Pr[XY = 0]$?
+		\vfill
+		\item $\E[XY]$.
+	\end{enumerate}
+	\vfill
+
+	\item Let $X$ be the value of the first die and $Y$ the sum of the values when two dice are rolled. Compute the joint moment generating function of $X$ and $Y$.
+
+	\vfill
+
+	\item Successive weekly sales, in units of \$1000, have a bivariate normal distribution with common mean 40, common standard deviation 6, and correlation 0.6.
+	\begin{enumerate}
+		\item Find the probability that the total of the next 2 weeks' sales exceeds 90.
+		\vfill
+
+		\item If the correlation was 0.2 rather than 0.6, do you think that this would increase or decrease the answer to (a)?
+	\end{enumerate}
+	\vfill
+
+	\item Suppose that $Y$ is a normal random variable with mean $\mu$ and variance $\sigma^2$, and suppose also that the conditional distribution of $X$, given that $Y=y$, is normal with mean $y$ and variance 1.
+	\begin{enumerate}
+		\item Argue that the joint distribution of $X,Y$, is the same as that of $Y+Z,Y$ where $Z$ is a standard normal random variable independent of $Y$.
+		\vfill
+
+		\item Argue that $X,Y$ has a bivariate normal distribution.
+
+		\vfill
+
+		\item Find $\E[X]$, $\Var[X]$ and $\Cov(X,Y)$.
+		\vfill
+
+		\item Find $\E[Y\mid X=x]$.
+		\vfill
+
+		\item What is the conditional distribution of $Y$ given that $X=x$.
+	\end{enumerate}
+	\vfill
+\end{enumerate}
+
+\end{document}

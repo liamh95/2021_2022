@@ -1,0 +1,84 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{question}{Question}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\ket}[1]{\left|{#1}\right\rangle}
+\newcommand{\bra}[1]{\left\langle {#1}\right|}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 9: Equivalence Relations}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+Let's review the superdense coding protocol from section 2.3.
+Here, Alice wants to send a 2-bit message to Bob.
+They start by preparing two qubits in the following entangled state,
+\begin{equation}
+	\ket{\psi} = \frac{\ket{00} + \ket{11}}{\sqrt{2}}.
+\end{equation}
+Alice takes the first qubit and Bob the second.
+Now if Alice wants to send Bob the message ``00'', she does nothing to her qubit.
+If she wants to send ``01'' she applies $Z$, for ``10'' she applies $X$ and for ``11'' she applies $iY$.
+\begin{question}
+	Aren't $I$, $X$, $Y$ and $Z$ operators on \emph{single} qubits? If so, how can Alice apply them to the \emph{two} qubit state, $\ket{\psi}$?
+\end{question}
+\begin{proof}[Solution]
+	Alice isn't applying these single qubit operators to the \emph{whole} state, but to just her single qubit.
+	If she were to apply the operator $X$ to just her qubit (assume it's the first one), then the \emph{whole} state becomes
+	\[
+		(X\otimes I)\ket{\psi}.
+	\]
+	The $I$ above represents Bob doing nothing to his qubit.
+\end{proof}
+
+Alice's actions are encoded in the following display.
+\begin{equation}
+\begin{split}
+	00\ : \ket{\psi} & \mapsto (I\otimes I)\ket{\psi} = \frac{\ket{00} + \ket{11}}{\sqrt{2}}\\
+	01\ : \ket{\psi} & \mapsto (Z\otimes I)\ket{\psi} = \frac{\ket{00} - \ket{11}}{\sqrt{2}}\\
+	10\ : \ket{\psi} & \mapsto (X\otimes I)\ket{\psi} = \frac{\ket{10} + \ket{01}}{\sqrt{2}}\\
+	11\ : \ket{\psi} & \mapsto (iY\otimes I)\ket{\psi}= \frac{\ket{10} - \ket{10}}{\sqrt{2}}.
+\end{split}
+\end{equation}
+
+It's easy to check that these states are all mutually orthogonal.
+Remember that $\ket{00}$ is shorthand for $\ket{0}\otimes \ket{0}$ and that the inner product on the tensor product is
+\[
+	\big(a\ket{v_1}\otimes \ket{w_1}, b\ket{v_2}\otimes \ket{w_2}\big) = a^*b \langle v_1|v_2\rangle \langle w_1 | w_2\rangle.
+\]
+\end{document}

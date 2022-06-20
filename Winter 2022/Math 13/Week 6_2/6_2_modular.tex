@@ -1,0 +1,100 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 6: Modular Arithmetic}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+\item Which of these assignments are injective, surjective or bijective?
+\begin{enumerate}
+	\item In 2016, UCI had 33,467 students enrolled. Let $f$ be the function that maps each student to their eight-digit student ID number. (Consider $f$ as a function from the set of students to the set of all eight-digit numbers).
+
+	\vfill
+	\item Let $g$ be the function from the set of ID numbers of current UCI students to the set of current UCI students that maps an ID number to the student it belongs to.
+
+	\vfill
+
+	\item A padlock company produces 100,000 padlocks in a month. Each padlock is opened with a combination of three numbers, each between 0 and 39 and each lock is made with a random combination. Leg $h$ be the function that maps each padlock to the three-number sequence representing its combination.
+
+\end{enumerate}
+
+\vfill
+
+\item Find $x$ and $y$ such that $431x + 29y = \gcd(431, 29)$. \textit{I promise it won't take that many steps.}
+
+\vfill
+
+\item Prove that consecutive integers must be relatively prime (that is, their greatest common divisor is 1).
+
+\vfill
+
+\item Let $a$ be an integer. Prove that $2a+1$ and $4a^2+1$ are relatively prime.
+
+\vfill
+
+\item Suppose that $a$ and $b$ are relatively prime integers and that $a\mid c$ and $b\mid c$. Prove that $(ab)\mid c$.
+\vfill
+
+% \item Let $a,b\in \integers$ with $a\geq b > 0$.
+% In this exercise we explore how many steps it takes to compute the greatest common divisor of $a$ and $b$ using the Euclidean algorithm.
+% \begin{enumerate}
+% 	\item Let $c = a\mod b$. Show that $c < a/2$. \textit{Hint: consider two cases -- one where $a<2b$ and one where $a \geq 2b$.}
+
+% 	\item Recall that the Euclidean algorithm produces a sequence of numbers
+% 	\[
+% 		r_0 \geq r_1 \geq r_2 \geq \cdots \geq 0,
+% 	\]
+% 	where $r_0 = a$, $r_1 = b$ and $r_{i+2} = r_i \mod r_{i+1}$.
+% 	Using the previous exercise, conclude that for any $i$, the numbers $r_{i+2}$ and $r_{i+3}$ are less than half as large as $r_i$ and $r_{i+1}$, respectively.
+% 	In other words, show that after $2t$ steps, the numbers we're working with drop by more than a factor of $2^t$.
+
+% 	\item The Euclidean algorithm terminates as soon as we reach a remainder of zero. If $T$ is the last step of the algorithm, conclude that
+% 	\[
+% 		2^{-T}b\leq 1.
+% 	\]
+% 	Solve this for $T$ to obtain a bound for how many steps it takes to run the Euclidean algorithm.
+% \end{enumerate}
+
+% \vfill
+
+\end{enumerate}
+
+\end{document}

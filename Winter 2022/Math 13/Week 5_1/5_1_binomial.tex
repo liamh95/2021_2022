@@ -1,0 +1,81 @@
+\documentclass[12pt]{report}  
+
+\pagestyle{empty}
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol,array}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{epsf}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{definition}[thm]{Definition}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\field}{\mathbb{F}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 13 - Week 5: Binomial Coefficients}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}	
+
+\item Let $n$ be an integer with $n\geq 2$. Prove that
+\[
+	\binom{n}{2} = 1+2+3 + \cdots  + (n-1) = \sum_{k=1}^{n-1}k.
+\]
+Try to come up with two different ways to prove it.
+\vfill
+
+\item For integers $n$ and $k$ with $0\leq k\leq n$, prove that
+\[
+\binom{n}{k} = \binom{n}{n-k}.
+\]
+
+\vfill
+
+\item Consider a grid that is $l$ units long and $w$ units wide.
+Starting from the lowest-left square, how many paths are there to the upper-right square in which each step either goes one unit to the right or one unit vertically?
+\vfill
+
+\item Use the binomial theorem to prove
+\[
+\binom{n}{0} - \binom{n}{1} + \binom{n}{2} -\binom{n}{3} + \cdots \pm \binom{n}{n} = 0,
+\]
+provided $n>0$. Move all the negative terms to the right-hand side to deduce
+\[
+	\binom{n}{0}+\binom{n}{2} + \binom{n}{4} + \cdots = \binom{n}{1}+\binom{n}{3} + \binom{n}{5}+\cdots.
+\]
+Give a description of what this means in terms of subsets of an $n$-element set and prove it using counting.
+
+\vfill
+
+\item Prove that a set with $n$ elements has exactly $2^n$ subsets. Give as many proofs as you can for this.
+\vfill
+
+\end{enumerate}
+
+\end{document}
