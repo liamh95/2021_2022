@@ -3,24 +3,31 @@
             footskip=0.25in]{geometry}
 \usepackage{graphicx,float,hyperref} 
 \usepackage{amsmath,amsthm,amssymb,amsfonts,geometry,mathtools,enumerate,bbm}
+\usepackage{algpseudocode}
  
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{claim}[theorem]{Claim}
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{observation}[theorem]{Observation}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{problem}[theorem]{Problem}
 \newtheorem{question}[theorem]{Question}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{definition}[theorem]{Definition}
 \newtheorem{property}[theorem]{Property}
-\newtheorem{exercise}[theorem]{Exercise}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{examples}[theorem]{Examples}
+
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{exercise}[theorem]{Exercise}
 \newtheorem{exercises}[theorem]{Exercises}
+
 \newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
  
  
@@ -63,8 +70,351 @@
 
 \section{An Introduction to Cryptography}
 \subsection{Simple Substitution Ciphers}
-Informally speaking, a \emph{cipher} is an injective function that maps 
+One of history's oldest examples of encrypting messages is the \emph{shift cipher}, sometimes called the \emph{Caesar cipher} after Julius Caesar, who allegedly used it to encrypt the orders he'd send to his troops.
+To encrypt a message, simply shift each letter of the plaintext forward in the alphabet by three, wrapping around if the shifted letter goes past \texttt{Z}. For example, if the key\footnote{We won't rigorously define what ``plaintext'', ``ciphertext'' or ``key'' mean. You can think of the plaintext as being being the human-readable or usable message (maybe consisting of letters or a number) and the ciphertext as being some unreadable sequence of letters or numbers. Then you can think of the key as being some piece of information that tells you how to convert between plain- and ciphertext.} is \texttt{3} and our plaintext is \texttt{hello, world}, then we have the following ciphertext.
 
+\begin{center}
+    \texttt{hello world} $\mapsto$ \texttt{KHOOR ZRUOG}
+\end{center}
+
+Conversely, if we know the key is \texttt{3} and we're given the ciphertext \texttt{ZHGQH VGDB}, then we simply shift backwards by 3 to obtain the plaintext.
+
+\begin{center}
+    \texttt{ZHGQH VGDB} $\mapsto$ \texttt{wedne sday}
+\end{center}
+
+One advantage to the shift cipher is that it's really easy to encrypt and decrypt messages if the key is known.
+The main disadvantage is that it's only slightly challenging (more annoying than challenging) for an adversary to decrypt messages even if they don't know the key.
+If we use the English alphabet, then there are only 26 possible keys and it doesn't take too long to try them all (a few minutes by hand, a fraction of a second even with bad code).
+This trial and error method of trying all possible keys, sometimes called \emph{brute forcing}, works because it's pretty unlikely that decrypting with two different keys will yield two plaintexts that are both readable.
+For example, suppose we happen upon the following ciphertext
+\begin{center}
+    \texttt{XPPEE ZXZCC ZH}.
+\end{center}
+If we suspect that this ciphertext came from a shift cipher, we can just try all possible un-shifts to get the following possible plaintexts.
+
+\begin{center}
+    \begin{tabular}{|c|c||c|c|}
+    \hline
+    key & plaintext & key & plaintext\\
+    \texttt{1} & \texttt{woodd ywybb yg} & \texttt{14} & \texttt{jbbqq ljloo lt}\\
+    \texttt{2} & \texttt{vnncc xvxaa xf} & \texttt{15} & \texttt{iaapp kiknn ks}\\
+    \texttt{3} & \texttt{ummbb wuwzz we} & \texttt{16} & \texttt{hzzoo jhjmm jr}\\
+    \texttt{4} & \texttt{tllaa vtvyy vd} & \texttt{17} & \texttt{gyynn igill iq}\\
+    \texttt{5} & \texttt{skkzz usuxx uc} & \texttt{18} & \texttt{fxxmm hfhkk hp}\\
+    \texttt{6} & \texttt{rjjyy trtww tb} & \texttt{19} & \texttt{ewwll gegjj go}\\
+    \texttt{7} & \texttt{qiixx sqsvv sa} & \texttt{20} & \texttt{dvvkk fdfii fn}\\
+    \texttt{8} & \texttt{phhww rpruu rz} & \texttt{21} & \texttt{cuujj ecehh em}\\
+    \texttt{9} & \texttt{oggvv qoqtt qy} & \texttt{22} & \texttt{bttii dbdgg dl}\\
+    \texttt{10} & \texttt{nffuu pnpss px} & \texttt{23} & \texttt{asshh cacff ck}\\
+    \texttt{11} & \texttt{meett omorr ow} & \texttt{24} & \texttt{zrrgg bzbee bj}\\
+    \texttt{12} & \texttt{lddss nlnqq nv} & \texttt{25} & \texttt{yqqff ayadd ai}\\
+    \texttt{13} & \texttt{kccrr mkmpp mu} & \texttt{ } & \texttt{ }\\
+    \hline
+    \end{tabular}
+\end{center}
+
+The only plaintext here that's even remotely readable is \texttt{meett omorr ow}, corresponding to a key of \texttt{11}.
+This process of decrypting a ciphertext without knowing the key in advance is called \emph{cryptanalysis}.
+
+Notice that with a shift cipher, each instance of \texttt{a} encrypts to the same character, and so on.
+In this setting, once we know what one character maps to, then we know what all the other characters map to as well.
+E.g. if we know that \texttt{m} maps to \texttt{X}, then we know that the cipher shifts each character forward by 11, which immediately tells us that \texttt{a} maps to \texttt{L}, and so on.
+A more general \emph{simple substitution cipher} decouples the encryptions of different letters, e.g. each \texttt{a} maps to \texttt{C} and each \texttt{b} maps to \texttt{J}, etc.
+
+\begin{question}
+    Explain why this particular substitution cipher is not a shift cipher.
+\end{question}
+
+\begin{question}
+    How many possible keys are there in a substitution cipher? Hint: think of encryption as a function. What properties should this function have?
+\end{question}
+
+What would cryptanalysis of a simple substitution cipher look like?
+There are more than $10^{26}$ keys in this case.
+If we could try a million keys every second, it would still take more than $10^{13}$ years to try them all, so the brute-force solution is infeasible.
+Despite the huge number of possible keys, simple substitution ciphers are often really easy to cryptanalyze in practice with simple \emph{frequency analysis}.
+The idea is that if the plaintext is more than a few sentences long, then one might expect to see a lot of \texttt{e}'s, \texttt{t}'s and \texttt{a}'s and not many \texttt{z}'s or \texttt{q}'s.
+Consequently, if we look at the frequencies of the letters in the ciphertext, it would be reasonable to guess that the most common ciphertext letters correspond to the most common plaintext letters.
+
+For example, suppose we intercept the following message.
+
+\begin{center}
+    \texttt{LWNSOZ BNWVWB AYBNVB SQWVUO HWDIZW RBBNPB POOUWR PAWXAW}\\
+    \texttt{PBWZWM YPOBNP BBNWJP AWWRZS LWZQJB NVIAXA WPBSAL IBNXWA}\\
+    \texttt{BPIRYR POIWRP QOWAIE NBVBNP BPUSRE BNWVWP AWOIHW OIQWAB}\\
+    \texttt{JPRZBN WFYAVY IBSHNP FFIRWV VBNPBB SVWXYA WBNWVW AIENBV}\\
+    \texttt{ESDWAR UWRBVP AWIRVB IBYBWZ PUSREU WRZWAI DIREBH WIATYV}\\
+    \texttt{BFSLWA VHASUB NWXSRV WRBSHB NWESDW ARWZBN PBLNWR WDWAPR}\\
+    \texttt{JHSAUS HESDWA RUWRBQ WXSUWV ZWVBAY XBIDWS HBNWVW WRZVIB}\\
+    \texttt{IVBNVA IENBSH BNWFWS FOWBSP OBWASA BSPQSO IVNIBP RZBSIR}\\
+    \texttt{VBIBYB WRWLES DWARUW RBOPJI REIBVH SYRZPB ISRSRV YXNFAI}\\
+    \texttt{RXIFOW VPRZSA EPRIKI REIBVF SLWAVI RVYXNH SAUPVB SVWWUU}\\
+    \texttt{SVBOIC WOJBSW HHWXBB NWIAVP HWBJPR ZNPFFI RWVV}
+\end{center}
+
+Let's arrange the letters in the ciphertext by frequency.
+
+\begin{center}
+\begin{tabular}{c c c c c c c c c c c}
+    \texttt{W} & \texttt{B} & \texttt{R} & \texttt{S} & \texttt{I} & \texttt{V} & \texttt{A} & \texttt{P} & \texttt{N} & \texttt{O} & $\cdots$\\
+    76 & 64 & 39 & 36 & 36 & 35 & 34 & 32 & 30 & 16 & $\cdots$
+\end{tabular}
+
+\end{center}
+
+The letters in standard English text have the following frequencies.
+
+\begin{center}
+\begin{tabular}{c c c c c c c c c c c}
+    \texttt{E} & \texttt{T} & \texttt{A} & \texttt{O} & \texttt{N} & \texttt{R} & \texttt{I} & \texttt{S} & \texttt{H} & \texttt{D} & $\cdots$\\
+    .131 & .105 & .082 & .080 & .071 & .068 & .064 & .061 & .053 & .038 & $\cdots$
+\end{tabular}
+\end{center}
+
+Since the letter \texttt{W} appears much more frequently than the other letters in the ciphertext, it tips us off that we might be dealing with a substitution cipher and that an \texttt{e} in the plaintext probably maps to a \texttt{W} in the ciphertext. It's also reasonable to guess that the letters \texttt{B}, \texttt{R}, \texttt{S} and \texttt{I} correspond to the letters \texttt{t}, \texttt{a}, \texttt{o} and \texttt{i} in some order.
+
+Looking at individual letter frequencies lets us get our foot in the door, but it doesn't help us much when it comes to differentiating between letters that appear with roughly the same frequency (like \texttt{R} and \texttt{S} in this ciphertext).
+If we think about English text for a bit, we notice that certain pairs of letters, called \emph{bigrams}, appear together more frequently than others (e.g. \texttt{q} is almost always followed by a \texttt{u} and \texttt{th} is a common pair).
+Here are a few of the bigram frequencies from our ciphertext
+
+\begin{center}
+\begin{tabular}{c | c c c c c c c c c}
+    &\texttt{W} & \texttt{B} & \texttt{R} & \texttt{S} & \texttt{I} & \texttt{V} & \texttt{A} & \texttt{P} & \texttt{N}\\
+    \hline
+    \texttt{W} & 3 & 4 & 12 & 2 & 4 & 10 & 14 & 3 & 1\\
+    \texttt{B} & 4 & 4 & 0 & 11 & 5 & 5 & 2 & 4 & 20\\
+    \texttt{R} & 5 & 5 & 0 & 1 & 1 & 5 & 0 & 3 & 0\\
+    \texttt{S} & 1 & 0 & 5 & 0 & 1 & 3 & 5 & 2 & 0\\
+    \texttt{I} & 1 & 8 & 10 & 1 & 0 & 2 & 3 & 0 & 0\\
+    \texttt{V} & 8 & 10 & 0 & 0 & 2 & 2 & 0 & 3 & 1\\
+    \texttt{A} & 7 & 3 & 4 & 2 & 5 & 4 & 0 & 1 & 0\\
+    \texttt{P} & 0 & 8 & 6 & 0 & 1 & 1 & 4 & 0 & 0\\
+    \texttt{N} & 14 & 3 & 0 & 1 & 1 & 1 & 0 & 7 & 0\\
+\end{tabular}
+\end{center}
+
+That is, this table tells us that \texttt{WN} appears once and \texttt{NW} appears 14 times.
+In English, the letter \texttt{h} frequently comes before \texttt{e} and rarely comes after it, so it's a safe guess that \texttt{h} maps to \texttt{N} in this particular substitution.
+Since \texttt{th} is the most common digram in English and \texttt{BN} is the most common digram in the ciphertext, we guess that \texttt{t} maps to \texttt{B}.
+Other features of the English language lead to more educated guesses that lead to a full cryptanalysis of the ciphertext.
+
+\begin{problem}
+    Finish decrypting the ciphertext. One place to start is by looking for vowels and noting that some vowels like \texttt{a}, \texttt{i} and \texttt{o} tend to avoid each other.
+\end{problem}
+
+
+
+\subsection{Divisibility and Greatest Common Divisors}
+Some of the most widely-used cryptosystems today make heavy use of abstract algebra and number theory.
+Roughly speaking, number theory is concerned with properties of the integers, $\Z$, like divisibility and solutions to equations with integer variables.
+
+\begin{definition}
+    Let $a$ and $b$ be integers with $b\neq 0$. We say that $b$ \emph{divides} $a$ if $a=bc$ for some integer $c$, in which case, we write $b\mid a$.
+\end{definition}
+
+\begin{example}
+    \begin{enumerate}[(a)]
+        \item We call the integers divisible by 2 \emph{even} and those that aren't \emph{odd}. Is zero even or odd?
+
+        \item 713 is divisible by 23 since $713 = 23\cdot 31$. The numbers used in everyday cryptographic applications are hundreds or even thousands of digits long.
+
+        \item A number $n$ is divisible by 5 if and only if it ends in a 0 or a 5 (when written in base 10, of course). To see this, write
+        \[
+            n = d_0 + 10d_1 + 10^2d_2 + \cdots + 10^kd_k,
+        \]
+        where $k\geq 0$ and $d_i \in \{0, 1, 2, \ldots, 9\}$ for all $i$.
+        Then $d_0$ is the number that $n$ ``ends'' with, so if it's 0 or 5, we can just factor a 5 out of the right-hand side to see that $n$ is divisible by 5.
+        Conversely, if we rearrange this,
+        \[
+            d_0 = n - 10d_1 - 10^2d_2 - \cdots - 10^kd_k,
+        \]
+        we see that if $n$ is divisible by 5, then the whole right-hand side (which is equal to $d_0$) is also divisible by 5.
+    \end{enumerate}
+\end{example}
+
+We record some basic properties of divisibility here. The proof of this proposition is a straightforward exercise.
+
+\begin{proposition}
+    Let $a$, $b$ and $c$ be integers.
+    \begin{enumerate}[(a)]
+        \item If $a\mid b$ and $b\mid c$, then $a\mid c$.
+        \item If $a\mid b$ and $b\mid c$, then $a = \pm b$.
+        \item If $a\mid b$ and $a\mid c$, then $a\mid (b+c)$ and $a\mid (b-c)$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{question}
+    For those familiar with equivalence relations, is divisibility an equivalence relation on $\Z$?
+\end{question}
+
+\begin{definition}
+    A \emph{common divisor} of integers $a$ and $b$ is a positive integer $d$ that divides both of them.
+    The \emph{greatest common divisor} of $a$ and $b$ is the largest positive integer $d$ such that $d\mid a$ and $d\mid b$ and we write $d = \gcd(a,b)$ or $d = (a,b)$ if there is no possibility of confusion.
+\end{definition}
+
+\begin{example}
+    \begin{enumerate}[(a)]
+        \item Find the greatest common divisor of $132$ and $66$ by listing out all of their divisors.
+
+        \item Find the greatest common divisor of $80$ and $5$. Other than the number being pretty small, why was this easy to do? Prove your idea.
+    \end{enumerate}
+\end{example}
+
+Of course given integers $a$ and $b$, it's not always the case that $a\mid b$ or $b\mid a$.
+In this case, we get a (unique) remainder.
+
+\begin{proposition}
+    For any positive integers $a$ and $b$, there exist unique integers $q$ and $r$ such that
+    \begin{equation}\label{division}
+        a = bq + r\qquad \text{with }0\leq r < b.
+    \end{equation}
+    Here we call $q$ the \emph{quotient} and $r$ the \emph{remainder} when $a$ is divided by $b$.
+\end{proposition}
+\begin{proof}
+    Homework exercise.
+\end{proof}
+
+Division with remainder provides us with a way of finding the gcd of two integers.
+To see this, rearrange (\ref{division}) to obtain
+\[
+    r = a - bq.
+\]
+If $d$ is a common divisor of $a$ and $b$, then it clearly divides the right-hand side of this equation, so it must divide $r$ as well.
+A similar rearrangement (which?) shows that if $c$ is a common divisor of $b$ and $r$, then it must also divide $a$.
+We then have that the common divisors of $a$ and $b$ are the common divisors of $b$ and $r$, so we must have that
+\[
+    \gcd(a,b) = \gcd(b,r).
+\]
+This is great because if we assume that $a > b$, then we've reduced the problem of finding $\gcd(a,b)$ to finding the gcd of two smaller numbers, $b$ and $r$.
+We can then repeat this: divide $b$ by $r$ to obtain
+\[
+    b = q'r + r',\qquad \text{with }0\leq r' < r.
+\]
+By the same reasoning, we have that
+\[
+    \gcd(a,b) = \gcd(b,r) = \gcd(r,r').
+\]
+Since the remainders are positive numbers that get strictly smaller after each division, we must eventually reach a remainder of zero. The remainder right before this one is then the gcd of $a$ and $b$.
+\begin{example}\label{gcd ex}
+    Let's compute $\gcd(12345, 11111)$.
+    Even without a calculator it's sometimes easy to eyeball how many times one number goes into another.
+    \begin{align*}
+        12345 &= 11111\cdot 1 + 1234\\
+        11111 &= 1234\cdot 9 + 5\\
+        1234 &= 5\cdot 246 + 4\\
+        5 &= 4\cdot 1 + 1\\
+        4 &= 1\cdot 4 + 0
+    \end{align*}
+    The second-to-last remainder we found was 1, so we conclude that $\gcd(12345, 11111) = 1$.
+    Note that even though the numbers involved started out somewhat large (for by-hand computations), we were able to calculate the gcd in just a few steps.
+\end{example}
+
+This procedure for computing the gcd of two integers is called the \emph{Euclidean algorithm} after the ancient Greek mathematician.
+We summarize it here.
+\begin{theorem}
+    Let $a\geq b$ be positive integers.
+    Then the following algorithm computes $\gcd(a,b)$ in a finite number of steps (i.e., the algorithm eventually terminates).
+
+    \begin{algorithmic}[1]
+        \State Let $r_0 = a$ and $r_1 = b$.
+        \State Set $i = 1$. 
+        \State Divide $r_{i-1}$ by $r_i$ with remainder to obtain quotient $q_i$ and remainder $r_{i+1}$.
+        \[
+            r_{i-1} = r_i\cdot q_i + r_{i+1},\qquad \text{with }0\leq r_{i+1}<r_i.
+        \]
+        \State If $r_{i+1} = 0$, then $r_i = \gcd(a,b)$ and the algorithm terminates.
+        \State Otherwise, $r_{i+1} > 0$. Set $i = i+1$ and go to Step 3.
+    \end{algorithmic}
+
+\end{theorem}
+
+How many times do we need to repeat the division step of the algorithm?
+Let's start by looking at how much the remainders drop at each step.
+At each step we have two possibilities: either $r_{i+1} \leq \frac{1}{2}r_i$ or $r_{i+1} > \frac{1}{2}r_i$.
+In the first case, since the remainders are strictly decreasing, we have
+\[
+    r_{i+2} < r_{i+1} \leq \frac{1}{2}r_i.
+\]
+In the other case we must have $r_i = r_{i+1}\cdot 1 + r_{i+2}$. Rearranging, we have
+\[
+    r_{i+2} = r_i - r_{i+1} < r_i - \frac{1}{2}r_i = \frac{1}{2}r_i.
+\]
+In either case, we have that the remainder drops by at least half every two steps. After $2k+1$ steps we then have
+\[
+    r_{2k+1} < \frac{1}{2}r_{2k-1} < \frac{1}{2^2}r_{2k-3} < \cdots < \frac{1}{2^k}r_1 = \frac{1}{2^k}b.
+\]
+If $k$ is the smallest integer such that $b/2^k<1$, then we have $r_{2k+1} = 0$.
+Setting $k = \lfloor \log_2 b\rfloor + 1$ does the trick.
+The $gcd$ is then found on step at most $2k = 2\lfloor \log_2b\rfloor + 2$.
+
+\begin{remark}
+    Pretty much all cryptography software includes some implementation of the Euclidean algorithm.
+    Computers store integers in their binary representations where an integer $N$ takes $n = \lfloor \log_2 N\rfloor +1$ bits of memory (why?). The above analysis shows that the Euclidean algorithm runs in a number of steps equal to at most twice the number of bits $(2n)$ it takes to store the smaller of its two inputs.
+    When the number of steps it takes an algorithm to complete grows (at most) like a polynomial in its input size, then we consider it to be (reasonably) efficient.
+\end{remark}
+
+The Euclidean algorithm also gives us a way of writing $\gcd(a,b)$ as a linear combination of $a$ and $b$.
+
+\begin{example}
+    Let's return to Example \ref{gcd ex}.
+    % We know $\gcd(12345, 11111) = 1$ since 1 is the second-to-last remainder.
+    % Isolate the gcd and use the previous two equations to get the remainders $4$ and $5$ in terms of earlier remainders.
+    % \begin{align*}
+    %     1 &= 5 - 4\cdot 1\\
+    %      &= (11111-1234\cdot 9) - (1234-5\cdot 246)\\
+    %      &= 11111 -1234\cdot 10 + 5\cdot 246
+    % \end{align*}
+    % Now get the remainder 1234 in terms of the previous remainders and do the same for 5 once more.
+
+    % \begin{align*}
+    %     1 &= 11111 -1234\cdot 10 + 5\cdot 246\\
+    %       &= 11111 - (12345 - 11111)\cdot 10 + (11111-1234\cdot 9)\cdot 246\\
+    %       &= 12345\cdot (-10) + 11111\cdot 257 + 1234\cdot (2214)\\
+    %       &= 
+    % \end{align*}
+
+    Write $a = 12345$ and $b = 11111$ and solve for the first remainder, 1234, in terms of $a$ and $b$:
+    \[
+        1234 = a - b.
+    \]
+    Now plug this into the second equation to get
+    \[
+        b = (a-b)\cdot 9 + 5,
+    \]
+    So the next remainder, 5, can be written in terms of $a$ and $b$ as
+    \[
+        5 = -9a + 10b.
+    \]
+    Plug this along with the expression for 1234 into the third equation to get
+    \[
+        a-b = (-9a + 10b)\cdot 246 + 4,
+    \]
+    which gives the next remainder, 4, in terms of $a$ and $b$:
+    \[
+        4 = 2215a - 2461b.
+    \]
+    Finally, plug the expressions for $4$ and $5$ into the second-to-last equation to get
+    \[
+        1 = (-9a + 10b) - (2215a - 2461b) = -2224a + 2471b.
+    \]
+\end{example}
+
+This example is more or less a proof of the following theorem.
+
+\begin{theorem}
+    Let $a$ and $b$ be positive integers.
+    Then the equation
+    \[
+        ax + by = c
+    \]
+    has integer solutions for $x$ and $y$ if and only if $c$ is divisible by $\gcd(a,b)$.
+    Moreover, if $(x_0, y_0)$ is a particular solution to this equation, then every other solution has the form
+    \[
+        x = x_0 + \frac{kb}{\gcd(a,b)},\quad y = y_0 - \frac{ka}{\gcd(a,b)}
+    \]
+    for some integer $k$.
+\end{theorem}
 
 
 \begin{thebibliography}{13}
