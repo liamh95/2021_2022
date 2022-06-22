@@ -1,15 +1,28 @@
+\frametitle{Substitution example}
 \begin{center}
-\begin{tabular}{c | c c c c c c c c c}
-    &\texttt{W} & \texttt{B} & \texttt{R} & \texttt{S} & \texttt{I} & \texttt{V} & \texttt{A} & \texttt{P} & \texttt{N}\\
-    \hline
-    \texttt{W} & 3 & 4 & 12 & 2 & 4 & 10 & 14 & 3 & 1\\
-    \texttt{B} & 4 & 4 & 0 & 11 & 5 & 5 & 2 & 4 & 20\\
-    \texttt{R} & 5 & 5 & 0 & 1 & 1 & 5 & 0 & 3 & 0\\
-    \texttt{S} & 1 & 0 & 5 & 0 & 1 & 3 & 5 & 2 & 0\\
-    \texttt{I} & 1 & 8 & 10 & 1 & 0 & 2 & 3 & 0 & 0\\
-    \texttt{V} & 8 & 10 & 0 & 0 & 2 & 2 & 0 & 3 & 1\\
-    \texttt{A} & 7 & 3 & 4 & 2 & 5 & 4 & 0 & 1 & 0\\
-    \texttt{P} & 0 & 8 & 6 & 0 & 1 & 1 & 4 & 0 & 0\\
-    \texttt{N} & 14 & 3 & 0 & 1 & 1 & 1 & 0 & 7 & 0\\
-\end{tabular}
+\begin{BVerbatim}
+    LWNSOZ BNWVWB AYBNVB SQWVUO HWDIZW RBBNPB POOUWR PAWXAW
+     eho   theset   thst o es    e   e  tth t     e    e  e
+    PBWZWM YPOBNP BBNWJP AWWRZS LWZQJB NVIAXA WPBSAL IBNXWA
+     te e     th  tthe    ee  o  e   t hs     e to    th e
+    BPIRYR POIWRP QOWAIE NBVBNP BPUSRE BNWVWP AWOIHW OIQWAB
+    t         e     e    htsth  t  o   these   e   e    e t
+    JPRZBN WFYAVY IBSHNP FFIRWV VBNPBB SVWXYA WBNWVW AIENBV
+        th e   s   to h      es sth tt ose    ethese    hts
+    ESDWAR UWRBVP AWIRVB IBYBWZ PUSREU WRZWAI DIREBH WIATYV
+       e    e ts   e  st  t te    o    e  e       t  e    s
+    BFSLWA VHASUB NWXSRV WRBSHB NWESDW ARWZBN PBLNWR WDWAPR
+    t o e  s  o t he o s e to t he o e   e th  t he  e e
+    JHSAUS HESDWA RUWRBQ WXSUWV ZWVBAY XBIDWS HBNWVW WRZVIB
+      o  o   o e    e t  e o es  est    t  eo  these e  s t
+    IVBNVA IENBSH BNWFWS FOWBSP OBWASA BSPQSO IVNIBP RZBSIR
+     sths    hto  the eo   eto   te o  to      sh t    to
+    VBIBYB WRWLES DWARUW RBOPJI REIBVH SYRZPB ISRSRV YXNFAI
+    st t t e e  o  e   e  t        ts  o    t    o s   h
+    RXIFOW VPRZSA EPRIKI REIBVF SLWAVI RVYXNH SAUPVB SVWWUU
+         e s   o            ts  o e s   s  h  o   st osee
+    SVBOIC WOJBSW HHWXBB NWIAVP HWBJPR ZNPFFI RWVV
+    ost    e  toe   e tt he  s   et     h      ess
+\end{BVerbatim}
 \end{center}
+
