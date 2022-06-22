@@ -8,3 +8,5 @@ grades.ods
 *.out
 *.toc
 *.SRCINFO
+*.bbl
+*.blg

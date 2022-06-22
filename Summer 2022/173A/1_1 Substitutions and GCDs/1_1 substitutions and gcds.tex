@@ -1,0 +1,100 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Conditional Distributions}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+    \item How many simple substitution ciphers (on the English alphabet) are there with the following properties?
+    \begin{enumerate}
+        \item In total.
+        \vfill
+
+        \item That leave no letters fixed.
+
+        \vfill
+
+        \item That fix at least one letter.
+
+        \vfill
+
+        \item That fix exactly one letter.
+
+    \end{enumerate}
+    \vfill
+
+    \item \begin{enumerate}
+        \item Compute $\gcd(30030, 257)$.
+
+        \vfill
+
+        \item Factor $30030$ into prime numbers.
+
+        \vfill
+
+        \item Use the previous two exercises to conclude that 257 is prime.
+    \end{enumerate}
+
+    \vfill\pagebreak
+
+    \item Decrypt this message that was encrypted using a Caesar cipher.
+    \begin{center}
+        \texttt{UXENRBWXCUXENFQRLQJUCNABFQNWRCJUCNAJCRXWORWMB}
+    \end{center}
+
+    \vfill
+
+    \item Let $a, b, c\in \integers$. Prove the following statements.
+    \begin{enumerate}
+        \item If $a\mid b$ and $b\mid c$ then $a\mid c$.
+        \vfill
+
+        \item If $a\mid b$ and $b\mid a$ then $a = \pm b$.
+
+        \vfill
+
+        \item If $a\mid b$ and $a\mid c$ then $a\mid (b\pm c)$.
+    \end{enumerate}
+    \vfill
+
+    \item Compute $\gcd(291, 252)$ and find integers $u$ and $v$ such that
+    \[
+        291u + 252v = \gcd(291, 252).
+    \]
+    \vfill
+\end{enumerate}
+
+\end{document}
