@@ -1,0 +1,78 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Greatest Common Divisors and Modular Arithmetic}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+    \item Prove that if $p$ is a prime number and $p\mid a_1a_2\ldots a_k$ for integers $a_1, \ldots, a_k$, then $p$ divides at least one of the $a_i$'s.
+
+
+    \item In this exercise we'll prove that prime factorization is unique, i.e. that any integer $a$ may be written
+    \begin{equation}\label{factorization}
+        a = p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r}
+    \end{equation}
+    for primes $p_1, \ldots, p_r$ and nonnegative integers $e_1, \ldots, e_r$ where the $p_i$ are unique up to rearrangement.
+
+    A common way to prove that some way of doing something is unique is to do it in two ways and then argue that they're the same.
+    To this end, suppose we could write
+    \begin{equation}\label{different}
+        a = p_1p_2\cdots p_s = q_1q_2\cdots q_t,
+    \end{equation}
+    where the $p_i$ and $q_j$ are all primes, not necessarily distinct and $s$ may be different from $t$.
+    \begin{enumerate}
+        \item Where did the $e_i$'s go when we moved from (\ref{factorization}) to (\ref{different})?
+
+
+        \item Argue that $p_1$ must divide $q_1\cdots q_t$. Use this to conclude that $p_1$ is equal to one of the $q_i$'s. Now reorder so that this is $q_1$.
+
+        \item Now divide both sides of (\ref{different}) by $p_1$. What are you left with? Repeat this argument.
+
+        \item Put the previous pieces together into a short, well-written proof for the uniqueness of prime factorization.
+    \end{enumerate}
+    
+
+    \item Prove that there are infinitely many prime numbers. \emph{Hint: what if there were only finitely many?}
+
+    \item Compute $\gcd(291, 252)$ and find integers $u$ and $v$ such that
+    \[
+        291u + 252v = \gcd(291, 252).
+    \]
+
+    \item 
+\end{enumerate}
+
+\end{document}

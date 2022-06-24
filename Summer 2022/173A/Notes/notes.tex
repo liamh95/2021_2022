@@ -36,6 +36,7 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
@@ -405,7 +406,7 @@ The Euclidean algorithm also gives us a way of writing $\gcd(a,b)$ as a linear c
 
 This example is more or less a proof of the following theorem.
 
-\begin{theorem}
+\begin{theorem}\label{bezout}
     Let $a$ and $b$ be positive integers.
     Then the equation
     \[
@@ -418,6 +419,276 @@ This example is more or less a proof of the following theorem.
     \]
     for some integer $k$.
 \end{theorem}
+
+
+
+
+
+
+
+
+
+
+\subsection{Modular Arithmetic}
+
+Recall that when encrypting a message with a shift cipher with key $k$, each letter in the plaintext is shifted forward in the alphabet by $k$ positions.
+Importantly, we \emph{wrap around} the alphabet if we shift past the letter \texttt{Z} (or whatever letter is at the end of the relevant alphabet).
+This idea of wrapping around the end back to the beginning comes up in our day-to-day lives when we think about telling time.
+Four hours after 9AM is 1PM since we \emph{wrap around} 12pm back to 1PM (the same idea holds if you prefer to think in military time - three hours after 2300 is 0200).
+We'll look at this mathematically with the idea of \emph{congruence}.
+
+\begin{definition}
+    Let $m\geq 1$ be an integer. We say that the integers $a$ and $b$ are \emph{congruent modulo }$m$ if the difference $a-b$ is divisible by $m$.
+    In this case we write
+    \[
+        a \equiv b \pmod{m}
+    \]
+    and call $m$ the \emph{modulus}.
+\end{definition}
+
+
+\begin{example}
+    We have that $2 \equiv 5\pmod{7}$. We also have that $2\equiv 9\pmod 7$ and $2 \equiv 16\pmod 7$.
+\end{example}
+
+Importantly, congruences respect familiar operations like addition and multiplication, but are a little trickier when it comes to division.
+
+\begin{proposition}\label{well defined}
+    Let $m\geq 1$ be an integer.
+    \begin{enumerate}
+        \item If $a_1 \equiv a_2 \pmod m$ and $b_1 \equiv b_2\pmod m$, then
+        \[
+            a_1 \pm b_1 \equiv a_2 \pm b_2 \pmod m\qquad \text{and}\qquad a_1b_1\equiv a_2b_2\pmod m.
+        \]
+
+        \item Let $a$ be an integer. Then there exists an integer $b$ such that
+        \[
+            ab \equiv 1\pmod m
+        \]
+        if and only if $\gcd(a,m) = 1$.
+        In this case, we call $b$ the \emph{multiplicative inverse of $a$ modulo $m$} and we write $b = a^{-1}\pmod m$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    The proof of part (a) isn't super interesting, so we'll skip it.
+
+    For part (b), first suppose that $\gcd(a,m) = 1$.
+    Then by Theorem (\ref{bezout}), we can find $u$ and $v$ such that $au+mv = 1$.
+    But if we rearrange this, we have
+    \[
+        au - 1 = mv,
+    \]
+    so the difference $au-1$ is divisible by $m$ and $au\equiv 1\pmod m$.
+    In this case, $u$ is an inverse of $a\pmod m$.
+
+    On the other hand, suppose $a$ has a multiplicative inverse $b\pmod m$.
+    Then $m$ divides the difference $ab-1$ so we have
+    \[
+        ab - km = 1
+    \]
+    for some integer $k$.
+    If $d$ is some (positive) common divisor of $a$ and $m$, then $d$ must divide the left-hand side of this equation.
+    But then $d$ must divide 1, so we must have $d = 1$.
+    It must then be the case that $\gcd(a, m) = 1$.
+\end{proof}
+
+Part (b) of this proposition gives us a partial analogue of division modulo $m$.
+Just like how the rational number $1/2$ has the property that $(1/2)\cdot 2 = 1$, the number $3$ has the property that $3\cdot 2 = 6 \equiv 1\pmod 5$, so $3$ plays a similar role to $1/2$.
+What's more is that our proof of part (b) gives us an algorithm for computing the modular inverse: the extended Euclidean algorithm.
+
+\begin{example}
+    Let's find the inverse of $4$ modulo 7 (if it exists at all).
+    First compute $\gcd(4, 7)$.
+    \begin{align*}
+        7 &= 4\cdot 1 + 3\\
+        4 &= 3\cdot 1 + 1\\
+        3 &= 1\cdot 3 + 0
+    \end{align*}
+    So $\gcd(4, 7) = 1$, so we know a modular inverse exists.
+    We find it by substituting in expressions for the remainders.
+
+    \begin{align*}
+        1 &= 4 - 3\cdot 1\\
+          &= 4 - (7-4)\\
+          &= 4\cdot 2 - 7.
+    \end{align*}
+    Rearranging this, we see that $4\cdot 2 - 1 = 7$, so $4\cdot 2\equiv 1\pmod 7$, and 2 is the inverse of 4 modulo 7.
+\end{example}
+
+Remember that the Euclidean algorithm is really efficient (for a computer at least - so is the extended one), so finding inverses is efficient as well.
+
+Returning to the above example, note that $4\cdot 9 = 36 \equiv 1\pmod 7$ as well, so we can just as easily say that $9$ is an inverse of 4 modulo 7.
+It would be nice if there was just one inverse or a way for two people to pick the same inverse every time.
+Division with remainder gives us a way of doing this.
+If $b$ is an inverse of $a$ modulo $m$, write
+\[
+    b = mq + r\quad\text{with }0\leq r < m.
+\]
+Then $r$ is always between 0 and $m-1$. Since this $r$ is unique, we can agree that we always work with the integers 0 through $m-1$ when we work modulo $m$.
+This idea is encapsulated in the following proposition.
+
+\begin{proposition}\label{remainders only}
+    The integers $a$ and $b$ are congruent modulo $m$ if and only if they have the same remainder when divided by $m$.
+\end{proposition}
+
+Recall the notion of equivalence relations.
+
+\begin{definition}
+    A relation $\sim$ on a set $X$ is an \emph{equivalence relation} if the following all hold.
+    \begin{enumerate}
+        \item (Reflexivity) $x\sim x$ for all $x\in X$.
+        \item (Symmetry) $x\sim y$ if and only if $y\sim x$ for any $x,y\in X$.
+        \item (Transitivity) if $x\sim y$ and $y\sim z$ then $x\sim z$.
+    \end{enumerate}
+    For each $x\in X$, the \emph{equivalence class of }$x$, denoted $[x]$ (or sometimes $\overline{x}$) is
+    \[
+        [x] = \{y\in X: x\sim y\}.
+    \]
+    We can form the new set $X/\sim$, the \emph{quotient of $X$ by $\sim$} by just taking equivalence classes.
+    \[
+        X/\sim = \{[x]: x\in X\}.
+    \]
+\end{definition}
+
+Modular arithmetic is a concrete example of this.
+
+\begin{proposition}
+    Fix a positive integer $m\geq 2$. Then equivalence modulo $m$ is an equivalence relation on $\Z$.
+\end{proposition}
+
+Moreover, Proposition (\ref{remainders only}) leads us to think that the quotient of $\Z$ by ``equivalence modulo $m$'' is the ``correct'' object to work with and to choose our equivalence classes to be $[0], \ldots, [m-1]$.
+
+\begin{definition}
+    The set $\Z/m\Z$ is defined to be the set of integers quotiented by the relation ``equivalent modulo $m$''. Specifically,
+    \[
+        \Z/m\Z = \{[0], \ldots, [m-1]\},
+    \]
+    where $[a] = \{b\in \Z: a\equiv b\pmod m\}$.
+\end{definition}
+\begin{remark}
+    When working with $\Z/m\Z$, we usually drop the $[\cdot ]$ when talking about its elements, which are equivalence classes. That is, it technically doesn't make sense to write $2\in \Z/5\Z$ since 2 isn't an equivalence class. However, as the next proposition shows, the equivalence class $[2]$ can be made to behave a lot like the ordinary integer 2.
+\end{remark}
+
+We can carry the notions of addition and multiplication over to the quotient as well.
+
+\begin{definition}
+    For $[a], [b]\in \Z/m\Z$, define $[a] + [b]$ to be $[a+b]$ and $[a]\cdot [b]$ to be $[ab]$.
+\end{definition}
+
+\begin{remark}
+    Technically, the above definition should be made into a proposition that says this definition is \emph{well-defined}.
+    That is, we need to show that if $a\equiv a'$ and $b\equiv b'$ then we want $[a] + [b] = [a'] + [b']$ and $[a]\cdot [b] = [a']\cdot [b']$.
+    This follows easily from Proposition (\ref{well defined}).
+\end{remark}
+
+Let's think about Theorem \ref{bezout} for a bit in this context by looking at equations in $\Z/m\Z$.
+
+\begin{example}
+    \begin{enumerate}
+        \item Does $2x\equiv 3$ have a solution modulo 5?
+        It would be nice if we could ``divide by 2'' and that's exactly what a multiplicative inverse lets us do.
+        It's easy to verify that $4$ is the inverse of $2\pmod 5$, so multiplying both sides of this equation through by 4 gives $x \equiv 12 \equiv 2\pmod 5$.
+
+        \item What about $2x\equiv 3\pmod 6$?
+        This equation in $\Z/6\Z$ is equivalent to the integer equation $2x - 3 = 6y$,
+        which has no solution since the left-hand side is always odd while the right-hand side is always even.
+        Another way we can think about it is that we can't ``divide by 2'' since $\gcd(2, 6) = 2 \neq 1$.
+
+        \item What about $2x \equiv 4 \pmod 6$?
+        Just like in the last example, we can't divide by 2.
+        However, it's easy to see that $x \equiv 2\pmod 6$ is a solution.
+        But this solution isn't unique since $x \equiv 5 \pmod 6$ is also a solution.
+    \end{enumerate}
+\end{example}
+
+In short, the existence of an inverse, as determined by Theorem \ref{bezout} determines whether or not equations like $ax \equiv b\pmod m$ have solutions.
+If $\gcd(a, m) = 1$, then there's a unique solution.
+Otherwise, there can either be no solution or there might be multiple solutions.
+If we want to restrict ourselves to the (equivalence classes of) integers that \emph{do} have inverses modulo $m$, then we use the following object.
+
+\begin{definition}
+    Fix an integer $m\geq 2$. Then the set of \emph{units modulo $m$} is denoted by
+    \begin{align*}
+        (\Z/m\Z)^\times &= \{a\in \Z/m\Z: \gcd(a,m) = 1\}\\
+        &= \{a\in \Z/m\Z: a\text{ has an inverse modulo }m\}.
+    \end{align*}
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+\subsection{Prime Numbers, Unique Factorization, and Finite Fields}
+
+The ``building blocks'' of the integers are the prime numbers.
+\begin{definition}
+    An integer $p$ is called \emph{prime} if $p\geq 2$ and if the only positive integers dividing $p$ are 1 and $p$.
+\end{definition}
+
+Note that if $p$ is prime, then $\gcd(a,p) = 1$ for each $1\leq a < p$ (why?).
+Consequently, each nonzero element of $\Z/p\Z$ has a multiplicative inverse, i.e.
+\[
+    (\Z/p\Z)^\times = \{1, 2, \ldots, p-1\}.
+\]
+The set $\Z/p\Z$ forms a structure that we call a (finite) \emph{field}: a set where we can add and subtract as well as multiply and divide by (nonzero) elements.
+Other examples of fields include $\R$ and $\Q$ but not $\Z$.
+
+\begin{proposition}
+    Let $p$ be a prime number and suppose that $p \mid ab$.
+    Then $p\mid a$ or $p\mid b$.
+    More generally, if
+    \[
+        p\mid a_1a_2\cdots a_k,
+    \]
+    then $p\mid a_i$ for some $i$.
+\end{proposition}
+\begin{proof}
+    We'll prove the first statement and you'll prove the second one in discussion.
+    If $p$ divides $a$ then we're done.
+    If $p\nmid a$, then $\gcd(a,p) = 1$ (why?), so we can write
+    \[
+        au + pv = 1
+    \]
+    for some integers $u$ and $v$.
+    Multiplying this through by $b$ gives
+    \[
+        abu + pbv = b.
+    \]
+    By assumption, $p\mid ab$ and clearly $p\mid pbv$, so $p$ divides the left-hand side of this equation. Consequently, $p$ divides the right-hand side, which is $b$.
+\end{proof}
+
+Using this, we can prove what we said earlier about primes being ``building blocks.''
+
+\begin{theorem}[The Fundamental Theorem of Arithmetic]
+    Let $a\geq 2$ be an integer. Then $a$ can be factored as a product of prime numbers
+    \begin{equation}\label{factorization}
+        a = p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r}
+    \end{equation}
+    for some positive integer $r$.
+    Furthermore, this factorization is unique up to rearrangement of the primes.
+\end{theorem}
+\begin{proof}
+    We prove that we can factor into primes by induction and uniqueness will come later.
+    Our base case is $a=2$, and this itself is a prime factorization since 2 is prime.
+    Suppose then that every integer less than $a$ can be factored into primes.
+    If $a$ itself is prime, then we're done by the same reasoning we used in the base case.
+    Otherwise, $a = bc$ where $1 < b,c < a$.
+    By the induction hypothesis, we can factor $b$ and $c$ into primes:
+    \[
+        b = p_1^{e_1}\cdots p_k^{e_k},\quad c= q_1^{f_1}\cdots q_\ell^{f_\ell}.
+    \]
+    But then $a = p_1^{e_1}\cdots p_k^{e_k}q_1^{f_1}\cdots q_\ell^{f_\ell}$ is a factorization of $a$.
+    You'll prove the uniqueness part of this statement in discussion.
+\end{proof}
+
+Looking at the factorization of $a$ into primes (\ref{factorization}), we call the number of times a particular prime, $p$, appears in the factorization the \emph{order of $p$ in $a$} and denote it by $ord_p(a)$.
+That is, in the factorization (\ref{factorization}), $ord_{p_i}(a) = e_i$.
 
 
 \begin{thebibliography}{13}
