@@ -37,6 +37,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
@@ -637,9 +638,10 @@ Consequently, each nonzero element of $\Z/p\Z$ has a multiplicative inverse, i.e
     (\Z/p\Z)^\times = \{1, 2, \ldots, p-1\}.
 \]
 The set $\Z/p\Z$ forms a structure that we call a (finite) \emph{field}: a set where we can add and subtract as well as multiply and divide by (nonzero) elements.
+We denote this field by $\F_p$.
 Other examples of fields include $\R$ and $\Q$ but not $\Z$.
 
-\begin{proposition}
+\begin{proposition}\label{prime divides product}
     Let $p$ be a prime number and suppose that $p \mid ab$.
     Then $p\mid a$ or $p\mid b$.
     More generally, if
@@ -689,6 +691,211 @@ Using this, we can prove what we said earlier about primes being ``building bloc
 
 Looking at the factorization of $a$ into primes (\ref{factorization}), we call the number of times a particular prime, $p$, appears in the factorization the \emph{order of $p$ in $a$} and denote it by $ord_p(a)$.
 That is, in the factorization (\ref{factorization}), $ord_{p_i}(a) = e_i$.
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Powers and Primitive Roots in Finite Fields}
+
+
+We can add, subtract, multiply and (sometimes) divide by elements of $\Z/m\Z$.
+Since we can multiply, we can definitely exponentiate in exactly the way you think we would.
+If $a\in \Z/m\Z$ and $k$ is a nonnegative integer, then $a^k$ is the product of $a$ with itself $k$ times, taken modulo $k$.
+Moreover, if $a$ has inverse $a^{-1}$, then we can define negative powers of $a$ as positive powers of $a^{-1}$.
+We need to be a little careful though.
+We can raise an element of $\Z/m\Z$ to an integer power, but it doesn't make sense to raise an element of $\Z/m\Z$ to the power of another element of $\Z/m\Z$.
+
+\begin{example}
+    We clearly have that $2^1 \equiv 2\pmod 5$.
+    However, $2^5 = 32\equiv 2\pmod 5$ even though $5 \not\equiv 1\pmod 5$.
+    In other words, $a^b \equiv a^c \pmod m$ \emph{does not} imply that $b \equiv c\pmod m$.
+\end{example}
+
+A few of the main cryptographic protocols we'll talk about come from the properties of modular exponentiation, so let's talk a bit about it.
+Let's look at some of the powers of 2 modulo 7
+\[
+    2^1 \equiv 2,\ 2^2 \equiv 4,\ 2^3 = 8 \equiv 1,\ 2^4 = 16 \equiv 2,\ 2^5 = 32 \equiv 4,\ 2^6 = 64 \equiv 1, \ldots
+\]
+It looks like we get a repeating pattern of 1, 2, 4.
+In fact, we can prove that this pattern holds true: take any positive integer $k$ and divide it by 3 with remainder to get $k = 3q + r$. Then
+\[
+    2^k = 2^{3q + r} = (2^3)^q\cdot 2^r \equiv 1^q\cdot 2^r \equiv 2^r\pmod 7.
+\]
+That is, the value of $2^k$ only depends on the remainder we get when we divide $k$ by 3, i.e. we care about what $k$ is modulo 3, \emph{not} modulo 7.
+What happens with the powers of other numbers, say 3 (still modulo 7)?
+\[
+    3^1 = 3,\ 3^2 \equiv 2,\ 3^3\equiv 6,\ 3^4 \equiv 4,\ 3^5\equiv 6,\ 3^6\equiv 1,\ 3^7\equiv 3,\ldots
+\]
+Like with 2, we have that $3^6 \equiv 1\pmod 7$.
+However, it looks like we get a repeating pattern of length six this time.
+What's more is that the powers of 3 give us all the nonzero elements of $\Z/7\Z$.
+
+Let's solidify the first of these observations into a theorem.
+\begin{theorem}[Fermat's Little Theorem]
+    Let $p$ be a prime number and let $a$ be any integer. Then
+    \[
+        a^{p-1} \equiv \begin{cases}
+            1\pmod p,&\text{if }p\nmid a,\\
+            0\pmod p,&\text{if }p\mid a.
+        \end{cases}
+    \]
+\end{theorem}
+\begin{proof}
+    If $p$ divides $a$ then it divides every power of $a$, so let's just look at the case where $p\nmid a$.
+    Let's look at the numbers
+    \begin{equation}\label{distinct}
+        a,\ 2a,\ 3a,\ \ldots,\ (p-1)a,
+    \end{equation}
+    We claim that these are all \emph{distinct} when reduced modulo $p$.
+    Indeed, if $ka \equiv ja\pmod p$, then $p$ divides $a(k-j)$.
+    By Proposition \ref{prime divides product}, $p$ must then divide $a$ or $k-j$.
+    Since we've assumed that $p\nmid a$, we must have that $p$ divides $k-j$.
+    But we haven't listed any multiples of $p$ above, so we must have $k=j$.
+
+    Now let's multiply all the elements in (\ref{distinct}) together.
+    On one hand, this is clearly $a^{p-1}\cdot (p-1)!$.
+    On the other hand, since since these are $p-1$ distinct nonzero integers between 1 and $p-1$, the must be all of the integers in this range, so their product is $(p-1)!$.
+    We must then have
+    \[
+        a^{p-1}\cdot (p-1)! \equiv (p-1)!\pmod p.
+    \]
+
+    We can then cancel the $(p-1)!$ from both sides (why?) to obtain $a^{p-1}\equiv 1\pmod p$.
+\end{proof}
+
+This theorem has some really powerful implications for computation.
+
+\begin{example}
+    The integer $p = 15485863$ is prime, so by Fermat's little theorem we have
+    \[
+        2^{15485862} \equiv 1\pmod {15485863}.
+    \]
+    Even though the numbers involved are large ($2^{15485862}$ has more than 400,000 digits), we can write the above identity without doing any real computation (we had to know that 15485863 is prime first, and we'll see some good algorithms for verifying this later).
+\end{example}
+
+Fermat's little theorem tells us that if $p\nmid a$, then $a^{p-1}\equiv 1\pmod p$, but as we saw with the powers of 2 modulo 7, a smaller power of $a$ might be congruent to 1 modulo $p$.
+This motivates the following definition.
+
+\begin{definition}
+    Let $p\geq 2$ be prime. For any integer $a$ such that $p\nmid a$, the \emph{order of $a$ modulo $p$} is the smallest positive integer $k$ such that $a^k\equiv 1\pmod p$.
+\end{definition}
+
+Fermat's little theorem tells us that that the order of $a$ is at most $p-1$ so long as $p\nmid a$.
+The following proposition claims that the order of $a$ modulo $p$ can't be just anything however.
+
+\begin{proposition}
+    Let $p$ be a prime and let $a$ be an integer with $p\nmid a$.
+    If $a^n\equiv 1\pmod p$, then the order of $a$ modulo $p$ divides $n$.
+    In particular, the order of $a$ divides $p-1$.
+\end{proposition}
+
+\begin{proof}
+    Suppose $k$ is the order of $a$ modulo $p$.
+    We divide $n$ by $k$ to obtain
+    \[
+        n = kq + r
+    \]
+    for some $0\leq r < k$.
+    We then have
+    \[
+        1 \equiv a^n \equiv a^{kq + r} \equiv (a^k)^q\cdot a^r \equiv 1^q\cdot a^r \equiv a^r\pmod p.
+    \]
+    But $k$ is the smallest positive power of $a$ congruent to 1 modulo $p$, so we must have $r = 0$ and $k\mid n$.
+\end{proof}
+
+Looking at the powers of 3 modulo 7, we see that sometimes the powers of $a$ modulo $p$ can fill out all of the nonzero residues modulo $p$.
+The following theorem says that there is always such a $p$ and you'll prove it on your next homework assignment.
+\begin{theorem}[Primitive Root Theorem]
+    Let $p$ be prime.
+    Then there exists an element $g \in \F_p^\times$ such that
+    \[
+        \F_p^\times = \{1, g, g^2, \ldots, g^{p-2}\}.
+    \]
+    Such a $g$ is called a \emph{generator} or \emph{primitive root of }$\F_p$.
+\end{theorem}
+
+
+Let's talk a little about how to actually compute $a^k\pmod m$.
+The naive way, repeated multiplication, would simply compute $a^i$ for all $i\leq k$:
+\[
+    a_1 \equiv a\pmod m,\quad a_2 \equiv a\cdot a_1 \pmod m,\quad a_3 \equiv a\cdot a_2\pmod m,\quad \ldots\quad a_k = a\cdot a_{k-1}\pmod m.
+\]
+If $k$ is of moderate size (for a computer), say around 1000 bits (around 300 digits), then the time it would take to complete this algorithm would be greater than the estimated age of the universe, even if you reduced modulo $m$ after each step (if you didn't, then the integer $a^k$ would take up more bit than there are particles in the universe by some estimates).
+Let's look at an example for how to compute large powers very efficiently.
+
+\begin{example}
+    Let's compute $3^{75}\pmod 100$.
+    We start by writing $75$ in binary.
+    The largest power of 2 that is no larger than 75 is 64, so
+    \[
+        75 = 64 + 11.
+    \]
+    Now the largest power of 2 at most 11 is 8. We repeat this process.
+    \begin{align*}
+        76 &= 64 + 8 + 3\\
+        &= 64 + 8 + 2 + 1.
+    \end{align*}
+    Using this we can write
+    \begin{equation}\label{3 to binary}
+        3^{76} = 3^{64 + 8 + 2 + 1} = 3^{64}\cdot 3^8\cdot 3^2\cdot 3^1.
+    \end{equation}
+    Now we can compute the seven numbers
+    \[
+        3,\ 3^2,\ 3^4,\ 3^8,\ \ldots,\ 3^{64}
+    \]
+    modulo 100 quite easily - each number is just the square of the one before it.
+    Now using (\ref{3 to binary}), we decide which of these powers of 3 to multiply together.
+    \begin{center}
+    \begin{tabular}{|c|| c | c | c | c | c | c | c | c|}
+        \hline
+        $i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+        \hline
+        $3^{2^i}\pmod{100}$ & 3 & 9 &  81 & 61 & 21 & 41 & 81\\
+        \hline
+    \end{tabular}
+    \end{center}
+    This gives
+    \begin{align*}
+         3^{76} &= 3^1\cdot 3^2\cdot 3^8\cdot 3^{64}\\
+         &\equiv 3\cdot 9\cdot 61\cdot 81 \pmod{100}\\
+         &\equiv 21 \pmod{500}.
+    \end{align*}
+\end{example}
+
+
+Let's describe this algorithm, sometimes called the \emph{fast powering algorithm} or the \emph{square-and-multiply algorithm}, more formally.
+
+\begin{enumerate}
+\item \textbf{Given: }integers $g$, $A$ and $N$
+\item Compute the binary expansion of $A$ as 
+\[
+    A = A_0 + A_1\cdot 2 + A_2\cdot 2^2 + \cdots + A_r\cdot 2^r,\quad \text{with }A_i\in \{0,1\}\text{ for all }i.
+\]
+\item Compute the powers $A^{2^i}\pmod m$ for each $0\leq i \leq r$ by squaring.
+    \begin{align*}
+        a_0 &\equiv g\pmod N\\
+        a_1 &\equiv a_0^2\equiv g^2\pmod N\\
+        a_2 &\equiv a_1^2\equiv g^{2^2}\pmod N\\
+        \vdots\\
+        a_r &\equiv a_{r-1}^2\equiv g^{2^r}\pmod N.
+    \end{align*}
+
+\item Compute $g^A\mod N$ by multiplication.
+    \begin{align*}
+        g^A &= g^{A_0 + A_1\cdot 2 + A_2 \cdot 2^2 + \cdots + A_r\cdot 2^r}\\
+        &= g^{A_0}\cdot (g^2)^{A_1}\cdot (g^{2^2})^{A_2}\cdots (g^{2^r})^{A_r}\\
+        &\equiv a_0^{A_0}\cdot a_1^{A_1} \cdots a_r^{A_r}\pmod n.
+    \end{align*}
+\end{enumerate}
+
+
 
 
 \begin{thebibliography}{13}
