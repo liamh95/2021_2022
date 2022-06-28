@@ -827,11 +827,11 @@ The naive way, repeated multiplication, would simply compute $a^i$ for all $i\le
 \[
     a_1 \equiv a\pmod m,\quad a_2 \equiv a\cdot a_1 \pmod m,\quad a_3 \equiv a\cdot a_2\pmod m,\quad \ldots\quad a_k = a\cdot a_{k-1}\pmod m.
 \]
-If $k$ is of moderate size (for a computer), say around 1000 bits (around 300 digits), then the time it would take to complete this algorithm would be greater than the estimated age of the universe, even if you reduced modulo $m$ after each step (if you didn't, then the integer $a^k$ would take up more bit than there are particles in the universe by some estimates).
+If $k$ is of moderate size (for a computer), say around 1000 bits (around 300 digits), then the time it would take to complete this algorithm would be greater than the estimated age of the universe, even if you reduced modulo $m$ after each step (if you didn't, then the integer $a^k$ would take up more bits than there are particles in the universe by some estimates).
 Let's look at an example for how to compute large powers very efficiently.
 
 \begin{example}
-    Let's compute $3^{75}\pmod 100$.
+    Let's compute $3^{75}\pmod {100}$.
     We start by writing $75$ in binary.
     The largest power of 2 that is no larger than 75 is 64, so
     \[
@@ -865,7 +865,7 @@ Let's look at an example for how to compute large powers very efficiently.
     \begin{align*}
          3^{76} &= 3^1\cdot 3^2\cdot 3^8\cdot 3^{64}\\
          &\equiv 3\cdot 9\cdot 61\cdot 81 \pmod{100}\\
-         &\equiv 21 \pmod{500}.
+         &\equiv 21 \pmod{100}.
     \end{align*}
 \end{example}
 
@@ -896,6 +896,102 @@ Let's describe this algorithm, sometimes called the \emph{fast powering algorith
 \end{enumerate}
 
 
+
+
+
+
+
+
+\addtocounter{subsection}{1}
+\subsection{Symmetric and Asymmetric Ciphers}
+Let's briefly formalize some notions from cryptography.
+Suppose Alice and Bob agree to send and receive messages using some cipher.
+If the same key is used for encryption and decryption, then we say that the cipher is \emph{symmetric}.
+We can describe a symmetric cipher with these sets and maps.
+\begin{align*}
+    \mathcal{K} &= \text{all possible keys}\\
+    \mathcal{M} &= \text{all possible plaintexts}\\
+    \mathcal{C} &= \text{all possible ciphertexts}\\
+    e &: \mathcal{K}\times \mathcal{M}\to \mathcal{C}\\
+    d &: \mathcal{K}\times \mathcal{C}\to \mathcal{M}.
+\end{align*}
+The function $e$ is the \emph{encryption function} that takes in a key, plaintext pair $(k, m)$ and outputs the corresponding ciphertext.
+Likewise, the \emph{decryption function} $d$ takes a key, ciphertext pair $(k, c)$ and outputs the plaintext.
+
+Of course we want decryption to undo encryption with the same key, so we require the following consistency condition.
+\[
+    d(k, e(k, m)) = m,\qquad \text{for all }k\in \mathcal{K},\ m\in \mathcal{M}.
+\]
+Another way to think about this condition is to define encryption and decryption functions $e_k$, $d_k$ for each key $k$,
+\[
+    e_k(\cdot) = e(k, \cdot),\qquad d_k(\cdot) = d(k, \cdot)
+\]
+Then the consistency condition just says that $d_k$ is the inverse function of $e_k$.
+This of course requires that $e_k$ be injective.
+\begin{example}
+    The substitution cipher is a symmetric cipher.
+\end{example}
+
+When assessing the security of a cipher, we \emph{always assume that an eavesdropper, Eve, knows the method of encryption.}
+That is, we assume Eve knows $e$ and $d$, but not the key $k$.
+Under this assumption, here are some of the properties we want for $(\mathcal{K}, \mathcal{M}, \mathcal{C}, e, d)$.
+\begin{enumerate}
+    \item Easy encryption: for any $k\in \mathcal K$ and $m\in \mathcal M$, it's easy to compute $e_k(m)$.
+    \item Easy decryption: for any $k\in \mathcal K$ and $c \in \mathcal C$, it's easy to compute $d_k(c)$.
+    \item Strength against ciphertext-only attacks: If Eve knows that the ciphertexts $c_1, c_2, \ldots, c_n\in \mathcal C$ were encrypted using the same (unknown) key $k$, it should be hard for her to compute any of the corresponding plaintexts, $d_k(c_1), \ldots, d_k(c_n)$ without knowing $k$.
+
+    \item Strength against known-plaintext attacks: If Eve knows some plaintexts and their corresponding ciphertexts $(m_1, c_1), \ldots, (m_n, c_n)$, where $c_i = e_k(m_i)$, then it should be hard for her to compute $d_k(c)$ for any new ciphertext $c$ without knowing $k$.
+
+    \item Strength against chosen-plaintext attacks: If Eve \emph{chooses} some plaintexts $m_1, \ldots, m_n$ and knows their corresponding ciphertexts $c_1, \ldots, c_n$, it should still be hard for her to compute $d_k(c)$ for any new ciphertext $c$ without knowing $k$.
+
+    \item Strength against chosen-ciphertext attacks: If Eve chooses some ciphertexts $c_1, \ldots, c_n$ and knows their corresponding plaintexts $m_1, \ldots, m_n$, it should still be hard for her to compute $d_k(c)$ for any new ciphertext $c$ without knowing $k$.
+\end{enumerate}
+
+\begin{example}
+    The substitution cipher isn't very resistant to ciphertext-only attacks since it's vulnerable to frequency analysis when we have a long ciphertext.
+    It's also quite vulnerable to known-plaintext attacks since we can just query a few messages to learn most of the substitutions.
+\end{example}
+
+\begin{remark}
+    When we think of plaintexts we often think of strings of Latin characters.
+    However, we can usually \emph{encode} written characters into numbers (indeed, this is what computers do), so we can safely think of $\mathcal M$ and $\mathcal C$ as sets of numbers or elements of $\Z/m\Z$.
+\end{remark}
+
+\begin{example}
+    Let $\mathcal M = \mathcal C = \mathcal K = \F_p^\times$.
+    For any key $k$, define encryption by
+    \[
+        e_k(m) = m\cdot k\pmod p.
+    \]
+    We can assume that basic arithmetic like addition and multiplication modulo $p$ is efficient to compute.
+    We can also efficiently decrypt, since the Euclidean algorithm gives us a way to compute $k^{-1}\pmod p$ in around $2\log_2 p$ steps, so
+    \[
+        d_k(c) = k^{-1}\cdot c \pmod p
+    \]
+    is efficient to compute.
+    This cipher is \emph{completely broken} (that is, we can learn the key) by a known plaintext attack.
+    If we know $c$ and $m$, then we can simply compute
+    \[
+        k \equiv c^{-1}\cdot m\pmod p
+    \]
+    since we can efficiently compute $c^{-1}\pmod p$.
+\end{example}
+
+One issue with symmetric ciphers is how Alice and Bob agree on a key.
+If they have to exchange the key in the open, then it's vulnerable to Eve.
+Alternatively, they can meet in person, but this can be inconvenient or impossible.
+This motivates the idea of \emph{public-key cryptography}.
+Here, we have two separate keys, $k = (k_{priv}, k_{pub})$.
+The \emph{public key}, $k_{pub}$ is known to everyone, while the \emph{private key} is known only to the person receiving messages.
+We have encryption and decryption functions
+\begin{align*}
+    e_{k_{pub}} &: \mathcal M\to \mathcal C\\
+    d_{k_{priv}} &: \mathcal C\to \mathcal M,
+\end{align*}
+that are inverse to one another.
+It should be difficult to compute $d_{k_{priv}}$ without knowledge of $k_{priv}$ even if one knows $k_{pub}$.
+
+If Alice wants to send 
 
 
 \begin{thebibliography}{13}
