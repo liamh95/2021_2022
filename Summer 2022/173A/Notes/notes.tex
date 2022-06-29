@@ -991,8 +991,165 @@ We have encryption and decryption functions
 that are inverse to one another.
 It should be difficult to compute $d_{k_{priv}}$ without knowledge of $k_{priv}$ even if one knows $k_{pub}$.
 
-If Alice wants to send 
+If Bob wants to send Alice a message, then Alice first sends Bob her public key, $k_{pub}$ (or maybe she publishes it in some public place like some website).
+Note that we should then assume that Eve knows $k_{pub}$ as well.
+Bob then computes $e_{k_{pub}}(m)$ and sends it to Alice.
+Alice then decrypts this using $k_{priv}$, which only she knows.
+The private key $k_{priv}$ is sometimes called \emph{trapdoor information} for the \emph{one-way} function $e_{k_{pub}}$ because it should be hard to invert this function without knowledge of $k_{priv}$.
 
+
+
+
+
+
+
+
+
+\section{Discrete Logarithms and Diffie-Hellman}
+\addtocounter{subsection}{1}
+\subsection{The Discrete Logarithm Problem}
+Public-key cryptography revolves around functions that are easy to compute but hard to invert without some special trapdoor information.
+We've seen that exponentiation modulo $p$ is easy to compute by the square-and-multiply algorithm and invertible by the primitive root theorem.
+It turns out that it's also hard to invert.
+
+\begin{definition}
+    Let $g$ be a primitive root of $\F_p^\times$ and let $h\neq 0$ in $\F_p$.
+    The \emph{discrete logarithm problem (DLP)} is the problem of finding an exponent $x$ such that
+    \[
+        g^x\equiv h\pmod p.
+    \]
+    The number $x$ is called the \emph{discrete logarithm of $h$ to the base $g$} and is defined modulo $p-1$ by Fermat's little theorem.
+\end{definition}
+
+Remember that since $g$ is a primitive root we have that
+\[
+    \F_p^\times = \{g^0, g^1, \ldots, g^{p-2}\},
+\]
+so $h \equiv g^i$ for some $0 \leq i \leq p-2$.
+By Fermat's little theorem we have that $g^{p-1}\equiv 1\pmod p$, so
+\[
+    g^{i + k(p-1)} \equiv h\pmod p
+\]
+for any integer $k$.
+This\footnote{If you've taken complex analysis, this might remind you of the fact that $e^{r + 2\pi i} = e^r$ in $\C^\times$ and why we have to take so-called \emph{branch cuts} of the logarithm in that setting.} is why we say that the discrete logarithm is defined modulo $p-1$.
+In particular, there are infinitely many integers $x$ such that $g^x\equiv h\pmod p$ and the DLP asks us to find just one such $x$.
+This motivates us to define the function
+\[
+    \log_g: \F_p^\times \to \Z/(p-1)\Z
+\]
+for any primitive root $g$.
+
+It makes sense to call this function a logarithm because it behaves how you would hope a logarithm does.
+\begin{proposition}
+    For any primitive root $g$ of $\F_p^\times$ and any $a,b\in \F_p^\times$ we have that
+    \[
+        \log_g(ab) \equiv \log_g(a) + \log_g(b)\pmod{p-1}.
+    \]
+\end{proposition}
+\begin{proof}
+    You'll prove this in your discussion section.
+\end{proof}
+
+How do we compute discrete logarithms?
+Let's look at the brute-force solution.
+For any $A\in \Z/(p-1)\Z$ we can compute $g^A\pmod p$ in around $2\log_2p$ multiplications (steps), and if try to solve the DLP by trial and error, we'd compute
+\[
+    g^0,\ g^1,\ g^2, \ldots
+\]
+modulo $p$ until we find $h$.
+If $h \equiv g^{p-2}$ then this will take around $2p\log_2p$ steps.
+If $p$ is even moderately large, say at least $2^{100}$, then this will take way too many steps for even modern computers.
+
+\begin{remark}
+    In some ways exponentiation and logarithms have different properties when we're working in $\F_p$ instead of $\R$ or $\C$.
+    Even though they behave the same way \emph{algebraically} (i.e. they follow the same ``rules''), exponentiation modulo $p$ appears to behaves ``randomly'' in its input (of course it isn't actually random, but if you were to graph the function $x\mapsto g^x \pmod p$ for a primitive root $g$, then you'll get a random-looking cloud of points).
+\end{remark}
+
+\begin{remark}
+    We can talk about the DLP even if $g$ isn't a primitive root modulo $p$.
+    If it isn't, then the DLP asks us to find $x$ such that $g^x\equiv h\pmod p$ if such an $x$ exists.
+
+    In fact, we can talk about the DLP in the setting of an arbitrary group.
+    If $G$ is a group (written multiplicatively), then the DLP for $G$ asks us to find, for any two given $g$ and $h$ in $G$, an integer satisfying
+    \[
+        \underbrace{g\cdot g \cdot \cdots \cdot g}_{x\text{ times}} = h.
+    \]
+\end{remark}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Diffie-Hellman Key Exchange}
+Recall that with a symmetric cipher, Alice and Bob need to both have a key $k$ that they use to encrypt or decrypt messages.
+Even if the cipher that they use is extremely resistant to any attack you can think of, if they exchange the key in an insecure way, then their communications are as good as compromised.
+Whitfield Diffie and Martin Hellman released a paper in 1976 showing a way of doing this with modular exponentiation, but it's since been claimed that the British GCHQ knew of this idea since the sixties and kept it secret.
+
+The following protocol allows for Alice and Bob to establish a shared secret even in the presence of an adversary, Eve.
+The idea is that they can then use this secret as a key (or somehow use it to make a key) for a symmetric cipher.
+
+\begin{enumerate}
+    \item (Public) Alice and Bob both publicly agree on a large (around $2^{1000}$) prime $p$ and an integer $g$ relatively prime to $p$.
+    Usually, $g$ is a primitive root modulo $p$, but this isn't necessary.
+
+    \item (Private) Alice chooses a secret integer $a$ and computes $A \equiv g^a\pmod p$.
+    Likewise, Bob chooses a secret integer $b$ and computes $B \equiv g^b\pmod p$.
+    They perform this part completely independently of each other.
+    Alice and Bob can complete this step efficiently with the square-and-multiply algorithm.
+
+    \item (Public) Alice sends $A$ to Bob and Bob sends $B$ to Alice.
+    This happens publicly (sometimes said ``in the clear''), so Eve can see this.
+
+    \item (Private) Alice uses her secret integer to compute $B^a \pmod p$ and Bob likewise computes $A^b\pmod p$.
+    Again, this can be done efficiently with square-and-multiply.
+\end{enumerate}
+
+After these steps are completed, Alice and Bob share the following value
+\begin{align*}
+    A^b &\equiv (g^a)^b \pmod p\\
+    &\equiv (g^b)^a\pmod p\\
+    &\equiv B^a\pmod p.
+\end{align*}
+
+Eve has access to anything that was shared publicly, namely $p$, $g$, $A$, and $B$.
+If Eve knew either $a$ or $b$, then she could simply compute $B^a$ or $A^b$ modulo $p$ to compromise the shared secret.
+But in order for her to do this, she needs to solve either of the equations
+\[
+    g^x \equiv A\pmod p,\qquad g^y\equiv B\pmod p.
+\]
+That is, if Eve can solve the discrete logarithm problem, then she can find the shared secret.
+
+\begin{example}
+    Suppose Alice and Bob agree on the prime $p=13$ and the integer $g = 2$.
+    Next, say Alice randomly chooses $a=7$ and Bob randomly (and independently) chooses $b = 9$.
+    Alice computes $A\equiv g^a = 2^7 \equiv 11\pmod{13}$ and Bob computes $B\equiv g^b = 2^9 \equiv 5\pmod {13}$.
+    Alice and Bob then exchange $A$ and $B$ in the clear and compute
+    \[
+        B^a = 5^7\equiv 8\pmod {13},\qquad A^b = 11^9\equiv 8\pmod {13}.
+    \]
+    If Eve can find $x$ such that $2^x\equiv 11\pmod {13}$ or $y$ such that $2^y\equiv 5\pmod{13}$, then she too can perform one of the above computations to arrive at the shared value of 8.
+\end{example}
+
+If Even can solve the DLP, then she can compromise Diffie-Hellman key exchange.
+Does she really have to do this though?
+Really, what she needs to do is solve the following problem.
+
+\begin{definition}
+    Let $p$ be prime and let $g\in \F_p^\times$, if for any $a$ and $b$ we can use $g^a\pmod p$ and $g^b\pmod p$ to compute $g^{ab}\pmod p$, then we can solve the \emph{Diffie-Hellman (search) problem} or \emph{DHP}.
+\end{definition}
+
+\begin{remark}
+    The Diffie-Hellman problem doesn't actually require us to find either of the exponents $a$, $b$.
+\end{remark}
+Clearly DHP is no harder than DLP, but it's \emph{unknown} whether or not solving the DHP would allow one to solve the DLP as well.
 
 \begin{thebibliography}{13}
 
