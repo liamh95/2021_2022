@@ -1241,6 +1241,264 @@ Both of them can be broken by access to a discrete logarithm oracle, but can we 
     Then Eve just has to multiply this by $c_2^{-1}$ and invert to obtain $g^{ab}$.
 \end{proof}
 
+
+
+
+
+
+
+
+
+
+
+\subsection{Basic Group Theory}
+Recall that we can add and multiply elements of $\F_p$.
+If we just look at the additive structure, then we have an identity ($0 + a = a$ for all $a$) and (additive) inverses (for all $a$, $a + (-a) = 0$).
+Similarly, if we look at $\F_p^\times$, we have an identity ($a\cdot 1 = a$ for all $a$) and (multiplicative) inverses (for all $a$, $a\cdot a^{-1} = 1$).
+These kinds of structures that come with an operation that admits an identity and inverses come up a lot in math and merit having their own definition.
+
+\begin{definition}
+    A \emph{group} consists of a set $G$ along with a binary operation $\star: G\times G\to G$ that satisfies the following properties.
+    \begin{enumerate}
+        \item (Identity) There is an element $e\in G$ such that
+        \[
+            e \star a = a\star e = a
+        \]
+        for all $a\in G$.
+
+        \item (Inverses) For each $a\in A$ there is a (unique) element $a^{-1}\in G$ such that
+        \[
+            a\star a^{-1} = a^{-1}\star a = e.
+        \]
+
+        \item (Associativity) For all $a$, $b$, $c$ in $G$ we have
+        \[
+            a\star (b\star c) = (a\star b)\star c.
+        \]
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    We often drop the $\star$ from our notation and just write elements of $G$ next to each other to indicate the operation (called \emph {juxtaposition}).
+    That is, we often write $ab$ instead of $a\star b$ (we write the group \emph{multiplicatively}).
+    In this case, we sometimes write $1$ for the identity element.
+    If the group is \emph{commutative}, i.e. $a\star b = b\star a$ for all $a$ and $b$, then we sometimes write $a+b$ instead of $a\star b$ (we write the group \emph{additively}) and 0 instead of $e$ for the identity.
+\end{remark}
+
+\begin{remark}
+    If we write our group multiplicatively, then we write
+    \[
+        a^n = \underbrace{a\cdot a\cdot \cdots \cdot a}_{n\text{ times}}
+    \]
+    for any nonnegative integer $n$
+    If we write it additively, then
+    \[
+        na = \underbrace{a + a + \cdots + a}_{n\text{ times}}.
+    \]
+\end{remark}
+
+\begin{example}
+    \begin{enumerate}[(a)]
+        \item $G = \Z$ becomes a group when we equip it with the operation of addition (the identity is 0 and the inverse of $a$ is $-a$).
+        However, $\Z$ is not a group when we equip it with multiplication since all integers not equal to $\pm 1$ lack multiplicative inverses.
+
+        \item $\Z/n\Z$ is a group when we equip it with addition modulo $n$.
+        It's a group with respect to multiplication (when we throw out 0 of course) if and only if $n$ is prime.
+        In general, to get a group with respect to multiplication, we have to look at $(\Z/n\Z)^\times$, the (equivalence classes of) integers coprime to $n$.
+
+        \item The set of $n\times n$ matrices with real (or complex, or $\F_p$) entries and nonzero determinant is a group with respect to matrix multiplication.
+        We denote this group by $\text{GL}_n(\R)$ (or $\text{GL}_n(\C)$ or $\text{GL}_n(\F_p)$), the \emph{general linear group}.
+
+        \item If $X$ is a set, then the set of all bijections from $X$ to itself, denoted by $S_X$, is a group with respect to the operation of function composition (what is the identity? how do you invert?)
+    \end{enumerate}   
+\end{example}
+
+
+Lots of the algebra that we've built up for $\Z/n\Z$ (and lots of the cryptography) carries over to arbitrary groups.
+In particular, we still have the notion of an element's order.
+
+\begin{definition}
+    Let $G$ be a group and let $a\in G$.
+    The smallest positive integer $d$ such that $a^d = e$ is called the \emph{order} of $a$.
+    If there is no such integer, then we say $a$ has \emph{infinite order}.
+\end{definition}
+
+We have a similar interplay between order and divisibility.
+
+\begin{proposition}
+    Let $G$ be a finite group (i.e., $|G|$ is finite).
+    Then every element of $G$ has finite order.
+    Moreover, if $a\in G$ has order $d$ and if $a^k = e$, then $d \mid k$.
+\end{proposition}
+
+\begin{proof}
+    We look at the powers of $a$:
+    \[
+        a, a^1, a^2, \ldots
+    \]
+    If these elements of $G$ were all distinct, then $G$ wouldn't be a \emph{finite} group, so we must have repetitions here.
+    Say $a^i = a^j$ for some $i<j$.
+    Then we can multiply both sides by the inverse of $a$ $i$ times to get $a^{j-i} = e$.
+    Since $j-i$ is positive, we've found a positive integer power of $a$ that gives us $e$.
+    Let $d$ be the smallest such power (the order of $a$ - this comes from the \emph{well-ordered property} of the natural numbers).
+
+
+    Now suppose that $a^k = e$ for some positive $k$.
+    Divide $k$ by $d$ with remainder to get
+    \[
+        k = dq + r,\quad \text{with }0\leq r < d.
+    \]
+    Then 
+    \[
+        e = a^k = a^{dq + r} = (a^d)^q\cdot a^r = 1\cdot a^r = a^r.
+    \]
+    Since $d$ is the smallest positive power of $a$ equal to $e$, we must have that $r = 0$ and $d\mid k$.
+\end{proof}
+
+
+We also have a version of Fermat's little theorem that works in any finite group.
+
+\begin{theorem}[Lagrange's Theorem]
+    Let $G$ be a finite group with $n$ elements.
+    Then $a^n  = e$ for all $a\in G$.
+    In particular, the order of $a$ divides $n$.
+\end{theorem}
+\begin{proof}
+    This theorem really is true for \emph{any} finite group, but since most of the groups used in cryptography are commutative, you'll prove the theorem under the additional assumption that $G$ is commutative in your discussion section.
+    The proof of the more general statement isn't very complicated and it's one of the first things you learn in Math 120A.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+\subsection{Order Notation and Algorithms}
+In cryptography we often find ourselves concerned with algorithms (like when we think about how to compute things or when we think about what an adversary needs to do in order to compromise or communications).
+More specifically, we're usually interested in how ``good'' and algorithm is, usually measured in the number of ``steps'' it takes to complete (may the number of times we perform a basic arithmetic operation like multiplication or addition or maybe the number of times we have to query an oracle).
+
+
+\begin{example}
+    Consider the problem of finding your name on an alphabetized roster containing $n$ names.
+    One way we can do this is by reading the names off one by one until we find your name.
+    In the worst case, your name is the last on the list and we have to read through all $n$ names.
+
+    Another approach is to look at the name in the middle of the list (if there is an even number of names, just pick one of the two in the ``middle'' arbitrarily.
+    If your name comes before this one in the alphabet, then we can safely throw out all the names that come after this middle name (and vice-versa if your name comes after it; if we happened to pick your name at this step, then we're done!).
+    This just leaves $n/2$ names to look at.
+    Now do the same thing - look at the name in the middle of this list then throw out everything after it if your name comes before this name (and throw out everything before if your name comes after).
+
+    How many steps does this take to run?
+    At each step we cut the number of things we need to search through in half.
+    We keep doing this until we find your name.
+    At worst, we have to check $T$ names, where $T$ is the smallest integer such that $n/2^T < 1$.
+    Therefore, this algorithm requires at most $\lfloor \log_2(n)\rfloor + 1$ steps to complete.
+\end{example}
+
+\begin{remark}
+    In this example, we bounded the number of steps it took to complete our task by considering the \emph{worst case}.
+    When counting the number of steps, we always assume we're working in the worst case (unless we specify otherwise).
+\end{remark}
+
+The second algorithm in the above example, although slightly more complicated than the first,
+is way more efficient (again, in the worst case scenario).
+One way to intuit this is to compare the growth of the functions $n$ and $\log_2 n$ -- the former grows much more rapidly than the latter (if the list had 1000 names on it, then it would take at most ten steps to find your name!)
+This motivates the following framework for comparing the growth of functions.
+
+\begin{definition}
+    Let $f, g$ be functions $\N\to \R$.
+    We say that $f(n) = O(g(n))$, read ``$f$ is big $O$ of $g$'' if there exist positive constants $c$ and $C$ such that
+    \[
+        f(x) \leq Cg(x)
+    \]
+    for all $x \geq c$.
+    That is, $f$ is \emph{eventually} bounded by some constant multiple of $g$.
+\end{definition}
+
+
+\begin{example}
+    If $f(n) = 3n^2 + 5\log n$, then $f(n) = O(n^2)$.
+    To see this, note that $\log n$ is smaller than $n$ for any $n \geq 1$.
+    Likewise, $n \leq n^2$ for all $n \geq 1$, so we have
+    \begin{align*}
+        3n^2 + 5\log n &\leq 3n^2 + 5n \qquad \text{if }n \geq 1\\
+        &\leq 8n^2 \qquad \text{if }n\geq 1.
+    \end{align*}
+\end{example}
+
+
+The following proposition gives an easier way of checking if $f(n) = O(g(n))$.
+\begin{proposition}
+    If
+    \[
+        \lim_{n\to \infty}\frac{f(n)}{g(n)} = L < \infty,
+    \]
+    then $f(n) = O(g(n))$.
+\end{proposition}
+\begin{proof}
+    By the definition of limits, we must have that
+    \[
+        \left|\frac{f(n)}{g(n)} - L\right| \leq 1
+    \]
+    for all $n$ greater than some $c$.
+    Consequently, when $n \geq c$, we have that
+    \[
+        f(n) \leq (L+1)g(n),
+    \]
+    so setting $C = L+1$ in the definition of big $O$ notation proves the claim.
+\end{proof}
+
+
+Let's record some basic facts and examples.
+\begin{example}
+    \begin{enumerate}
+        \item (We can ignore constant factors) For any function $g(n): \N\to \R$ we have that $Kg(n) = O(g(n))$ for any constant $K$.
+
+        \item $\log n = O(n^\alpha)$ for any $\alpha > 0$. That is, $\log n$ grows more slowly than \emph{any} polynomial.
+        You can prove this with L'Hopital's rule.
+
+        \item If $f(n)$ is any polynomial, then $f(n) = O(2^n)$.
+
+        \item If $f(n)$ is a constant, then $f(n) = O(1)$.
+
+        \item If $f(n)$ is the number of steps it takes to find a name in an alphabetized roster, then $f(n) = O(\log n)$.
+
+        \item If $f(a,b)$ is the number of steps it takes to compute the greatest common divisor of $a$ and $b$, then $f(a,b) = O(\log b)$, where $b \geq a$.
+    \end{enumerate}
+\end{example}
+
+
+\begin{remark}
+    Usually we care about how the number of steps it takes an algorithm to complete scales with the size of its input.
+    The size of the input is often measured in the number of bits it takes to store it (this is how computers store things).
+    With this in mind, if the input to a problem is $k$ bits long and it takes an algorithm $O(k^A)$ steps to complete for some constant $A \geq 0$, then we say that the algorithm runs in \emph{polynomial time}.
+    If it takes $O(2^{ck})$ steps for some $c \geq 0$, then we say it takes \emph{exponential time}.
+
+    Between these two classes we have \emph{subexponential time}, where the number of steps is $O(2^{\epsilon k})$ for every $\epsilon > 0$ (here the constants in the definition of big $O$ notation are allowed to depend on $\epsilon$).
+    Generally speaking we consider polynomial-time algorithms to be efficient (they usually run decently well on computers if the degree of the polynomial isn't too big) and exponential time algorithms to be inefficient.
+\end{remark}
+
+
+\begin{example}
+    The brute-force algorithm for solving the discrete logarithm problem in $\F_p^\times$ requires checking at most $p-1$ different values of $g^x$.
+    Since $p$ takes $k \approx \log_2 p$ bits to store, this algorithm runs in exponential time.
+    We'll explore better algorithms later.
+\end{example}
+
+\begin{example}
+    In some groups the discrete logarithm problem is extremely easy.
+    For example, if we consider the DLP in the \emph{additive} group $\F_p$, then we want to find $x$ such that $x\cdot g \equiv h\pmod p$ for fixed $g$ and $h$.
+    But we can do this by just computing $g^{-1}\pmod p$ and multiplying, which takes $O(\log p)$ steps with the Euclidean algorithm.
+
+    Finding groups where the discrete logarithm problem is hard is important in cryptography.
+\end{example}
+
+
+
 \begin{thebibliography}{13}
 
 \bibitem{HPS} Hoffstein, Jeffrey, Jill Pipher and Joseph H. Silverman. \href{https://link.springer.com/book/10.1007/978-1-4939-1711-2}{\textit{An Introduction to Mathematical Cryptography}}. Second Edition. Springer New York, NY. 2014.
