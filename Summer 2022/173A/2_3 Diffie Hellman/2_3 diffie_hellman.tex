@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}  
+%%Read the manual for other options. 
+
+\pagestyle{empty} %%Eliminates page numbers
+%%\input rmb_macros
+%%Collect your favorite macros in a 
+%%separate file
+
+%\input amssym.def
+%\input amssym
+%\input mssymb
+%%Defines additional symbols
+
+
+
+\usepackage{graphics}
+\usepackage{amsmath,amssymb,amsthm, multicol}
+\usepackage[pdftex]{graphicx}
+\usepackage{epsf}
+%%Use to include pictures. 
+
+%\newcommand{\comment}[1]{}
+%\newcommand{\sobolev}[2]{W^{#1,#2}}
+%\newcommand{\sobolev}[2]{L^#2_#1}
+%%Some examples of macros or new commands.
+\newcommand{\integers}{\mathbb{Z}}
+
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{2.25in}
+%%Set margins, defaults are ok. 
+
+\begin{document}
+\begin{flushleft} 
+%%Paragraphs will not be indented in this 
+%%environment
+\centerline{\LARGE{Week 2 Quiz}} 
+\vspace{5 mm}
+{Student ID Number:}\hfill  
+%%\hfill forces following text 
+%%to right margin
+{Name \rule {2 in}{0.01in}}\\
+Math 173A, 11AM
+\\
+%%gives a line of length 2in and 
+%%thickness 0.01in
+{Please justify all your answers}\hfill {July 1, 2022}
+\\
+{Please also write your full name on the back} 
+
+\medskip
+\end{flushleft}
+
+\begin{enumerate}
+    \item Fill in the blank or answer with ``True'' or ``False''.
+        \begin{enumerate}
+            \item Fix a prime $p$ and suppose that $a$ is coprime to $p$. The smallest positive integer $k$ such that $a^k \equiv 1\pmod{p}$ is called the \rule{2.5cm}{.15mm} of $a \pmod{p}$.
+            \item True or false? If $p$ is prime and $a$ is any integer then $a^{p-1}\equiv 1 \pmod{p}$.
+            \item Fix a prime $p$. An element $g \in \mathbb{F}_p^\times$ whose powers give every element of $\mathbb{F}_p^\times$ is called a \rule{2.5cm}{.15mm} of $\mathbb{F}_p^\times$.
+        \end{enumerate}
+    \vfill
+    \item 
+    \begin{enumerate}
+        \item Solve $7d\equiv 1\pmod{30}$.
+        \vfill
+        \item Suppose you write a message as a number $m\pmod{31}$. Encrypt $m$ as $m^7\pmod{31}$. How would you decrypt? \textit{Hint: Decryption can be done by raising the ciphertext to a power mod 31. Fermat's little theorem will be useful.}
+        \vfill
+    \end{enumerate}
+
+    \item \begin{enumerate}
+        \item What is one topic or example from the course so far that you find confusing? What do you find confusing about it?
+
+        \vfill
+
+        \item What would you like to see more of in the discussion sections? What would you like to see less of?
+        \vfill
+
+    \end{enumerate}
+\end{enumerate}
+
+%\vfill will divide page evenly
+%use \begin{enumerate} environment for ordered lists
+\end{document}

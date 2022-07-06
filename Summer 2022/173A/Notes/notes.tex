@@ -1138,7 +1138,7 @@ That is, if Eve can solve the discrete logarithm problem, then she can find the 
     If Eve can find $x$ such that $2^x\equiv 11\pmod {13}$ or $y$ such that $2^y\equiv 5\pmod{13}$, then she too can perform one of the above computations to arrive at the shared value of 8.
 \end{example}
 
-If Even can solve the DLP, then she can compromise Diffie-Hellman key exchange.
+If Eve can solve the DLP, then she can compromise Diffie-Hellman key exchange.
 Does she really have to do this though?
 Really, what she needs to do is solve the following problem.
 
@@ -1150,6 +1150,96 @@ Really, what she needs to do is solve the following problem.
     The Diffie-Hellman problem doesn't actually require us to find either of the exponents $a$, $b$.
 \end{remark}
 Clearly DHP is no harder than DLP, but it's \emph{unknown} whether or not solving the DHP would allow one to solve the DLP as well.
+
+
+
+
+
+
+
+
+\subsection{The Elgamal Public Key Cryptosystem}
+The Diffie-Hellman protocol serves as a way for Alice and Bob to create a key to use in some other symmetric cipher.
+That is, it doesn't directly allow Alice and Bob to send messages to one another.
+The following cryptosystem, attributed to Egyptian cryptographer Taher Elgamal (1985), while not the first of its kind (that was RSA in 1978 - we'll talk about that later), has a similar flavor to Diffie-Hellman key exchange.
+The Elgamal cryptosystem proceeds as follows.
+
+\begin{enumerate}
+    \item (Public) Alice or some trusted party publicly chooses a large prime $p$ and an element $g \in \F_p^\times$ with large prime order. (In particular, $g$ is \emph{not} a primitive root. Why not?)
+
+    \item (Key generation) Alice chooses a random $1\leq a\leq p-1$ and computes $A \equiv g^a\pmod p$, her \emph{public key}.
+    Alice then publishes $A$ while keeping $a$, her \emph{private key} secret.
+
+    \item (Encryption) Bob chooses a plaintext $m\in \F_p^\times$.
+    He then chooses a random $1\leq k\leq p-1$, his \emph{ephemeral (temporary) key}, and computes $c_1 \equiv g^k\pmod p$ and $c_2 \equiv m\cdot A^k\pmod p$.
+    He then sends the ciphertext $(c_1, c_2)$ to Alice.
+
+    \item (Decryption) Alice uses her private key $a$ to compute the plaintext in the following way.
+    \[
+        (c_1^a)^{-1}\cdot c_2\equiv (g^{ak})^{-1}\cdot m\cdot A^k \equiv g^{-ak}\cdot g^{ak}\cdot m\equiv m\pmod p.
+    \]
+\end{enumerate}
+
+Step 1 is interesting in its own right, but we'll talk about it more later when we discuss primality testing.
+If we assume that Alice can efficiently generate random numbers (which can be done, but we won't talk about it here), then she can efficiently compute $A\equiv g^a\pmod p$ with the square-and-multiply algorithm, so step 2 is efficiently doable.
+Similarly, Bob can efficiently compute $c_1 \equiv g^k\pmod p$ and $c_2 \equiv m\cdot A^k\pmod p$ in step 3.
+Finally, Alice can use square-and-multiply to efficiently compute $c_1^a$ and then use, say, the Euclidean algorithm to compute its inverse, so decryption is also efficient.
+
+What does an eavesdropper, Eve, need to do in order to compromise Elgamal?
+If she can recover the ephemeral key $k$ that Bob uses to encrypt the plaintext $m$, then she can recover the plaintext by computing 
+\[
+    c_2\cdot (A^k)^{-1} \equiv m\cdot A^k\cdot A^{-k} \equiv m\pmod p.
+\]
+If she knows $k$, then she can do this efficiently.
+If Eve can solve the discrete logarithm problem, then she can find $k$ given the public quantities $p$ and $c_1 \equiv g^k\pmod p$.
+Similarly, if she can recover Alice's private key $a$, then she can decrypt any messages sent to Alice (in a way, she becomes indistinguishable from Alice).
+Just like with $k$, if Eve can solve the discrete logarithm problem, then she can recover $a$ from $A \equiv g^a\pmod p$.
+This proves the following proposition.
+
+\begin{proposition}
+    If Eve can solve the discrete logarithm problem then she can decrypt arbitrary Elgamal ciphertexts encrypted using arbitrary Elgamal public keys.
+\end{proposition}
+
+Computational problems like this are often stated in terms of \emph{oracles}.
+We won't define this term rigorously, but you can think of an oracle for a computational problem as a machine or entity that, when given an instance of that problem, solves it instantly.
+So another way of stating the above proposition is that Eve can decrypt arbitrary Elgamal ciphertexts with an oracle for the discrete logarithm problem.
+
+How does the security of Elgamal compare to that of Diffie-Hellman.
+Both of them can be broken by access to a discrete logarithm oracle, but can we use one to break the other?
+
+\begin{proposition}
+    Fix a prime $p$ and an element $g\in F_p^\times$ to use in Elgamal encryption.
+    Suppose that Eve has access to an oracle that decrypts arbitrary Elgamal ciphertexts encrypted using arbitrary Elgamal public keys.
+    Then she can use the oracle to solve the Diffie-Hellman problem.
+
+    Conversely, if Eve has access to an oracle that solves the Diffie-Hellman problem, then she can decrypt arbitrary Elgamal ciphertexts.
+\end{proposition}
+
+\begin{proof}
+    We'll show how to use an Elgamal oracle to break Diffie-Hellman and you'll do the converse on your homework.
+    Recall that in the Diffie-Hellman problem, Eve is given
+    \[
+        A\equiv g^{a}\pmod p\qquad\text{and}\qquad B\equiv g^b\pmod p
+    \]
+    and she needs to compute $g^{ab}\pmod p$.
+    The tool Eve has at her disposal is an Elgamal oracle, which takes as input a prime $p$, a base $g$, a public key $A$ and a ciphertext $(c_1, c_2)$ and returns the quantity
+    \[
+        (c_1^a)^{-1}\cdot c_2\pmod p.
+    \]
+    What inputs can Eve feed to her Elgamal oracle to solve the DHP?
+    If she inputs the public key $A\equiv g^a\pmod p$ and the ciphertext $(B, 1)$, then the oracle will return
+    \[
+        (B^a)^{-1}\cdot 1 \equiv g^{-ab}\pmod p.
+    \]
+    Then she just has to invert this (say, with the Euclidean algorithm).
+    Even if the oracle rejects inputs where the second part of the ciphertext is 1, she can still win.
+    Eve can choose a random element $c_2\in \F_p^\times$ and submit $(B, c_2)$ to the oracle.
+    The oracle will then return
+    \[
+        (B^a)^{-1}\cdot c_2 \equiv g^{-ab}\cdot c_2\pmod p.
+    \]
+    Then Eve just has to multiply this by $c_2^{-1}$ and invert to obtain $g^{ab}$.
+\end{proof}
 
 \begin{thebibliography}{13}
 

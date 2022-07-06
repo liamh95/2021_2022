@@ -1,0 +1,87 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Discrete Logarithms}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+    \item Let $g$ be a primitive root for $\F_p$.
+    \begin{enumerate}
+        \item Suppose that $x = a$ and $x = b$ are both integer solutions to the congruence $g^x\equiv h\pmod p$.
+        Prove that $a\equiv b\pmod {p-1}$.
+        Explain why this means the map
+        \begin{align*}
+            \log_g: \F_p^\times &\to \Z/(p-1)\Z\\
+            g^x &\mapsto x\pmod {p-1}
+        \end{align*}
+        is well-defined.
+
+        \item Prove that $\log_g(h_1h_2) \equiv \log_g(h_1) + \log_g(h_2)\pmod{p-1}$ for all $h_1, h_2\in \F_p^\times$.
+
+        \item Prove that $\log_g(h^n) \equiv n\log_g(h)$ for all $h\in \F_p^\times$ and $n\in \Z$.
+    \end{enumerate}
+
+    % \item
+    % \begin{enumerate}
+    %     \item Compute $6^5\pmod {11}$ using the square-and-multiply algorithm.
+
+    %     \item Given that 2 is a primitive root modulo 11, consider the equation $2^x\equiv 6\pmod{11}$.
+    %     \emph{Without finding $x$}, determine whether $x$ is even odd. (Remember that the discrete logarithm is defined modulo $p-1$. Why does it make sense to ask whether $x$ is even or odd?)
+    % \end{enumerate}
+
+    \item This exercise describes a public key cryptosystem that requires Alice and Bob to exchange several messages.
+    We illustrate it with an example using small numbers.
+
+    Alice and Bob publicly agree on a prime $p = 23$.
+    Suppose Alice wants to send Bob the message $m = 11$.
+    She chooses a random exponent $a = 3$ and sends the number $u \equiv m^a \equiv 20\pmod{23}$ to Bob.
+    Bob chooses a random exponent $b = 9$ and sends $v \equiv u^b \equiv 5\pmod{23}$ back to Alice.
+    Alice then computes $w \equiv v^{15} \equiv 19\pmod{23}$ and sends $w$ to Bob.
+    Finally, Bob computes $w^5 \equiv 11\pmod{23}$ to recover Alice's original message.
+
+    \begin{enumerate}
+        \item Explain why this system works.
+        In particular, how are Alice's exponents $a = 3$ and 15 related?
+        Likewise, how are Bob's exponents $b = 9$ and 5 related?
+
+        \item How would you explain this cryptosystem in general? That is, how does it work outside of just this example?
+
+        \item Can you break this system if you can solve the discrete logarithm problem?
+    \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
