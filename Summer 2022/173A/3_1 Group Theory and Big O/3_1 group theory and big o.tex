@@ -1,0 +1,60 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\field}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Group Theory and Big $O$ Notation}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+    \item Prove that if $G$ is a finite commutative group with $n$ elements, then $a^n = e$ for all $a$ in $G$ and the order of $a$ divides $n$.
+
+    \vfill
+
+    \item In each case prove that $f(n) = O(g(n))$.
+    \begin{enumerate}
+        \item $f(n) = 7n^2 + \sqrt{n}$, $g(n) = n^2$.
+
+        \item $f(n) = n^{300}$, $g(n) = 2^n$.
+
+        \item $f(n) = (\log n)^{375}$, $g(n) = n^{.001}$.
+
+        \item $f(n) = n^22^n$, $g(n) = e^{2n}$.
+    \end{enumerate}
+
+    \vfill
+
+\end{enumerate}
+
+\end{document}
