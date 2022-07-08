@@ -1,0 +1,80 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Midterm Practice}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+    \item \begin{enumerate}
+        \item What is the order of 2 in $\F_{31}$?
+        \item Is 3 a primitive root in $\F_{31}$?
+    \end{enumerate}
+
+
+    \item Let $g$ be a primitive root of $\F_p$, where $p$ is a prime.
+    Show that $g^k$ is a primitive root of $\F_p$ if and only if $\gcd(k, p-1) = 1$.
+
+    \item Alice and Bob agree to use the prime $p=71$ and the base $g=7$ for a Diffie-Hellman key exchange.
+    \begin{enumerate}
+        \item Alice chooses $a = 12$ as her secret and Bob chooses $b = 31$ as his secret.
+        What are the values $A$ and $B$ that they should send to each other?
+
+        \item What is their shared secret?
+    \end{enumerate}
+
+    \item Use the baby step giant step algorithm to find $\log_2(15)$ in $\F_{29}$.
+
+    \item \begin{enumerate}
+
+    \item Describe each step in the ElGamal cipher.
+
+    \item If Eve has an oracle that solves the discrete logarithm problem, can she decrypt Elgamal ciphertexts? How?
+    \end{enumerate}
+
+    \item \begin{enumerate}
+        \item Define what $f(x) = O(g(x))$ means.
+        \item Is $e^{x^2} = O(e^x)$?
+        \item Is $e^x = O(e^{x^2})$?
+        \item Is $\ln(x) = O(\log x)$?
+    \end{enumerate}
+
+    \item Let $p$ and $q$ be primes and suppose that $p = 2q+1$.
+    Let $h\in \F_p^\times$ and assume that $h\neq 1$.
+    Prove that $x^2 \equiv h\pmod p$ has a solution if and only if the order of $h$ is $q$.
+
+\end{enumerate}
+
+\end{document}
