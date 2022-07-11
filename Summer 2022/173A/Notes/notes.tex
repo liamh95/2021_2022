@@ -1684,6 +1684,138 @@ This example gives an algorithm for how to prove the following theorem.
 
 
 
+
+
+
+
+
+
+
+
+\subsection{The Pohlig-Hellman Algorithm}
+We hope to find an easier way to solve the discrete logarithm problem (find $x$ such that $g^x \equiv h\pmod p$).
+Our idea was to factor $p-1 = q_1^{e_1}\cdots q_t^{e_t}$ and then somehow find $x\pmod{p_i^{e_i}}$ for each $i$.
+The Chinese remainder theorem then gives us a way to (efficiently) weave these solutions together into $x\pmod{p-1}$.
+This is essentially the idea behind the Pohlig-Hellman algorithm.
+
+
+\begin{theorem}
+    Let $G$ be a group and suppose we have an algorithm to solve the discrete logarithm problem in $G$ for any element whose order is a prime power.
+    That is, if $g\in G$ has order $q^e$, suppose we can solve $g^x = h$ in $O(S_{q^e})$ steps.
+
+    Then if $g\in G$ has order $N$, where $N$ has prime factorization
+    \[
+        N = q_1^{e_1}q_2^{e_2}\cdots q_t^{e_t},
+    \]
+    the discrete logarithm problem $g^x = h$ can be solved in
+    \[
+        O\left(\sum_{i=1}^tS_{q_i^{e_i}} + \log N\right)
+    \]
+    steps with the following procedure.
+    \begin{enumerate}
+        \item For each $1\leq i \leq t$, let
+        \[
+            g_i = g^{N/q_i^{e_i}}\qquad\text{and}\qquad h_i = h^{N/q_i^{e_i}}.
+        \]
+        Solve the discrete logarithm problem
+        \[
+            g_i^y = h_i
+        \]
+        and let $y_i$ be a solution.
+
+        \item Use the Chinese remainder theorem to solve
+        \begin{equation}\label{simul}
+            x \equiv y_1\pmod{q_1^{e_1}},\ \ldots,\ x \equiv y_t\pmod{q_t^{e_t}}.
+        \end{equation}
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    Since $g$ has order $N$, $g_i = g^{N/q_i^{e_i}}$ has order $q_i^{e_i}$ (why?).
+    Consequently, the first step of our algorithm takes $O(\sum S_{q_i^{e_i}})$ steps.
+    The Chinese remainder theorem step consists of just basic addition and inversion modulo $q_i^{e_i}$.
+    Since inversion can be done in $O(\log q_i^{e_i}) = O(\log N)$ steps, the entirety of step 2 takes just $O(t \log N) = O(\log N)$ steps.
+
+    Since $x$ satisfies the simultaneous congruences (\ref{simul}), we can write
+    \[
+        x = y_i + z_iq_i^{e_i}
+    \]
+    for some integer $z_i$.
+    We then have
+    \begin{align*}
+        (g^x)^{N/q_e^{e_i}} &= (g^{y_i + z_iq_i^{e_i}})^{N/q_i^{e_i}}\\
+        &= (g^{N/q_i^{e_i}})^{y_i}\cdot g^{Nz_i}\\
+        &= g_i^{y_i}\\
+        &= h_i\\
+        &= h^{N/q_i^{e_i}}.
+    \end{align*}
+    The third line follows from the fact that $a^N = e$ for any $a\in G$ by Lagrange's theorem.
+    If we take the logarithm to the base $g$ of both sides of this, we have
+    \begin{equation}\label{coprime}
+        \frac{N}{q_i^{e_i}}x \equiv \frac{N}{q_i^{e_i}}\log_g(h)\pmod N.
+    \end{equation}
+    Since the integers $N/q_1^{e_1}, \ldots, N/q_t^{e_t}$ are pairwise coprime, we can find integers $c_1, \ldots, c_t$ such that
+    \[
+        \frac{N}{q_1^{e_1}}c_1 +\cdots + \frac{N}{q_t^{e_t}}c_t  =1.
+    \]
+    If we multiply both sides of (\ref{coprime}) by $c_i$ and sum over $i$, then we see that
+    \begin{align*}
+        x & \equiv  \sum_{i=1}^tx\cdot\frac{N}{q_i^{e_i}}c_i\\
+        &\equiv \sum_{i=1}^t\log_g(h)\cdot\frac{N}{q_i^{e_i}}c_i\\
+        &\equiv h\pmod N.
+    \end{align*}
+\end{proof}
+
+We've reduced the discrete logarithm problem to the case where the base has prime power order.
+Now we show how to reduce the problem even further to just a base with prime order.
+
+\begin{proposition}
+    Let $G$ be a group, $q$ a prime and suppose we have an algorithm that takes $S_q$ steps to solve the DLP $g^x = h$ in $G$ whenever $g$ has order $q$.
+    Then if $g$ has order $q^e$, we can solve the discrete log problem $g^x = h$ in $O(eS_q)$ steps.
+\end{proposition}
+
+\begin{proof}
+    The idea is to write the unknown exponent $x$ in base $q$.
+    \[
+        x = x_0 + x_1q + x_2q^2 + \cdots + x_{e-1}q^{e-1}\quad\text{with }0\leq x_i<q.
+    \]
+    We have
+    \begin{align*}
+        h^{q^{e-1}} &= (g^x)^{q^{e-1}}\\
+        &= \left(g^{x_0 + x_1q + \cdots + x_{e-1}q^{e-1}}\right)^{q^{e-1}}\\
+        &= (g^{q^{e-1}})^{x_0}\cdot \left(g^{q^e}\right)^{x_1 + x_2q + \cdots + x_{e-1}q^{e-2}}\\
+        &= \left(g^{q^{e-1}}\right)^{x_0}.
+    \end{align*}
+    The last line follows since $g^{q^{e}} = 1$.
+    Since $g^{q^{e-1}}$ has order $q$, this is a problem we can solve for $x_0$ in $O(S_q)$ steps.
+    We essentially repeat this to find $x_2$.
+    Write
+    \begin{align*}
+        h^{q^{e-2}} &= (g^x)^{q^{e-2}}\\
+        &= \left(g^{x_0 + x_1q + \cdots + x_{e-1}q^{e-1}}\right)^{q^{e-2}}\\
+        &= g^{x_0q^{e-2}}\cdot \left(g^{q^{e-1}}\right)^{x_1}\cdot  \left(g^{q^e}\right)^{x_2 + x_3q + \cdots + x_{e-1}q^{e-3}}\\
+        &= g^{x_0q^{e-2}}\cdot \left(g^{q^{e-1}}\right)^{x_1}.
+    \end{align*}
+    But we know $x_0$, so we can move it over to the LHS to get
+    \[
+        (h\cdot g^{-x_0})^{q^{e-2}} = (g^{q^{e-1}})^{x_1},
+    \]
+    another DLP with base of order $q$.
+    We then solve this problem in $O(S_q)$ steps to find $x_1$.
+    In general, to get $x_i$, we solve the problem
+    \[
+        (g^{q^{e-1}})^{x_i} = \left(h\cdot g^{-x_0 - x_1q - \cdots - x_{i-1}q^{i-1}}\right)^{q^{e-i-1}}.
+    \]
+    In total, this takes $O(eS_q)$ steps.
+\end{proof}
+
+The moral of the story is that if $p-1$ factors into many small primes, then then the Pohlig-Hellman algorithm gives a viable attack on the DLP.
+
+
+
+
+
+
 \begin{thebibliography}{13}
 
 \bibitem{HPS} Hoffstein, Jeffrey, Jill Pipher and Joseph H. Silverman. \href{https://link.springer.com/book/10.1007/978-1-4939-1711-2}{\textit{An Introduction to Mathematical Cryptography}}. Second Edition. Springer New York, NY. 2014.

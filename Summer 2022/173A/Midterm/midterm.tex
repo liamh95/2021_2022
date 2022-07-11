@@ -1,0 +1,132 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm, verbatim,enumerate,bbm, mathtools}
+\usepackage{indentfirst}
+
+
+
+\date{\today}
+\parindent 5mm
+\parskip 0.2mm
+\oddsidemargin  0pt \evensidemargin 0pt \marginparwidth 0pt
+\marginparsep 0pt \topmargin 0pt \headsep 0pt \textheight 8.8in
+\textwidth 6.6in
+\renewcommand{\baselinestretch}{1.03}
+
+\allowdisplaybreaks
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Midterm -- Math 173A}
+\author{Instructor: Liam Hardiman}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+{\bf Instructions: } \begin{itemize} 
+\item You must show your work and clearly
+explain your line of reasoning.
+\item You may use a calculator, but only for basic arithmetic. If you didn't bring a calculator, you may use your phone, but it must be set to airplane/flight mode and you must clear all notifications before you start.
+\item You have one hour to complete the exam.
+\end{itemize}
+
+\medskip
+\medskip
+
+\center{{\bf GOOD LUCK!}}
+
+\newpage
+
+\begin{enumerate}
+    \item (10 points)
+    \begin{enumerate}
+        \item (2 points) Define \emph{primitive roots} of $\F_p$.
+        \vfill
+
+        \item (4 points) If $g$ is a primitive root of $\F_p$, prove that $g^k$ is a primitive root of $\F_p$ if and only if $\gcd(k, p-1) = 1$.
+        \vfill
+
+        \item (4 points) Find all primitive roots of $\F_{13}$. (Part (b) might be helpful.)
+        \vfill
+    \end{enumerate}
+
+
+    \newpage
+
+    \item (10 points)
+    \begin{enumerate}
+        \item (6 points) Carefully, but briefly describe each step in the Diffie-Hellman key exchange protocol.
+
+        \vfill
+
+        \item (4 points) If Eve has an oracle that solves the discrete logarithm problem, can she compromise a Diffie-Hellman key exchange? Why or why not?
+        \vfill
+    \end{enumerate}
+
+    \newpage
+
+    \item (10 points) Use the baby step giant step algorithm to find $\log_3(7)$ in $\F_{19}$.
+
+    \newpage
+
+    \item (10 points)
+    \begin{enumerate}
+        \item (6 points) Carefully, but briefly describe each step in the ElGamal encryption scheme.
+
+        \vfill
+
+        \item (4 points) Show that the ElGamal scheme is multiplicatively homomorphic. That is, show that if you know the encryptions of two messages $m_1$ and $m_2$, then you can construct the encryption of their product $m_1m_2$ \emph{without knowing the key}.
+        Be sure to prove that your answer really decrypts to the right message.
+
+        \vfill
+
+    \end{enumerate}
+
+    \newpage
+
+    \item (10 points)
+    Given two functions $f,g: \N\to \R$, we say that $f(n) = o(g(n))$ if
+    \[
+        \lim_{n\to \infty}\frac{f(n)}{g(n)} = 0.
+    \]
+    \begin{enumerate}
+        \item (4 points)
+        Show that if $f(n) = o(g(n))$, then $f(n) = O(g(n))$ as well.
+
+        \vfill
+
+        \item (4 points)
+        Give an example of functions $f$ and $g$ where $f(n) = O(g(n))$, but $f(n) \neq o(g(n))$.
+
+        \vfill
+
+        \item (2 points)
+        Suppose you have two algorithms that solve the same problem where one runs in $f(n)$ steps and the other runs in $g(n)$ steps.
+        If $f(n) = o(g(n))$, which algorithm would you prefer to use for large values of $n$?
+        Explain your choice.
+        \vfill
+
+    \end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}
