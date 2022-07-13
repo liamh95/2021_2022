@@ -1,0 +1,65 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - RSA}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+\begin{enumerate}
+
+    \item Recall that decrypting in RSA involves inverting a number $e$ modulo $\phi(N)$, where $N$ is a product of two large (distinct) primes $p$ and $q$.
+    The difficulty is that if Eve doesn't know $p$ or $q$, it's (presumably) hard for her to compute $\phi(N)$, and therefore hard for her to invert $e$.
+
+    Explain how Eve can find $p$ and $q$ if she knows $N = pq$ (which we always assume she does) and the sum $p+q$. \textit{Hint: expand $(x-a)(x-b)$.}
+
+    \vfill
+
+
+    \item The ciphertext 75 was obtained using RSA with $N = 437$ and $e=3$.
+    You know that the plaintext is either 8 or 9.
+    Determine which it is without factoring $N$.
+
+    \vfill
+
+    \item In order to increase security, Bob chooses $n$ and two encryption exponents $e_1$, $e_2$.
+    He asks Alice to encrypt her message $m$ to him by first computing $c_1 \equiv m^{e_1}\pmod N$, then encrypting $c_1$ to get $c_2\equiv c_1^{e_2}\pmod N$.
+    Alice then sends $c_2$ to Bob.
+    Does this double encryption increase security over single encryption?
+    Why or why not?
+
+    \vfill
+
+\end{enumerate}
+
+\end{document}

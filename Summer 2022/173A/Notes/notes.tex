@@ -210,6 +210,14 @@ Other features of the English language lead to more educated guesses that lead t
 
 
 
+
+
+
+
+
+
+
+
 \subsection{Divisibility and Greatest Common Divisors}
 Some of the most widely-used cryptosystems today make heavy use of abstract algebra and number theory.
 Roughly speaking, number theory is concerned with properties of the integers, $\Z$, like divisibility and solutions to equations with integer variables.
@@ -902,6 +910,8 @@ Let's describe this algorithm, sometimes called the \emph{fast powering algorith
 
 
 
+
+
 \addtocounter{subsection}{1}
 \subsection{Symmetric and Asymmetric Ciphers}
 Let's briefly formalize some notions from cryptography.
@@ -1150,6 +1160,8 @@ Really, what she needs to do is solve the following problem.
     The Diffie-Hellman problem doesn't actually require us to find either of the exponents $a$, $b$.
 \end{remark}
 Clearly DHP is no harder than DLP, but it's \emph{unknown} whether or not solving the DHP would allow one to solve the DLP as well.
+
+
 
 
 
@@ -1814,6 +1826,220 @@ The moral of the story is that if $p-1$ factors into many small primes, then the
 
 
 
+
+
+
+
+
+
+\section{Integer Factorization and RSA}
+
+\subsection{Euler's Formula and Roots Modulo $pq$}
+So far we've introduced a key-exchange protocol and a cryptosystem (Diffie-Hellmand and ElGamal, respectively) whose security relies on the same one-way operation.
+It's easy to exponentiate modulo $n$, but it's (presumably) hard to take logarithms.
+In this chapter we'll explore a different hard problem and build a cryptosystem on top of it.
+
+Recall that Fermat's little theorem tells us that $a^{p-1}\equiv 1\pmod p$ for any prime $p$ and any $a$ coprime to $p$.
+Can we generalize this theorem to composite moduli?
+We definitely need the base to be relatively prime to $m$ -- if $a^k \equiv 1\pmod m$, then
+\[
+    a^k - \ell m = 1
+\]
+for some integer $\ell$, so $\gcd(a, m)$ would have to divide 1.
+It looks like the right setting for our generalized Fermat's little theorem is $(\Z/m\Z)^\times$.
+Well if we set $m = 15$ and $a = 2$, we can easily check, say with square-and-multiply, that
+\[
+    a^{m-1} = 2^{14} = 2^2\cdot 2^4\cdot 2^8 \equiv 4\cdot 1\cdot 1 \equiv 4\not\equiv 1\pmod{15}.
+\]
+So even if we take a base that's relatively prime to $m$, it isn't always the case that $a^{m-1}\equiv 1\pmod m$.
+
+It looks like we need to change the exponent to get an analog of Fermat's little theorem for composite moduli.
+Lagrange's theorem gives us the right exponent.
+
+\begin{definition}
+    For any positive integer $m$, we define \emph{Euler's totient function} $\phi(m)$ (sometimes written $\varphi(m)$) to be
+    \[
+        \phi(m) = |\{a: 1\leq a \leq m-1\text{ and } \gcd(a,m) = 1\}| = |(\Z/m\Z)^\times|.
+    \]
+\end{definition}
+We can apply Lagrange's theorem to the commutative group $(\Z/m\Z)^\times$ to get the following theorem.
+\begin{theorem}[Euler's theorem]
+    For any positive integer $m$ and any $a$ relatively prime to $m$,
+    \[
+        a^{\phi(m)} \equiv 1\pmod m.
+    \]
+\end{theorem}
+
+\begin{remark}
+    In the case where $m = pq$ is a product of two primes, $\phi(m) = (p-1)(q-1)$.
+    To see this, note $\gcd(m,a) > 1$ for $1\leq a \leq m-1$ if and only if $a$ is a multiple of either $p$ or $q$.
+    There are $p$ multiples of $q$ and $q$ multiples of $p$ and they only coincide at $pq$ since $p$ and $q$ are distinct primes.
+    So we have
+    \[
+        a^{(p-1)(q-1)} \equiv 1\pmod {pq}
+    \]
+    for all $a$ relatively prime to $pq$.
+\end{remark}
+
+\begin{remark}\label{divide by gcd}
+    We can actually improve the exponent in the above remark a bit.
+    Let $g = \gcd(p-1, q-1)$, which is always at least 2 when $p$ and $q$ are odd primes.
+    By Fermat's little theorem we have for any $a$ relatively prime to $pq$,
+    \begin{align*}
+        a^{(p-1)(q-1)/g} &= \left(a^{p-1}\right)^{(q-1)/g}\\
+        &\equiv 1^{(q-1)/g}\pmod p.
+    \end{align*}
+    Note that the RHS of the first line is okay since $(q-1)/g$ is an integer.
+    If we exchange the roles of $p$ and $q$, we see that $a^{(p-1)(q-1)/g} \equiv 1\pmod q$ as well.
+    We then have that $a^{(p-1)(q-1)/g}-1$ is divisible by both $p$ and $q$, so it must be divisible by $pq$ and we have
+    \[
+        a^{(p-1)(q-1)/g}\equiv 1\pmod {pq}.
+    \]
+\end{remark}
+
+
+Diffie-Hellman works because it's easy to compute $g^a\pmod p$ if we know $g$ and $a$, but it's hard to get $a$ back from it.
+What if we reverse the roles of the secret and public parts?
+It's definitely easy to compute $m^e\pmod N$ if we know $m$ and $e$, but is it easy to get $m$ back if we know $e$?
+
+Well if $p$ is prime it is.
+
+\begin{proposition}\label{roots mod p}
+    Let $p$ be a prime and let $e\geq 1$ be an integer satisfying $\gcd(e, p-1) = 1$.
+    If $d$ is the inverse of $e$ modulo $p-1$ (which can be easily computed from $e$ with the Euclidean algorithm), then the congruence
+    \[
+        x^e \equiv c\pmod p
+    \]
+    has the unique solution $x \equiv c^d\pmod p$.
+\end{proposition}
+\begin{proof}
+    If $c\equiv 0\pmod p$, then $x\equiv 0\pmod p$ is the only solution, so we assume $c\not\equiv 0\pmod p$.
+    Write $de = 1+k(p-1)$ for some integer $k$.
+    Then by Fermat's little theorem we have
+    \begin{align*}
+        (c^d)^e &\equiv c^{1+k(p-1)}\pmod p\\
+        &\equiv c\cdot (c^{p-1})^k\pmod p\\
+        &\equiv c\pmod p.
+    \end{align*}
+    So $x\equiv c^d\pmod p$ is a solution to $x^e\equiv c\pmod p$.
+
+    As for uniqueness, suppose that $x_1$ and $x_2$ are two solutions.
+    Then we have
+    \begin{align*}
+        x_1 &\equiv x_1^{de}\pmod p\\
+        &\equiv (x_1^e)^d\pmod p\\
+        &\equiv c^d\pmod p\\
+        &\equiv (x_2^e)^d\pmod p\\
+        &\equiv x_2\pmod p.
+    \end{align*}
+\end{proof}
+
+
+\begin{example}
+    Let's solve
+    \[
+        x^5\equiv 9\pmod {17}.
+    \]
+    First we find the inverse of $5$ modulo $17-1=16$, which is 13.
+    Then we raise both sides to the power 13 to obtain the unique solution
+    \[
+        (x^5)^{13}\equiv 9^{13}\pmod{17}\iff x\equiv 8\pmod{17}.
+    \]
+\end{example}
+
+It turns out that Proposition \ref{roots mod p} carries over just fine to composite moduli, but we'll see that there's some subtlety that gets introduced when we actually try to solve the congruence.
+
+\begin{proposition}
+    Let $N$ be a positive integer and let $e\geq 1$ satisfy
+    \[
+        \gcd\big(e, \phi(N)\big) = 1.
+    \]
+    If $d$ is the inverse of $e$ modulo $\phi(N)$, then the congruence
+    \[
+        x^e\equiv c\pmod N
+    \]
+    has the unique solution $x \equiv c^d\pmod N$.
+\end{proposition}
+\begin{proof}
+    The proof is nearly identical to that of Proposition \ref{roots mod p}.
+    There's a slight issue if $\gcd(c, N) \neq 1$, but you'll take care of this on your next homework assignment.
+\end{proof}
+
+\begin{remark}
+    In the case where $N = pq$ is the product of distinct odd primes, Remark \ref{divide by gcd} offers us a potential speedup.
+    Instead of computing the inverse of $e$ modulo $\phi(pq) = (p-1)(q-1)$, we can instead let $d$ be the inverse of $e$ modulo $(p-1)(q-1)/g$, where $g = \gcd(p-1, q-1)$.
+    In this case we have $de = 1 + k(p-1)(q-1)/g$ and
+    \[
+        (c^d)^e \equiv c^{1 + k(p-1)(q-1)/g} \equiv c\cdot (c^{(p-1)(q-1)/g})^k \equiv c\pmod{pq}.
+    \]
+\end{remark}
+
+
+\begin{example}
+    Let's solve
+    \[
+        x^7\equiv 51\pmod{77}.
+    \]
+    Since $77 = 7\cdot 11$ is a product of two distinct primes, we look for the inverse of 7 modulo $(7-1)(11-1)/\gcd(7-1, 11-1) = 30$.
+    This inverse is 13, so we have
+    \[
+        x\equiv 51^{13} \equiv 2\pmod{77}.
+    \]
+\end{example}
+
+
+
+
+
+
+
+
+
+
+\subsection{RSA}
+
+When we solved the congruence in the previous example, we used the factorization of $77$ in order to get the right exponent.
+If the numbers involved are large, it looks like we'd need to be able to factor large numbers to solve congruences of this type in this way.
+If this is hard to do, then we can build a cryptosystem out of it.
+This gives us the RSA cryptosystem, due to Ron Rivest, Adi Shamir, and Leonard Adleman in 1977.
+\begin{enumerate}
+    \item (Key generation) Bob chooses secret primes $p$ and $q$ and an integer $e$ with $\gcd(e, (p-1)(q-1)) = 1$.
+    He publishes $N = pq$ and $e$, his \emph{public key}.
+    He also computes $d$ such that $ed \equiv 1\pmod{(p-1)(q-1)}$.
+    We call $N$ the \emph{modulus}, $e$ the \emph{encryption exponent} and $d$ the \emph{decryption exponent}.
+
+    \item (Encryption) Alice chooses a message $1\leq m\leq N$.
+    She computes $c\equiv m^e\pmod N$ and sends $c$ to Bob.
+
+    \item (Decryption) Bob computes
+    \[
+        c^d \equiv (m^e)^d \equiv m \pmod N.
+    \]
+\end{enumerate}
+
+\begin{example}
+    Bob chooses secret primes $p=101$ and $q = 163$.
+    He randomly chooses integers between 1 and $(p-1)(q-1) = 16200$ until he gets one that's relatively prime to $16200$.
+    He settles on $e = 133$ and publishes it along with $N = pq = 16463$.
+    Finally, he uses the Euclidean algorithm to compute the inverse of $e$ modulo $16200$ and gets $d = 10597$
+
+    Alice wants to send Bob the message $m = 9876$.
+    She computes
+    \[
+        c \equiv m^e = 9876^{133} \equiv 7025\pmod{N = 16463},
+    \]
+    and sends this ciphertext to Bob.
+
+    To decrypt, Bob computes
+    \[
+        c^d = 7025^{10597} \equiv 9876 = m\pmod{N = 16463}.
+    \]
+\end{example}
+
+An eavesdropper, Eve, sees the modulus $N$, the encryption exponent $e$, and the ciphertext $c \equiv m^e\pmod N$.
+Eve could decrypt the ciphertext if she could somehow get the decryption exponent $d$.
+She could invert $e$ modulo $(p-1)(q-1)$, but it's unclear how she can do this without knowing $p$ or $q$.
+It looks like the security of RSA relies on how hard a time Eve has factoring large integers like $N$.
 
 
 \begin{thebibliography}{13}

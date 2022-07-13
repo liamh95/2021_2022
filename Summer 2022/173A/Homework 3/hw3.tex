@@ -1,0 +1,72 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Homework 3}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+
+% hill cipher
+% existence of primitive roots modulo p
+% compute the parity of discrete log without actually computing it (look at notes)
+% man in the middle DH
+
+\begin{enumerate}
+
+    \item Do the following exercises from the textbook. 2.17, 2.18a and d, 2.21, 2.25, 2.27.
+
+    \item Let $p = 601$, which is prime.
+    \begin{enumerate}
+        \item Show that if an integer $r<600$ divides $600$, then it divides at least oone of 300, 200, 120 (these numbers are 600/2, 600/3, and 600/5).
+
+        \item Show that if the order of 7 in $\F_{601}$ is less than 600, then it divides one of the numbers 300, 200, 120.
+
+        \item A calculation shows that
+        \[
+            7^{300}\equiv 600,\quad 7^{200}\equiv 576\quad 7^{120}\equiv 423\pmod{601}.
+        \]
+        Why can we conclude that the order of 7 does not divide 300, 200, or 120?
+
+        \item Show that 7 is a primitive root in $\F_{601}$.
+
+        \item In general, suppose $p$ is a prime and $p-1 = q_1^{e_1}q_2^{e_2}\cdots q_s^{e_s}$ is the factorization of $p-1$ into primes. Describe a procedure to check whether a number $g$ is a primitive root mod $p$.
+    \end{enumerate}
+
+    \item Let $p \equiv 3\pmod 4$ be a prime.
+    Show that $x^2 \equiv -1\pmod p$ has no solutions.
+    \emph{Hint: Suppose a solution $x$ exists. Raise both sides to the power $(p-1)/2$.}
+
+\end{enumerate}
+
+\end{document}
