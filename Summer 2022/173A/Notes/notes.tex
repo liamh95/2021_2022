@@ -2042,6 +2042,244 @@ She could invert $e$ modulo $(p-1)(q-1)$, but it's unclear how she can do this w
 It looks like the security of RSA relies on how hard a time Eve has factoring large integers like $N$.
 
 
+
+
+
+
+
+
+
+
+\subsection{Primality Testing}
+If Bob wants to set up a shared key with Alice using Diffie-Hellman or RSA (in practice, RSA is used for key-exchange), it looks like he needs to generate large prime numbers.
+Consider this strategy.
+\begin{enumerate}
+    \item Randomly generate a large number $N$.
+    \item Check to see if $N$ is prime.
+\end{enumerate}
+Is this a viable strategy?
+Generating large random numbers is easy: if we want to randomly generate an $n$-bit number, we can just flip a coin for each of its bits (and we can modify this slightly to generate numbers in a particular range).
+What about checking to see if our randomly generated $N$ is prime?
+If this is hard or inefficient to do, then it would be hard for us to set up Diffie-Hellman or RSA.
+\emph{Even if it's easy for us to test $N$ for primality}, if prime numbers are extremely ``rare'', then it might take us way too long to actually find a prime number this way.
+
+The content of the next few sections is addressing these issues: primes \emph{are not} too rare for this strategy to work and it \emph{is} easy enough for us to check to see if a number is prime.
+
+
+Let's focus on step 2 for now -- testing $N$ for primality.
+Probably the simplest way is to simply check to see if $N$ is divisible by every $a<N$.
+If $N$ is an $n$-bit number, this is pretty bad -- it takes $O(2^n)$ steps.
+We can speed up this ``trial division'' algorithm by only checking numbers up to $\sqrt{N}$.
+This works since if $N = ab$, one of $a$ or $b$ must be at most $\sqrt{N}$.
+This still runs in exponential time at $O(2^{n/2})$ steps.
+
+Let's think about Fermat's little theorem for a minute.
+\begin{proposition}
+    If $p$ is prime then
+    \[
+        a^p\equiv a\pmod p.
+    \]
+\end{proposition}
+\begin{proof}
+    Note that this is slightly different from Fermat's little theorem, but it immediately follows from it.
+    If $p\mid a$, then it's clearly true, and if $p\nmid a$, then we simply multiply both sides of $a^{p-1}\equiv 1\pmod p$ by $a$.
+\end{proof}
+
+Conversely, if $a^N\not\equiv a \pmod N$ for some $a$, then $N$ is \emph{not} prime.
+\begin{example}
+    We can quickly verify with square-and-multiply that
+    \[
+        2^{121} \equiv 112 \pmod{121},
+    \]
+    so 121 is not prime.
+    We say that 2 is a \emph{witness} for the compositeness of $n$.
+\end{example}
+
+\begin{example}
+    It would take us a while to verify this by hand, but it's true that
+    \[
+        a^{561} \equiv a \pmod{561}
+    \]
+    for all $a$.
+    However, $561 = 3\cdot 11 \cdot 17$.
+    Such composite numbers are called \emph{Carmichael numbers}.
+\end{example}
+
+The last example shows that Fermat's little theorem only goes ``one way''.
+That is, just because $a^N\equiv a\pmod N$ for all $N$, we \emph{cannot} conclude that $N$ is prime.
+Fermat's little theorem might not be enough to make a good primality test, but the following proposition will help us strengthen it.
+\begin{proposition}
+    Let $p$ be an odd prime and write
+    \[
+        p-1 = 2^kq\quad\text{with }q\text{ odd.}
+    \]
+    Let $a$ be any number not divisible by $p$.
+    Then one of the following must hold
+    \begin{enumerate}[(i)]
+        \item $a^q \equiv 1\pmod p$.
+        \item One of $a^q$, $a^{2q}$, $a^{4q},\ldots$, $a^{2^{k-1}1}$ is congruent to $-1$ modulo $p$.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    If $a^q \equiv 1\pmod p$, then condition (i) holds and we're done.
+    In any case, consider the list
+    \begin{equation}\label{MR list}
+        a^q,\ a^{2q},\ a^{4q},\ldots,\ a^{2^{k-1}q},\ a^{2^kq}.
+    \end{equation}
+    The last number on this list is $a^{p-1}$, which is congruent to 1 modulo $p$ by Fermat's little theorem.
+    Furthermore, each item on this list is the square of the one that comes immediately before it.
+    So eventually, some number on this list squares to 1.
+    But the only elements of $\F_p$ that square to 1 are 1 and $-1$, so if the first item on this list isn't 1, there must be a $-1$ in this list.
+\end{proof}
+
+We can use this proposition to build a better version of the Fermat's little theorem primality test.
+Specifically, suppose $n$ is odd and $n-1 = 2^kq$ where $q$ is odd.
+If there's an integer $a$ with $\gcd(a,n) = 1$ and
+\begin{enumerate}[(i)]
+    \item $a^q\not \equiv 1\pmod n$.
+    \item $a^{2^iq}\not\equiv -1\pmod n$ for all $i = 0, 1, 2, \ldots, k-1$,
+\end{enumerate}
+then $n$ must be composite and we say $a$ is a \emph{Miller-Rabin witness} for the compositeness of $n$.
+
+This motivates the Miller-Rabin primality test, which test $n$ for primality using the potential witness $a$.
+Specifically, $n$ must be composite if conditions (i) and (ii) \emph{both} fail.
+However, if one these conditions holds, we learn nothing (the proposition only goes one way).
+\begin{enumerate}
+    \item If $n$ is even or $1< \gcd(a,n) < n$, return \textbf{Composite}.
+    \item Write $n-1 = 2^kq$ where $q$ is odd.
+    \item Set $a_0 \equiv a^q\pmod n$.
+    \item If $a_0 \equiv 1\pmod n$, return \textbf{Inconclusive}.
+    \item For each $i = 0, 1, \ldots, k-1$ do the following
+    \begin{enumerate}
+        \item If $a_i \equiv -1\pmod n$, return \textbf{Inconclusive}.
+        \item Set $a_{i+1} \equiv a_i^2\pmod n$.
+    \end{enumerate}
+    \item Return \textbf{Composite}.
+\end{enumerate}
+
+It's clear that step 1 is a quick and easy test for compositeness, since we can efficiently compute GCD's.
+Step 2 is also efficiently doable since we aren't fully factoring $n-1$.
+We're just peeling off all the 2's.
+Step 3 is efficiently doable since we can just square-and-multiply.
+
+% Step 4 really can't tell us one way or the other if $n$ is prime.
+% The previous proposition tells us that if $n$ is prime, it's possible that $a^q \not\equiv 1\pmod n$, we would just need the second condition to hold.
+% Similarly, if $n$ is not prime, it's possible that $a$ is just an element of order dividing $q$, so we really don't learn anything if $a^q \equiv 1\pmod n$.
+If the condition in step 4 is true, then it just tells us that condition (i) in the previous proposition holds.
+This holds if $n$ is prime, but it could also hold if $n$ is not prime, so we don't learn anything.
+However, if the condition doesn't hold, then $n$ might be prime.
+We'd just need to check that condition (ii) from the previous proposition also fails.
+
+Similarly, if the condition in step 5(a) holds, then this just tells us that condition (ii) in the previous proposition holds, which would happen if $n$ is prime.
+Step 5(b) just has us move to the next number in the list (\ref{MR list}).
+
+Finally, if we reach step 6, then conditions (i) and (ii) of the previous proposition both fail, so $n$ cannot be prime and $a$ is a Miller-Rabin witness.
+
+\begin{remark}
+    What is the runtime of the Miller-Rabin test?
+    Step 1 is just a GCD computation, which takes $O(\log n)$ steps.
+    Step 2 also takes $O(\log n)$ steps -- 2 goes into $n-1$ at most $\log n$ times.
+    Step 3 and each iteration of step 5(b) take $O(\log n)$ steps -- square and multiply.
+    Finally, $k\leq \log n$, so in total, the Miller Rabin test takes $O(\log n)$ steps, so it's a reasonably efficient algorithm.
+\end{remark}
+
+In practice, we would like to pick a bunch of random values of $a$ and run the Miller-Rabin test on $n$ and $a$.
+Now this is only a good idea if there are no Carmichael-like numbers for the Miller-Rabin test -- composite numbers that have no Miller-Rabin witnesses.
+It happens to be the case that every composite number has many Miller-Rabin witnesses.
+\begin{theorem}
+    Let $n$ be a composite number.
+    Then at least $3/4$ of the numbers $a$ between $1$ and $n-1$ are Miller-Rabin witnesses for $n$.
+\end{theorem}
+
+This gives us a good recipe to check if a given number $n$ is prime.
+Just choose, say, 10 random numbers $a$ between 2 and $n$.
+If $n$ is composite then each time we choose, we have a $3/4$ chance of picking a Miller-Rabin witness.
+Therefore, if $n$ is composite, there is only a $4^{-10}$ chance that each run of the Miller-Rabin test comes up inconclusive, so it's reasonable to guess that $n$ is prime.
+
+\begin{example}
+    Let's check to see if $n= 3913$ is prime using the Miller-Rabin test.
+    This number is small enough for trial division to be a good enough algorithm, but we'll use Miller-Rabin anyway.
+    \[
+        n-1 = 2^3\cdot 489.
+    \]
+    Let's test with $a=2$.
+    First we compute
+    \[
+        2^{489} \equiv 3333\pmod{2913}.
+    \]
+    Since this isn't 1, we keep going.
+    \begin{align*}
+        2^{2\cdot 489} &\equiv 3795\pmod{3913}\\
+        2^{4\cdot 489} &\equiv 2185\pmod{2913}.
+    \end{align*}
+    Since none of these is $-1$, we conclude that $3913$ is composite.
+\end{example}
+
+\begin{remark}
+    It's important to note that the Miller-Rabin test \emph{cannot} tell you that a number is prime, but it \emph{can} tell you that a number is composite.
+    If you run the test and find a Miller-Rabin witness, you know that $n$ is composite.
+    However, if you run the test 10 times, then if $n$ is composite, you could have just gotten really unlucky and failed to draw a witness.
+    In practice, since the Miller-Rabin test is so efficient, we can run it a large number of times and end up pretty certain that a number is prime if the test comes up inconclusive each time.
+    This turns out to be good enough in applications
+\end{remark}
+
+\subsubsection{The Distribution of the Set of Primes}
+Remember that our goal was to come up with a good way of generating large primes.
+The previous section showed that we could efficiently check if a randomly chosen number is prime, but what if it takes us a really long time to actually choose a prime?
+To address this, let's count primes.
+
+\begin{definition}
+    For any number $x$, let
+    \[
+        \pi(x) = \{p:p\text{ is prime and } 2\leq p\leq x \}.
+    \]
+    We call $\pi$ the prime-counting function.
+\end{definition}
+
+For example, $\pi(11) = 5$ since there are five primes between 2 and 11: 2, 3, 5, 7, 11.
+The following theorem, whose proof we don't go into here, estimates $\pi(x)$.
+\begin{theorem}\label{The Prime Number Theorem}
+    \[
+        \lim_{x\to \infty}\frac{\pi(x)}{x/\ln x} = 1.
+    \]
+\end{theorem}
+Roughly speaking, this theorem says that if $N$ is large and you randomly pick an integer between 1 and $N$, then there is roughly a $1/\ln N$ chance that you picked a prime.
+\begin{example}
+    The primes we use in some real-world cryptography are around 1024 bits in length.
+    How many primes $p$ satisfy $2^{1023} < p < p^{1024}$?
+    Well the prime number theorem says this is
+    \[
+        \pi(2^{1024}) - \pi(2^{1023}) \approx \frac{2^{1024}}{\ln 2^{1024}} - \frac{2^{1023}}{\ln 2^{1023}} \approx 2^{1013.53}.
+    \]
+    So there are a lot of primes here.
+    In particular, if we randomly pick an integer in this range, then we have roughly a
+    \[
+        2^{1013.53}/2^{1023} \approx 0.14\%
+    \]
+    chance of selecting a prime.
+    On average it should then take us around 700 guesses before we find a prime.
+    You'll see how to improve this a bit on your homework.
+\end{example}
+
+It might be unsatisfying that the Miller-Rabin test is probabilistic, i.e. there is a chance that it ``misses'' that its input is composite.
+However, the test runs so quickly that we can be very confident in its results in a very short amount of time.
+If we're being honest, the Miller-Rabin test is deterministic, but we'd have to check at most 1/4 of the numbers between 1 and $n$, and this would run in exponential time.
+
+If the generalized Riemann hypothesis holds, then we can turn the Miller-Rabin test into a \emph{deterministic} polynomial time algorithm.
+\begin{theorem}[G.L. Miller - 1975, E. Bach - 1990]
+    If a generalized version of the Riemann hypothesis is true, then every composite $n$ has a Miller-Rabin witness $a$ for its compositeness satisfying
+    \[
+        a \leq 2(\ln n)^2.
+    \]
+\end{theorem}
+In this setting, we'd only have to check $O((\log n)^2)$ potential witnesses instead of $O(n)$.
+More recently, unconditional polynomial time algorithms have been found.
+
+\begin{theorem}[M. Agrawal, N. Kayal, N. Saxena - 2002]
+    For every $\epsilon > 0$, there is an algorithm that determines whether a given number is prime in $O((\ln n)^{6+\epsilon})$ steps.
+\end{theorem}
+
+
 \begin{thebibliography}{13}
 
 \bibitem{HPS} Hoffstein, Jeffrey, Jill Pipher and Joseph H. Silverman. \href{https://link.springer.com/book/10.1007/978-1-4939-1711-2}{\textit{An Introduction to Mathematical Cryptography}}. Second Edition. Springer New York, NY. 2014.
