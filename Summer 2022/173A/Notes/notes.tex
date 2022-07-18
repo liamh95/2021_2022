@@ -2280,6 +2280,176 @@ More recently, unconditional polynomial time algorithms have been found.
 \end{theorem}
 
 
+
+
+
+
+
+
+
+
+\subsection{Pollard's $p-1$ Factorization Algorithm}
+RSA requires us to create large primes to use in our public keys, and the last section shows us how to do this efficiently.
+But the security of RSA relies on an adversary having a hard time factoring large numbers.
+The next algorithm shows that some large integers are easier to factor than others, even if they're products of two primes like an RSA modulus.
+The upshot is that it isn't good enough for us to just generate large primes and multiply them together to make an RSA modulus.
+
+
+Suppose that $N = pq$ where $p$ and $q$ are large unknown primes, like in RSA.
+Let's say that there's some integer $L$ such that
+\[
+    (p-1)\mid L\text{ and } (q-1)\nmid L.
+\]
+Remember we don't know $p$ or $q$ at this point, so we'll probably have to guess what this $L$ is.
+Now in this case there must be integers $i$, $j$ and $k\neq 0$ such that
+\begin{align*}
+    L &= i(p-1)\\
+    L &= j(q-1)+k.
+\end{align*}
+Then by Fermat's little theorem we have
+\begin{align*}
+    a^L &\equiv (a^{p-1})^i \equiv 1\pmod p\\
+    a^L &\equiv (a^{q-1})^j\cdot a^k \equiv a^k\pmod q
+\end{align*}
+for any $a$ satisfying $\gcd(a,p) = \gcd(a,q) = 1$.
+If $a$ isn't a primitive root modulo $q$ then we might have that $a^k\equiv 1\pmod q$ depending on what $k$ is, but this should be pretty rare if the numbers involved are large.
+In other words, it's likely that
+\begin{align*}
+    p &\mid a^L-1\\
+    q &\nmid a^L-1.
+\end{align*}
+But then we must have
+\[
+    \gcd(a^L-1, N) = p.
+\]
+If we've found this magic value of $L$, then the above GCD calculation is really easy to do and we've found a factor of $N$.
+But where should this $L$ come from?
+
+If it happens to be the case that $p-1$ is divisible by a bunch of small primes, then since $(p-1)$ divides $L$, the same must be true for $L$.
+So a way to look for $L$ is to just multiply small primes together until we get one that works, or take $L = n!$ for some small $n$.
+Let's turn this into an algorithm.
+
+\begin{enumerate}
+    \item Set $a_1 =2$ or whatever number you want.
+    \item For each $j = 2, 3, \ldots, T$ for some $T$ to be specified ahead of time, do the following.
+    \begin{enumerate}
+        \item Set $a_j \equiv a_{j-1}^j\pmod N$.
+        \item Compute $d = \gcd(a_j  - 1, N)$.
+        \item If $1 < d < N$, then $d$ is a nontrivial factor of $N$ and we stop the algorithm
+    \end{enumerate}
+\end{enumerate}
+Note that on iteration $j$ of step 2, we have $a_j \equiv a_1^{j!}\pmod N$.
+
+\begin{example}
+    If we take $N = 168441398857$, then it takes just a few (for a computer) steps of Pollard's algorithm to factor $N$.
+    It turns out that
+    \[
+        \gcd(2^{53!}-1, N) = 350437,
+    \]
+    and dividing this out gives the full factorization $N = 350437\cdot 480661$.
+    This works because
+    \[
+        p-1 = 350436 = 2^2\cdot 3\cdot 19\cdot 29\cdot 53.
+    \]
+\end{example}
+
+The moral of the story here is that when we generate large primes $p$ and $q$ for use in RSA, we should check to see if $p-1$ or $q-1$ are divisible by small primes.
+
+
+
+
+
+
+
+
+
+
+\subsection{Factorization via Difference of Squares}
+We can get some inspiration for factoring from basic algebra.
+Recall the difference of squares identity:
+\[
+    x^2 - y^2 = (x-y)(x+y).
+\]
+If we can write $N$ as a difference of squares, then the above identity tells us that we can factor!
+For example, if $N = 247$, notice that
+\[
+    247 = 256 - 9 = 16^2 - 3^2 = (16-3)(16+3) = 13\cdot 19.
+\]
+We can still work with this even if $N$ isn't a difference of squares.
+If $kN = X^2 - Y^2$ for some integer $k$, then
+\[
+    kN = (X-Y)(X+Y).
+\]
+We can then try to factor $N$ by computing $\gcd(N, X\pm Y)$.
+The idea here is that the perfect squares are pretty spread out as they get larger, so it's unlikely that $N+b^2$ is going to be a perfect square when we try random values of $b$.
+If we can somehow write a multiple of $N$ as a difference of squares, $kN = X^2-Y^2$, then hopefully some of the factors of $X\pm Y$ are also factors of $N$.
+
+\begin{example}
+    Say we're trying to factor 143.
+    It happens that
+    \[
+        3\cdot 143 = 23^2 - 10^2.
+    \]
+    We then compute $\gcd(143, 23-10)$ and see that $143 = 13\cdot 11$.
+\end{example}
+
+In general, it looks like we want integers $a$ and $b$ such that
+\[
+    a^2 \equiv b^2 \pmod N
+\]
+and one of $a\pm b$ has a nontrivial factor in common with $N$.
+How do we find such $a$ and $b$?
+In practice we don't look for them directly.
+Instead, we use the following procedure.
+
+\begin{enumerate}
+    \item (Relation Building) Find many integers $a_1,\ a_2,\ \ldots,\ a_r$ with the property that $c_i \equiv a_i^2 \pmod N$ is a product of small primes.
+
+    \item (Elimination) Take a product $c_{i_1}c_{i_2}\cdots c_{i_s}$ of some of the $c_i$'s so that every prime in the product appears to an even power.
+    Then
+    \[
+        c_{i_1}c_{i_2}\cdots c_{i_s} = b^2
+    \]
+    is a perfect square.
+
+    \item (GCD Computation) Let $a = a_{i_1}\cdots a_{i_s}$ and compute $d = \gcd(N, a-b)$.
+    Note that
+    \[
+        a^2 = (a_{i_1}\cdots a_{i_s})^2 \equiv c_{i_1}\cdots c_{i_s} \equiv b^2\pmod N,
+    \]
+    so there's a chance that $d$ is a nontrivial factor of $N$.
+\end{enumerate}
+
+Let's assume for now we've completed step 1, so we have integers
+\begin{align*}
+    c_1 &= p_1^{e_{1,1}}p_2^{e_{1,2}}\cdots p_t^{e_{1,t}}\\
+    c_2 &= p_1^{e_{2,1}}p_2^{e_{2,2}}\cdots p_t^{e_{2,t}}\\
+    \vdots &= \vdots\\ 
+    c_r &= p_1^{e_{r,1}}p_2^{e_{r,2}}\cdots p_t^{e_{r,t}},
+\end{align*}
+where each of the $e_{i,j}$ are nonnegative and $t$ is the number of primes we take to be ``small''.
+Step 2 requires us to take a product of these $c_i$'s so that we get a perfect square.
+We can think of this product as
+\[
+    c_1^{u_1}c_2^{u_2}\cdots c_r^{u_r},
+\]
+where each $u_i$ is 0 or 1 (think of a 1 as meaning ``select $c_i$ to be in the product'').
+Expanding the product gives
+\[
+    \prod_{i=1}^rc_i^{u_i} = \prod_{j=1}^tp_t^{\sum_{i=1}^re_{i,j}u_i}.
+\]
+This quantity is a perfect square if and only if each sum appearing in an exponent on the RHS is an even number.
+That is, we need the following equations to hold
+\begin{align*}
+    e_{1,1}u_1 + e_{2,1}u_2 + \cdots + e_{r,1}u_r &\equiv 0\pmod 2\\
+    e_{1,2}u_1 + e_{2,2}u_2 + \cdots + e_{r,2}u_r &\equiv 0\pmod 2\\
+    \vdots\\
+    e_{1,t}u_1 + e_{2,t}u_2 + \cdots + e_{r,t}u_r &\equiv 0\pmod 2.
+\end{align*}
+But this is really just a system of linear equations in the variables $u_1, \ldots, u_r$, where our scalars come from the field $\F_2$ instead of $\R$ or $\C$.
+Linear algebra works in exactly the same way here though: we can solve this system (efficiently!) through standard techniques like row reduction.
+
+
 \begin{thebibliography}{13}
 
 \bibitem{HPS} Hoffstein, Jeffrey, Jill Pipher and Joseph H. Silverman. \href{https://link.springer.com/book/10.1007/978-1-4939-1711-2}{\textit{An Introduction to Mathematical Cryptography}}. Second Edition. Springer New York, NY. 2014.

@@ -1,0 +1,309 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\lcm}{\text{lcm}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Presentation Problem Set}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+
+% hill cipher
+% existence of primitive roots modulo p
+% compute the parity of discrete log without actually computing it (look at notes)
+% man in the middle DH
+
+\section{Basic Number Theory}
+\begin{enumerate}
+    \item Let $F_1 = 1$, $F_2 = 1$, $F_{n+1} = F_n + F_{n-1}$ define the Fibonacci numbers 1, 1, 2, 3, 5, 8, $\ldots$.
+    Use the Euclidean algorithm to compute $\gcd(F_n, F_{n-1})$ for all $n\geq 1$.
+
+    \item Find the last 2 digits of $123^{562}$.
+
+    \item Here is how to construct the $x$ guaranteed by the general form of the Chinese remainder theorem.
+    Suppose $m_1,\ m_2,\ \ldots,\ m_k$ are integers with $\gcd(m_i, m_j) = 1$ whenever $i\neq j$.
+    Let $a_1,\ a_2,\ \ldots,\ a_k$ be integers.
+    Perform the following procedure.
+    \begin{enumerate}[(i)]
+        \item For $i= 1,\ldots, k$ and let $z_i = m_1m_2\cdots m_{i-1}m_{i+1}\cdots m_k$.
+        \item For $i= 1, \ldots, k$ and let $y_i \equiv z_i^{-1}\pmod m_i$.
+        \item Let $x = a_1y_1z_1 + \cdots + a_ky_kz_k$.
+    \end{enumerate}
+    Show that $x\equiv a_i\pmod{m_i}$ for all $i$.
+
+    \item Let $p$ be an odd prime and let $a$ be an integer that is not divisible by $p$, and let $b$ be a square root of $a$ modulo $p$.
+    \begin{enumerate}
+        \item Prove that for some choice of $k$, the number $b+kp$ is a square root of $a$ modulo $p^2$.
+        \item Suppose that $b$ i sa square root of $a$ modulo $p^n$.
+        Prove that for some choice of $j$, the number $b+jp^n$ is a square root of $a$ modulo $p^{n+1}$.
+        \item Show that if $p$ is an odd prime and if $a$ has a square root modulo $p$, then $a$ has a square root modulo $p^n$ for every power of $p$.
+        Is this true if $p=2$?
+    \end{enumerate}
+
+    \item Let $n=pq$ with $p$ and $q$ distinct odd primes.
+    \begin{enumerate}
+        \item Suppose that $\gcd(a, pq) = 1$.
+        Prove that if the equation $x^2 \equiv a\pmod n$ has any solutions, then it has four solutions.
+
+        \item Suppose that you had a machine that could find all four solutions for some given $n$.
+        How could you use this machine to factor $n$?
+    \end{enumerate}
+
+    \item Let $a,b,m,n$ be integers with $\gcd(m,n) = 1$.
+    Let
+    \[
+        c \equiv(b-a)\cdot m^{-1}\pmod n.
+    \]
+    Prove that $x = a+cm$ is a solution to
+    \[
+        x\equiv a\pmod m\qquad \text{and}\qquad x\equiv b\pmod n
+    \]
+    and that every solution to these simultaneous congruences has the form $x=a+cm+ymn$ for some $y\in \Z$.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+\section{Euler's $\phi$ function}
+\begin{enumerate}
+    \item For any two integers $m$ and $n$, prove that $\phi(\lcm(m,n))\cdot \phi(\gcd(m,n)) = \phi(m)\phi(n)$.
+
+    \item Let $p_1,\ p_2,\ \ldots,\ p_r$ be the distinct primes that divide $N$.
+    Prove that
+    \[
+        \phi(N) = N\prod_{i=1}^r\left(1 - \frac{1}{p_i}\right).
+    \]
+
+    \item Let $N$, $c$, and $e$ be positive integers satisfying the conditions $\gcd(N, c) = 1$ and $\gcd(e, \phi(N)) = 1$.
+    Explain how to solve the congruence
+    \[
+        x^e\equiv c\pmod N,
+    \]
+    assuming you know the value of $\phi(N)$.
+
+    \item Find all $n$ such that $\phi(n)$ is odd and prove that you have found all such $n$.
+
+    \item For any positive integer $N$, prove that
+    \[
+        \sum_{d\mid N}\phi(d) = N,
+    \]
+    where the sum is over all positive divisors of $N$.
+
+    \item For any two integers $m$ and $n$ prove that
+    \[
+        \phi(mn) = \phi(m)\phi(n)\cdot \frac{\gcd(m,n)}{\phi(\gcd(m,n))}.
+    \]
+
+    \item Let $M$ and $N$ be integers satisfying $\gcd(M, N) = 1$.
+    Prove the multiplication formula
+    \[
+        \phi(MN) = \phi(M)\phi(N).
+    \]
+
+    \item Prove that if $n$ has $r$ distinct odd prime factors, then $2r\mid \phi(n)$.
+
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+\section{Abstract Algebra}
+\begin{enumerate}
+    \item Show that the set of all invertible $2\times 2$ matrices with entries in $\F_p$ is a noncommutative group for every prime $p$.
+
+    \item Let $G$ be a group and let $d\geq 1$ be an integer. Define a subset of $G$ by
+    \[
+        G[d] = \{g\in G: g^d = e\}.
+    \]
+    \begin{enumerate}
+        \item Prove that if $g$ is in $G[d]$, then $g^{-1}$ is in $G[d]$.
+        \item Suppose that $G$ is commutative. Prove that if $g_1$ and $g_2$ are in $G[d]$, then $g_1g_2$ is in $G$ as well.
+        \item Deduce that if $G$ is commutative, then $G[d]$ is a group.
+        \item Show by an example that if $G$ is not a commutative group, then $G[d]$ need not be a group.
+    \end{enumerate}
+
+    \item If $\F$ is a field, we define the \emph{characteristic} of $\F$ to be the smallest positive integer $k$ such that
+    \[
+        \underbrace{1 + 1 + \cdots + 1}_{k\text{ times}} = 0.
+    \]
+    If there is no such $k$, we say that $\F$ has characteristic zero.
+    \begin{enumerate}
+        \item Give an example of a field with characteristic zero.
+
+        \item Show that if $\F$ is a field with positive characteristic, the characteristic must be a prime number.
+    \end{enumerate}
+
+    \item If $m$ is composite, why is $\Z/m\Z$ not a field?
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+\section{Discrete Logarithms}
+\begin{enumerate}
+    \item Let $p$ be prime.
+    \begin{enumerate}
+        \item Let $q$ be a prime number such that $q\mid p-1$.
+        Prove that $\F_p^\times$ has an element of order $q$.
+
+        \item Let $N$ be an integer such that $N\mid p-1$.
+        Prove that $\F_p^\times$ has an element of order $N$.
+    \end{enumerate}
+
+    \item It can be shown that 5 is a primitive root for the prime 1223.
+    You want to solve the discrete logarithm problem $5^x\equiv 3\pmod{1223}$.
+    Given that $3^{611} \equiv 1\pmod{1223}$, determine whether $x$ is even or odd.
+
+    \item In the Diffie-Hellman key exchange protocol, Alice and Bob choose a primitive root $g$ for a large prime $p$.
+    Alice sends $x_1\equiv g^a\pmod p$ to Bob and Bob sends $x_2 \equiv g^b\pmod p$ to Alice.
+    Suppose Eve bribes Bob to tell her the values of $b$ and $x_2$.
+    However, Bob forgets to tell Eve the value of $g$.
+    Suppose $\gcd(b, p-1) = 1$.
+    Show that Eve can determine $g$ from the knowledge of $p$, $x_2$ and $b$.
+
+    \item Use the Pohlig-Hellman algorithm to solve the discrete logarithm problem
+    \[
+        g^x = a
+    \]
+    in $\F_p$ where $p = 181$, $g = 2$ and $a = 100$.
+
+    \item In the ElGamal cryptosystem, Alice and Bob use $p=17$ and $g=3$.
+    Alice chooses her secret exponent to be $a=6$, so $A\equiv 15\pmod p$.
+    Bob sends the ciphertext $(7,6)$.
+    Find $m$.
+
+    \item Using the baby-step giant-step algorithm, find $x$ so that $5^x\equiv 193\pmod{503}$.
+    You may use a calculator.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+\section{RSA}
+
+\begin{enumerate}
+    \item Bob uses RSA to receive a single ciphertext $c$ corresponding to the message $m$.
+    His public modulus is $N$ and his public encryption exponent is $e$.
+    Since Bob feels guilty that his system was used only once, he agrees to decrypt any ciphertext he receives as long as it's not $c$, and return the decryption to that person.
+    Eve sends him the ciphertext $2^ec\pmod N$.
+    Show how Eve can use this to find $m$.
+
+
+    \item Suppose you are as system administrator setting up a messaging service for a company.
+    You want users to encrypt their communications using RSA, so you generate public and private keys for them.
+    You do this by generating a list of 100 huge primes, say with 1024 bits each.
+    You then generate each user's public modulus by choosing two primes from this list, being extra careful so that no two users have the same public modulus.
+
+    Explain why if there are more than 50 users on this network, some of the users' communications can be compromised.
+
+
+    \item Alice and Bob are good friends, so they decide to use the same public RSA modulus, but with different encryption exponents $e$ and $f$.
+    Suppose Charlie encrypts the message $m$ and sends it to Alice and Bob, using their respective public keys in both cases.
+    Show that if Eve can intercept these ciphertexts then she can recover $m$.
+
+    \item Suppose $n = pq$ is a product of two primes and suppose that $\gcd(a, pq) = 1$.
+    \begin{enumerate}
+        \item Show that if $x^2 \equiv a\pmod n$ has any solutions in $\Z/n\Z$, then it has exactly four.
+
+        \item If, for some $a\in \Z/n\Z$, you know all four solutions to $x^2\equiv a\pmod n$, show that you can efficiently factor $n$.
+    \end{enumerate}
+
+
+    \item Your opponent uses RSA with $n=pq$ and encryption exponent $e$ and encrypts a message $m$.
+    This yields the ciphertext $c\equiv m^p\pmod n$.
+    A spy tells you that, for this particular message, $m^{12345}\equiv 1\pmod n$.
+    Describe how to determine $m$.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+\section{Primality Testing and Factorization}
+
+\begin{enumerate}
+    \item \begin{enumerate}
+        \item What is a Fermat witness for a composite number?
+
+        \item List all Fermat witnesses for 15.
+
+        \item What is a Miller-Rabin witness?
+
+        \item List all Miller-Rabin witnesses for 15.
+    \end{enumerate}
+
+    \item Describe the pollard $p-1$ algorithm and use it to factor $2^9-1$.
+
+    \item Recall that a composite number $n$ is a Carmichael number if $a^n\equiv a \pmod n$.
+    Show that all Carmichael numbers are odd.
+
+    \item Let $N = 561$. Show that $a=2$ is a Miller-Rabin witness to the compositeness of $N$ and that this can be used to factor $N$.
+
+    \item Suppose $m$ is a positive integer such that $6m+1$, $12m+1$ and $18m+1$ are all primes.
+    Let $n = (6m+1)(12m+1)(18m+1)$.
+    Prove that $n$ is a Carmichael number.
+
+
+\end{enumerate}
+
+\end{document}
