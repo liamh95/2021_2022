@@ -1,0 +1,91 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 173A - Signatures}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+% why 3N and not 2N?
+
+\begin{enumerate}
+
+    \item Sign a ``document'' with RSA and have your partner verify the signature.
+    That is, pick two primes $p$ and $q$ and a verification key $e$ coprime to $(p-1)(q-1)$.
+    Publish $N  = pq$ and $e$.
+    Compute your signing key $d$ with $de\equiv 1 \pmod{(p-1)(q-1)}$ and keep it secret.
+
+    Now choose a document $D \pmod N$ and sign it by computing $S \equiv D^d\pmod N$.
+    Have your partner verify your signature by computing $S^e\pmod N$ and making sure it's congruent to $D$.
+
+
+    \item Sign a ``document'' with ElGamal and have your partner verify the signature.
+    That is, pick a prime $p$ and a primitive root $g$ modulo $p$.
+    Choose a secret signing key $1\leq a\leq p-1$ and publish the verification key $A \equiv g^a\pmod p$.
+
+    Now choose a document $D \pmod{p-1}$ and sign it.
+    Do this by picking a random $1 < k < p$ with $\gcd(k, p-1) = 1$.
+    Compute the signature
+    \[
+        S_1 \equiv g^k\pmod p\qquad \text{and}\qquad S_2 \equiv (D-aS_1)k^{-1}\pmod {p-1}.
+    \]
+
+    Have your partner verify your signature by verifying that $A^{S_1}S_1^{S_2}\equiv g^D\pmod p$.
+\end{enumerate}
+\vfill
+Here are some primes for RSA
+\begin{multline*}
+    23,\ 29,\ 31,\ 37,\ 41,\ 43,\ 47,\ 53,\ 59,\ 61,\ 67,\ 71,\ 73,\ 79,\ 83,\ 89,\ 97.
+\end{multline*}
+
+\vfill
+
+Here are some primes and primitive roots for ElGamal.
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        $p$ & Primitive root modulo $p$\\
+        \hline
+        241 & 7\\
+        353 & 3\\
+        419 & 2\\
+        557 & 2\\
+        683 & 5\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\vfill
+
+\end{document}
