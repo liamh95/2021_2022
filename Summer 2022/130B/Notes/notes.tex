@@ -1,0 +1,143 @@
+\documentclass[12pt]{article}
+\usepackage[left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,
+            footskip=0.25in]{geometry}
+\usepackage{graphicx,float,hyperref} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts,geometry,mathtools,enumerate,bbm}
+\usepackage{algpseudocode}
+\usepackage{fancyvrb}
+ 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{property}[theorem]{Property}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{examples}[theorem]{Examples}
+
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{exercises}[theorem]{Exercises}
+
+\newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
+ 
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+ 
+% \newenvironment{problem}[2][Problem]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%If you want to title your bold things something different just make another thing exactly like this but replace "problem" with the name of the thing you want, like theorem or lemma or whatever
+ 
+\begin{document}
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+%Good resources for looking up how to do stuff:
+%Binary operators: http://www.access2science.com/latex/Binary.html
+%General help: http://en.wikibooks.org/wiki/LaTeX/Mathematics
+%Or just google stuff
+ 
+\title{Math 130B}
+\author{Liam Hardiman}
+
+\maketitle
+
+\begin{abstract}
+    I'm writing these lecture notes for UC Irvine's Math 130B course, taught in the summer of 2022.
+    This is a five-ish week course where I plan to get through chapters 6-8 of Ross' book \cite{Ross}.
+    The class structure consists of a two hour lecture followed by a one hour discussion section three days a week.
+    I'm aiming to get through one or two sections of the book per lecture with a midterm soon after chapter 6, maybe partway into chapter 7.
+
+\end{abstract}
+
+
+\tableofcontents
+
+
+\section{Jointly Distributed Random Variables}
+Many of life's more interesting problems are multifaceted.
+For example, in a clinical trial for a cholesterol drug, we might be interested in a patient's cholesterol levels \emph{and} how many hours they exercise each week.
+Or if we're interested in California's gas consumption, we'd be interested in how much gas each station sells \emph{and} its price of gas.
+
+In this section, we address how to look at more than one random variable at the same time.
+
+
+\subsection{Joint Distribution Functions}
+Remember that every (real-valued) random variable $X$ gives us a function $F_X:\R\to [0,1]$ called its \emph{(cumulative) distribution function}:
+\begin{equation}
+    F_X(t) = \Pr[X \leq t].
+\end{equation}
+Likewise, if we have two random variables $X$ and $Y$, we can define their \emph{joint (cumulative) distribution function}.
+\begin{definition}
+    Let $X$ and $Y$ be two random variables.
+    Then their \emph{joint cumulative distribution function}, $F: \R^2\to [0,1]$ is defined by
+    \[
+        F(a,b) = \Pr[X\leq a, Y\leq b].
+    \]
+    If there's any possibility for ambiguity, we might write $F_{X,Y}$ to remind us that $F$ is the cumulative distribution function for $X$ and $Y$.
+\end{definition}
+
+How is the joint distribution function related to the \emph{marginal} distribution functions of $X$ and $Y$?
+Well if we just specify that $X\leq t$, then we haven't put any restrictions on $Y$.
+This gives us
+\begin{equation}\label{marginal1}
+\begin{split}
+    F_X(a) &= \Pr[X\leq a]\\
+    &= \Pr[X \leq a, Y<\infty].
+\end{split}
+\end{equation}
+Now the events $\{X\leq a, Y\leq t\}$ form an increasing sequence of events as $t$ increases.
+That is, if $t_1 < t_2$, then we have the inclusion
+\[
+    \{X\leq a, Y\leq t_1\} \subseteq \{X\leq a, Y\leq t_2\}.
+\]
+This is helpful because probabilities play nicely with increasing (or decreasing) sequences of events.
+Namely, if $E_1 \subseteq E_2 \subseteq \cdots$ is an increasing sequence of events, then
+\[
+    \Pr\left[\bigcup_{n=1}^\infty E_n\right] = \lim_{n\to \infty}\Pr[E_n].
+\]
+Using this, (\ref{marginal1}) becomes
+\begin{align*}
+    F_X(a) &= \Pr[X \leq a, Y< \infty]\\
+    &= \Pr\left[ \bigcup_{b\geq 0}\{X\leq a, Y\leq b\}\right]\\
+    &= \lim_{b\to \infty}\Pr\left[X\leq a, Y\leq b\right]\\
+    &= \lim_{b\to \infty}F(a,b)
+\end{align*}
+
+The same idea tells us that
+\[
+    F_Y(b) = \lim_{a\to \infty}F(a, b).
+\]
+
+
+\begin{thebibliography}{13}
+
+\bibitem{Ross} Ross, Sheldon. \textit{A First Course in Probability}. Ninth Edition. Pearson. 2014.
+% \bibitem{Grav} Gravner, Janko. Online lecture notes, https://www.math.ucdavis.edu/~gravner/MAT135A/resources/lecturenotes.pdf
+
+% \bibitem{Prob and Comp} Mitzenmacher, Michael, and Eli Upfal. Probability and computing: Randomization and probabilistic techniques in algorithms and data analysis. Cambridge university press, 2017.
+% \bibitem{Ross} Ross, Sheldon M. A first course in probability. Vol. 7. Upper Saddle River, NJ: Pearson Prentice Hall, 2006.
+
+
+ 
+\end{thebibliography}
+
+
+\end{document}
