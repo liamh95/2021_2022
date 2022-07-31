@@ -80,6 +80,174 @@ In this section, we address how to look at more than one random variable at the 
 
 
 \subsection{Joint Distribution Functions}
+
+Remember that we can define the \emph{probability mass function} of a discrete random variable $X$ to be the function that takes in a value and returns the probability that $X$ attains that value.
+\[
+    p(a) = \Pr[X = a].
+\]
+
+\begin{examples}
+\begin{enumerate}[(a)]
+    \item Suppose we roll a pair of dice and $X$ is the sum of the values shown.
+    Then $X$ can take any integer value between 2 and 12 and its probability mass function is
+    \begin{align*}
+        p(2) = p(12) &= \frac{1}{36} & p(3) = p(11)&= \frac{2}{36}\\
+        p(4) = p(10) &= \frac{3}{36} & p(5) = p(9)&= \frac{4}{36}\\
+        p(6) = p(8) &= \frac{5}{36} & p(7) &= \frac{6}{36}.
+    \end{align*}
+
+    \item Suppose Alice is communicating with Bob by sending him bits (0's or 1's) one by one.
+    Suppose each bit Alice sends has probability $p$ of successfully getting to Bob and each transmission is independent of the others.
+    If $X$ is the first time a bit fails to transmit properly (maybe there's too much noise on the channel), then $X$ is a geometric random variable with probability mass function
+    \[
+        p(n) = p^{n-1}(1-p).
+    \]
+\end{enumerate}
+\end{examples}
+
+Situations naturally arise where we might want to look at two discrete random variables at the same time.
+For example, if we roll two dice and $X$ is the smaller roll and $Y$ is the larger one, can we define an analogue of the probability mass function?
+
+\begin{definition}
+    Suppose $X$ and $Y$ are two discrete random variables taking values in the sets $A$ and $B$, respectively.
+    Then their \emph{joint probability mass function} is the function $p: A\times B\to [0,1]$ defined by
+    \[
+        p(a,b) = \Pr[X = a, Y = b].
+    \]
+\end{definition}
+
+\begin{example}
+    Say we roll two dice and $X$ is the largest value shown and $Y$ is the sum of the two values.
+    Let's compute a few values of the joint probability mass function of $X$ and $Y$.
+    We have
+    \begin{align*}
+        p(3, 5) &= \Pr[X = 3, Y = 5]\\
+        &= \Pr[\{(3,2), (2,3)\}]\\
+        &= \frac{2}{36}.
+    \end{align*}
+    This is because the only way for the largest value to be 3 and the sum to be 5 is for one of the dice to show 2 and the other to show 3.
+    We also have
+    \[
+        p(1, 8) = 0
+    \]
+    since there's no way for two dice to sum to 8 and the largest value be a 1.
+\end{example}
+
+How does the joint mass function of $X$ and $Y$ relate to the \emph{marginal} probability mass functions?
+Well if we just specify that $X = a$, then we haven't put any restrictions on $Y$.
+This gives us
+\begin{equation}
+\begin{split}
+    p_X(a) &= \Pr[X= a]\\
+    &= \Pr[X = a, Y<\infty]\\
+    &= \sum_{y\in B}\Pr[X = a, Y = y]\\
+    &= \sum_{y\in B}p(a, y).
+\end{split}
+\end{equation}
+
+Similarly, we have
+\[
+    p_Y(b) = \sum_{x\in A}p(x, b).
+\]
+
+\begin{example}
+    Say 100 people are asked for their handedness (right-handed or left-handed) and sex (male or female).
+    The survey produces the following table.
+    \begin{center}
+    \begin{tabular}{|c || c | c|}
+        \hline
+           & L & R\\
+        \hline
+         M & 4 & 44\\
+         F & 9 & 43\\
+         \hline
+    \end{tabular}
+    \end{center}
+    If we randomly select one of these people and let $X$ be their sex and $Y$ be their handedness, then we can obtain the joint probability mass function by just reading off values from the table.
+    \begin{align*}
+        p(M, L) &= 4/100  &  p(M, R) &= 44/100\\
+        p(F, L) &= 9/100  &  p(F, R) &= 43/100.
+    \end{align*}
+    Let's compute the marginal probability mass functions.
+    For $X$ we have
+    \begin{align*}
+        p_X(M) &= p(M, L) + p(M, R) = \frac{4}{100} + \frac{44}{100} = \frac{48}{100}\\
+        p_X(F) &= p(F, L) + p(F, R) = \frac{9}{100} + \frac{43}{100} = \frac{52}{100}.
+    \end{align*}
+    For $Y$ we have
+    \begin{align*}
+        p_Y(L) &= p(M, L) + p(F, L) = \frac{4}{100} + \frac{9}{100} = \frac{13}{100}\\
+        p_Y(R) &= p(M, R) + p(F, R) = \frac{44}{100} + \frac{43}{100} = \frac{87}{100}.
+    \end{align*}
+\end{example}
+
+
+\begin{example}
+    In the previous example we determined the marginal mass function from the joint mass function.
+    Can we go the other way?
+    That is, if we know the marginal mass functions for $X$ and $Y$, can we determine the joint mass function?
+    Well here's another possible outcome of the same survey from the previous example.
+    \begin{center}
+    \begin{tabular}{|c || c | c|}
+        \hline
+           & L & R\\
+        \hline
+         M & 3 & 45\\
+         F & 10 & 42\\
+         \hline
+    \end{tabular}
+    \end{center}
+    It's easy to check that we get the same marginal mass functions in this modified example.
+    So if we started with the marginals, how would we know whether the survey outcome was given by this table or the previous one?
+    Since we can't really tell, it looks like the marginals don't determine the joint.
+
+    Let's be a little more specific.
+    Suppose the marginals are specified by these equations
+    \begin{align*}
+        p_X(M) &= p_{ML} + p_{MR} = 48/100\\
+        p_X(F) &= p_{FL} + p_{FR} = 52/100\\
+        p_Y(L) &= p_{ML} + p_{FL} = 13/100\\
+        p_Y(R) &= p_{MR} + p_{FR} = 87/100.
+    \end{align*}
+    Finding the joint mass function amounts to solving this system for the variables $p_{ML}, p_{MR}, p_{FL}, p_{FR}$.
+    This is a linear system with four equations and four unknowns, so this sounds promising.
+    The corresponding matrix equation is
+    \[
+        \begin{bmatrix}
+            1 & 1 & 0 & 0\\
+            0 & 0 & 1 & 1\\
+            1 & 0 & 1 & 0\\
+            0 & 1 & 0 & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            p_{ML}\\
+            p_{MR}\\
+            p_{FL}\\
+            p_{FR}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            48/100\\
+            52/100\\
+            13/100\\
+            87/100
+        \end{bmatrix}.
+    \]
+    If we go through the usual procedure of row-reduction, the coefficient matrix reduces to
+    \[
+        \begin{bmatrix}
+            1 & 0 & 0 &-1\\
+            0 & 1 & 0 & 1\\
+            0 & 0 & 1 & 1\\
+            0 & 0 & 0 & 0
+        \end{bmatrix}.
+    \]
+    This matrix doesn't have full rank, so the system does \emph{not} have a unique solution.
+    In particular, there isn't just one joint mass function corresponding to these marginals.
+\end{example}
+
+
+Let's move on to continuous random variables.
 Remember that every (real-valued) random variable $X$ gives us a function $F_X:\R\to [0,1]$ called its \emph{(cumulative) distribution function}:
 \begin{equation}
     F_X(t) = \Pr[X \leq t].
@@ -95,7 +263,7 @@ Likewise, if we have two random variables $X$ and $Y$, we can define their \emph
 \end{definition}
 
 How is the joint distribution function related to the \emph{marginal} distribution functions of $X$ and $Y$?
-Well if we just specify that $X\leq t$, then we haven't put any restrictions on $Y$.
+Like in the discrete case, if we just specify that $X\leq a$, then we haven't put any restrictions on $Y$.
 This gives us
 \begin{equation}\label{marginal1}
 \begin{split}
@@ -125,6 +293,63 @@ The same idea tells us that
 \[
     F_Y(b) = \lim_{a\to \infty}F(a, b).
 \]
+
+When working with continuous random variables, we often work with their \emph{density functions}.
+Specifically, if $X$ is a continuous random variable, there is some function $f$ such that for (pretty much)\footnote{Technically, $B$ needs to be what's called a \emph{measurable} set. Pretty much any set you'd care about is measurable, but we need this restriction for the theory to hold up.} any set $B\subseteq \R$,
+\[
+    \Pr[X\in B] = \int_Bf(x)\ dx.
+\]
+Here's the analogue for multiple variables.
+
+\begin{definition}
+    Let $X$ and $Y$ be continuous random variables.
+    We say $X$ and $Y$ have a \emph{continuous joint distribution} if there is some function $f: \R^2\to [0,1]$ such that
+    \[
+        \Pr[(X,Y)\in C] = \int_Cf(x,y)\ dydx.
+    \]
+    In this case, we call $f$ the \emph{joint probability density function (pdf)} of $X$ and $Y$.
+\end{definition}
+
+In the discrete case we were able to start with a joint mass function and sum over one of the variables to obtain the marginal of the other variable.
+Here's the analogue for continuous random variables.
+
+\begin{proposition}
+    Suppose $X$ and $Y$ are jointly continuous random variables with joint probability density function $f$.
+    Then $X$ and $Y$ are continuous random variables with density functions
+    \begin{align*}
+        f_X(x) &= \int_\R f(x,y)\ dy\\
+        f_Y(y) &= \int_\R f(x,y)\ dx,
+    \end{align*}
+    respectively.
+\end{proposition}
+\begin{proof}
+    Suppose $B\subseteq \R$ is measurable (don't worry too much about this assumption).
+    Then
+    \begin{align*}
+        \Pr[X\in B] &= \Pr[X\in B, Y\in \R]\\
+        &= \int_B\left(\int_\R f(x,y)\ dy\right)dx.
+    \end{align*}
+    So the function
+    \[
+        f_X(x) = \int_\R f(x,y)\ dy
+    \]
+    plays the role of the density function for $X$.
+    The same idea gives the density function for $Y$.
+\end{proof}
+
+\begin{example}
+    Let $X$ and $Y$ be random variables with joint pdf
+    \[
+        f(x,y) = \begin{cases}
+            kxy,&\text{if }x,y\geq 0,\ x+y \leq 1\\
+            0,&\text{otherwise,}
+        \end{cases}
+    \]
+    where $k$ is some constant.
+
+    Let's determine the actual value of $k$.
+
+\end{example}
 
 
 \begin{thebibliography}{13}
