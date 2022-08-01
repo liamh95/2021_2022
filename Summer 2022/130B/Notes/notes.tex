@@ -348,8 +348,244 @@ Here's the analogue for continuous random variables.
     where $k$ is some constant.
 
     Let's determine the actual value of $k$.
+    We must have the following
+    \[
+        1 = \Pr[(X,Y) \in \R^2] = \int_{\R^2}f(x, y)\ dydx,
+    \]
+    so we're just going to have to evaluate this integral and then solve for $k$.
+    It's usually a good idea to draw the region in question when computing double integrals like this.
+    \begin{center}
+        \includegraphics[scale=1]{1-1region.png}
+    \end{center}
+    As $x$ ranges from 0 to 1, $y$ ranges from 0 to $1-x$.
+    To see this, draw a vertical slice upwards from any point on the $x$-axis until it intersects the line $x+y=1$.
+    Our integral then becomes
+    \begin{align*}
+        k\int_0^1\int_0^{1-x}xy\ dydx &= k\int_0^1x\left[\frac{1}{2}y^2\right]_{y=0}^{1-x}dx\\
+        &= \frac{k}{2}\int_0^1x(1-x)^2\ dx\\
+        &= \frac{k}{2}\left[\frac{1}{4}x^4-\frac{2}{3}x^3 + \frac{1}{2}x^2\right]_{x=0}^{x=1}\\
+        &= k/24.
+    \end{align*}
+    Since this expression must be equal to 1, we have $k=12$.
 
+    Now let's compute the marginal pdf's of $X$ and $Y$.
+    To get the marginal for $X$, we ``integrate out the $y$.''
+    For any fixed $x$, the value of $y$ ranges between 0 and $1-x$, so we have
+    \[
+        f_X(x) = \int_{\R}f(x,y)\ dy = \int_0^{1-x}kxy\ dy = \frac{k}{2}x(1-x)^2 = 12x(1-x)^2.
+    \]
+    Similarly, for any fixed $y$, the value of $x$ ranges between 0 and $1-y$.
+    \[
+        f_Y(y) = \int_{\R}f(x,y)\ dx = \int_0^{1-y}kxy\ dx = \frac{k}{2}y(1-y)^2 = 12y(1-y)^2.
+    \]
 \end{example}
+
+\begin{example}
+    The joint density function of $X$ and $Y$ is given by
+    \[
+        f(x,y) = \begin{cases}
+            2e^{-x}e^{-2y},&\text{if }0<x<\infty, 0<y<\infty\\
+            0,&\text{otherwise.}
+        \end{cases}
+    \]
+
+    Let's compute $\Pr[X>1, Y<1]$.
+    To compute the probability of \emph{any} event, we simply integrate the joint density function over that event.
+    In this case we have
+    \begin{align*}
+        \Pr[X > 1, Y< 1] &= \int_0^1\int_1^\infty2e^{-x}e^{-2y}\ dxdy\\
+        &= \int_0^12e^{-2y}\left[-e^{-x}\right]_{x=1}^{x=\infty}dy\\
+        &= 2e^{-1}\int_0^1e^{-2y}dy\\
+        &= e^{-1}(1-e^{-2}).
+    \end{align*}
+\end{example}
+
+In the case of a single random variable, the density and distribution functions are related by differentiation.
+That is, if $X$ has density function $f$ and distribution function $F$, then
+\[
+    f(x) = \frac{d}{dx}F(x).
+\]
+The multivariable analogue is what you would probably expect.
+If $X$ and $Y$ are jointly continuous with density function $f(x,y)$ and distribution function $F(x,y)$, then we have by Fubini's theorem
+\begin{equation}\label{derivative of distribution is density}
+    f(x,y) = \frac{\partial^2}{\partial x \partial y}F(x,y) = \frac{\partial^2}{\partial y\partial x}F(x,y).
+\end{equation}
+We aren't going to angst over the proof here, but this technically only holds for the values of $(x,y)$ where the partial derivatives are defined and continuous.
+
+
+
+
+
+
+
+
+
+
+\subsection{Independent Random Variables}
+Remember that we said that two \emph{events} $A$ and $B$ are independent if
+\[
+    \Pr[A\cap B] = \Pr[A]\cdot \Pr[B].
+\]
+We can carry this definition over to random variables.
+\begin{definition}
+    Let $X$ and $Y$ be random variables.
+    Then $X$ and $Y$ are \emph{independent} if for any measurable sets $A$ and $B$ we have
+    \[
+        \Pr[X\in A, Y\in B] = \Pr[X\in A]\cdot \Pr[Y\in B].
+    \]
+\end{definition}
+
+Let's show that this definition plays nicely with the machinery we defined in the previous section.
+
+\begin{proposition}
+    The discrete random variables $X$ and $Y$, taking values in $\mathcal X$ and $\mathcal Y$, respectively, are independent if and only if
+    \begin{equation}\label{discrete indep}
+        p(x,y) = p_X(x)p_Y(y)
+    \end{equation}
+    for all $x\in \mathcal X$ and $y\in \mathcal Y$.
+\end{proposition}
+\begin{proof}
+    First let's suppose that $X$ and $Y$ are independent.
+    Then we can consider the singleton sets $\{x\}$ and $\{y\}$ for any $x\in \mathcal X$, $y\in \mathcal Y$.
+    \[
+        p(x,y) = \Pr[X = x, Y=y] = \Pr[X=x]\Pr[Y=y] = p_X(x)p_Y(y).
+    \]
+
+    Now suppose that equation (\ref{discrete indep}) holds.
+    Then for any sets $A\subseteq \mathcal X$ and $B\subseteq \mathcal Y$ we have
+    \begin{align*}
+        \Pr[X\in A, Y\in B] &= \sum_{x\in A, y\in B}p(x,y)\\
+        &= \sum_{x\in A}p_X(x)\sum_{y\in B}p_Y(y)\\
+        &= \Pr[X\in A]\Pr[Y\in B],
+    \end{align*}
+    so $X$ and $Y$ are independent.
+\end{proof}
+
+
+\begin{example}
+    Suppose we perform $n+m$ independent trials, each having common success probability $p$.
+    Let $X$ be the number of successes in the first $n$ trials and let $Y$ be the number of successes in the next $m$ trials.
+    Are $X$ and $Y$ independent?
+    Intuitively, knowing what happens in the first $n$ trials shouldn't tell us anything about what happens in the next $m$ trials, so we hope that $X$ and $Y$ are independent.
+    Indeed, we have
+    \[
+        \Pr[X = x, Y=y] = \binom{n}{x}p^x(1-p)^{n-x}\binom{m}{y}p^y(1-p)^{m-y}= \Pr[X=x]\Pr[Y=y].
+    \]
+
+    Let's define a new random variable $Z$ to be the total number of successes in all $m+n$ trials.
+    Are $X$ and $Z$ independent?
+    Well if we know there are some successes in the first $n$ trials, then we definitely know that there are at least that many successes in total, so we suspect that these aren't independent.
+    We have
+    \begin{align*}
+        p(x,z) &= \Pr[x\text{ successes in the first $n$ trials, $z$ successes total}]\\
+        &= \Pr[x\text{ successes in the first $n$ trials, $z-x$ successes in the next $m$ trials}]\\
+        &= \binom{n}{x}p^x(1-p)^{n-x}\binom{m}{z-x}p^{z-x}(1-p)^{m-z+x}.
+    \end{align*}
+    However,
+    \begin{align*}
+        p_X(x) &= \binom{n}{x}p^x(1-p)^{n-x}\\
+        p_Z(z) &= \binom{n+m}{z}p^z(1-p)^{n+m-z}.
+    \end{align*}
+    It's easily seen that the product of these two quantities does not match up with the previous quantity, so $X$ and $Z$ are \emph{not} independent.
+\end{example}
+
+So we can check to see if two discrete random variables are independent by looking at their mass functions.
+What about continuous random variables?
+We should think of a discrete random variable's mass function as being analogous to a continuous random variable's density function, and this informs the next proposition.
+
+\begin{proposition}
+    If $X$ and $Y$ are continuous random variables, then they are independent if and only if
+    \[
+        f(x,y) = f_X(x)f_Y(y).
+    \]
+\end{proposition}
+\begin{proof}
+    Suppose $X$ and $Y$ are independent.
+    This is really a statement about \emph{distribution} functions, not density functions, so we have
+    \begin{equation}\label{continuous indep}
+        \Pr[X\leq x, Y\leq y] = \Pr[X\leq x]\Pr[Y\leq y],
+    \end{equation}
+    which is equivalent to
+    \[
+        F(x,y) = F_X(x)F_Y(y).
+    \]
+    Now let's take the mixed $x$ and $y$ partial derivatives of both sides to obtain
+    \[
+        \frac{\partial^2}{\partial x\partial y}F(x,y) = \frac{\partial^2}{\partial x\partial y}\big(F_X(x)F_Y(y)\big) = \frac{\partial}{\partial x}F_X(x)\frac{\partial}{\partial y}F_Y(y).
+    \]
+    We arrived at the last equality using the fact that $F_X(x)$ is constant with respect to $y$ and $F_Y(y)$ is constant with respect to $x$.
+    Since differentiation distributions gives us densities, we have
+    \[
+        f(x,y) = f_X(x)f_Y(y)
+    \]
+    as desired.
+
+    Conversely, suppose that equation (\ref{continuous indep}) holds.
+    We pretty much copy the proof of the previous proposition with integrals in place of sums.
+    For any sets $A$ and $B$ we have
+    \begin{align*}
+        \Pr[X\in A, Y\in B] &= \int_A\int_Bf(x,y)\ dydx\\
+        &= \int_Af_X(x)\ dx\int_Bf_Y(y)\ dy\\
+        &= \Pr[X\in A]\Pr[Y\in B].
+    \end{align*}
+\end{proof}
+
+So we have have independence if our joint density (or mass) function factors into the product of the marginals.
+We can actually say more -- factoring into \emph{any} product of functions, each depending on just one variable, is enough.
+\begin{proposition}
+    Let $X$ and $Y$ be continuous random variables.
+    Then $X$ and $Y$ are independent if and only if the joint density function can be factored as
+    \begin{equation}\label{joint factors}
+        f(x,y) = h(x)g(y)
+    \end{equation}  
+    for some functions $g$ and $h$.
+\end{proposition}
+\begin{proof}
+    If $X$ and $Y$ are independent, then the previous proposition tells us that we can just take $g = f_X$ and $h = f_Y$.
+
+    Conversely, suppose that $f(x,y) = h(x)g(y)$.
+    Then
+    \begin{align*}
+        1 &= \int_\R\int_\R f(x,y)\ dxdy\\
+        &= \int_\R h(x)\ dx\cdot \int_\R g(y)\ dy.
+    \end{align*}
+    But these last two integrals have to each be equal to some constants, $c_1$ and $c_2$, respectively.
+    We also have
+    \begin{align*}
+        f_X(x) &= \int_\R f(x,y)\ dy\\
+        &= \int_\R h(x)g(y)\ dy\\
+        &= c_1 h(x).
+    \end{align*}
+    Similarly, $f_Y(y) = c_2g(y)$.
+    Putting it all together, we have
+    \begin{align*}
+        f_X(x)f_Y(y) &= c_1h(x)\cdot c_2g(y)\\
+        &= (c_1c_2)h(x)g(y)\\
+        &= f(x,y).
+    \end{align*}
+\end{proof}
+
+\begin{example}
+    \[
+        f(x,y) = \begin{cases}
+            kxy,&\text{if }(x,y)\in [0,1]^2\\
+            0,&\text{otherwise.}
+        \end{cases}
+    \]
+    Factors
+\end{example}
+
+\begin{example}
+    \[
+        f(x,y) = \begin{cases}
+            kxy,&\text{if }x,y\geq 0, x+y\leq 1\\
+            0,&\text{otherwise.}
+        \end{cases}
+    \]
+    Doesn't look like we can factor it -- check using marginals.
+\end{example}
+
+
 
 
 \begin{thebibliography}{13}
