@@ -732,6 +732,28 @@ Now if $X$ and $Y$ are independent, the joint density factors as $p(x,y) = p_X(x
             (2n-z+1)/n^2,&\text{if }n+1\leq z\leq 2n.
         \end{cases}
     \]
+    Importantly, we have that the sum of two uniform random variables is \emph{not} another uniform random variable.
+\end{example}
+
+\begin{example}
+    If $X$ and $Y$ are independent Poisson random variables with respective parameters $\lambda_1$ and $\lambda_2$, let's compute the distribution of $X+Y$.
+
+    We have that
+    \begin{align*}
+        \Pr[X+Y = n] &= \sum_{k=0}^n\Pr[X = k, Y = n-k]\\
+        &= \sum_{k=0}^n\Pr[X=k]\Pr[Y=n-k]\\
+        &= \sum_{n=0}^n e^{-\lambda_1}\frac{\lambda_1^k}{k!}e^{-\lambda_2}\frac{\lambda_2^{n-k}}{(n-k)!}\\
+        &= e^{-(\lambda_1+\lambda_2)}\sum_{k=0}^n\frac{\lambda_1^k\lambda_2^{n-k}}{k!(n-k)!}.
+    \end{align*}
+    Now the sum at the end should remind us of the binomial theorem since it has a product of two terms whose powers sum to $n$.
+    We almost have the correct binomial coefficient too.
+    We just need to multiply and divide by $n!$.
+    \begin{align*}
+        \Pr[X+Y = n] &= e^{-(\lambda_1+\lambda_2)}\sum_{k=0}^n\frac{\lambda_1^k\lambda_2^{n-k}}{k!(n-k)!}\\
+        &= \frac{e^{-(\lambda_1+\lambda_2)}}{n!} \sum_{k=0}^n\frac{n!}{k!(n-k)!}\lambda_1^k\lambda_2^{n-k}\\
+        &= \frac{e^{-(\lambda_1+\lambda_2)}}{n!}(\lambda_1+\lambda_2)^n.
+    \end{align*}
+    This is the mass function of a Poisson random variable with parameter $\lambda_1+\lambda_2$.
 \end{example}
 
 Let's look at the case of continuous random variables.
@@ -772,6 +794,85 @@ The analogy (mass functions $\iff$ densities) and (sums $\iff$ integrals) leads 
 \begin{example}
     Let's do the continuous version of the previous example.
     That is, suppose $X$ and $Y$ are independent random variables taking values in the interval $[0, 1]$ uniformly.
+    By the above proposition, the density of $Z= X+Y$ is given by
+    \[
+        f_Z(z) = \int_\R f_X(x)f_Y(z-x)\ dx.
+    \]
+    To actually compute this integral, we need to know the values of $x$ that make $f_X(x)$ and $f_Y(z-x)$ positive.
+    Since the density of the uniform distribution is given by
+    \[
+        f_X(x) = \begin{cases}
+            1,&\text{if }x\in [0,1]\\
+            0,&\text{otherwise,}
+        \end{cases}
+    \]
+    we have that $f_X(x)$ is positive if and only if $0\leq x\leq 1$ and $f_Y(z-x)$ is positive if and only if $0\leq z-x\leq 1$.
+    When we combine these, we see that the values of $x$ that make both inequalities true depend on what $z$ is.
+    In particular, when $0\leq z\leq 1$, we need $0\leq x \leq z$, and when $1\leq z\leq 2$, we need $z\leq x\leq 1$.
+    So if $0\leq z\leq 1$, we have
+    \[
+        f_Z(z) = \int_0^z 1\ dz = z
+    \]
+    and when $1\leq z\leq 2$ we have
+    \[
+        f_Z(z) = \int_z^1 1\ dz = 1-z.
+    \]
+\end{example}
+
+\begin{example}
+    Let $X$ and $Y$ be independent standard normal random variables (that is, they both have mean 0 and variance 1).
+    Recall that the density of $X$ is then
+    \[
+        f_X(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}.
+    \]
+    Let's compute the density of the sum $Z = X+Y$.
+    We have
+    \begin{align*}
+        f_Z(z) &= \int_\R f_X(x)f_Y(z-x)\ dx\\
+        &= \int_\R \frac{1}{\sqrt{2\pi}}e^{-x^2/2}\cdot \frac{1}{\sqrt{2\pi}}e^{-(z-x)^2/2}\ dx\\
+        &= \frac{1}{2\pi}\int_\R e^{-x^2 + zx - z^2/2}\ dx.
+    \end{align*}
+    At this point, we complete the square in the exponent.
+    \[
+        -x^2 + zx - z^2/2 = -x^2 + zx -z^2/4 + z^2/4 - z^2/2 = -(x-z/2)^2 - z^2/4.
+    \]
+    So the density becomes
+    \begin{align*}
+        f_Z(z) &= \frac{1}{2\pi}e^{-z^2/4}\int_\R e^{-(x-z/2)^2}dx = \frac{1}{\sqrt{2\pi}}e^{-z^2/4}.
+    \end{align*}
+    Here we've used the fact that $\int_\R e^{-x^2}\ dx = \sqrt{2\pi}$ along with a simple substitution.
+    Note that this is the density of a normal random variable having mean 0 and variance 2.
+\end{example}
+
+So the sum of two independent standard normal random variables is again a normal random variable.
+More generally, the sum of arbitrarily many independent normal random variables is again a normal random variable.
+The proof of this more general fact is pretty much the same, but the algebra is a little messier.
+
+\begin{theorem}
+    If $X_1, X_2, \ldots, X_n$ are independent normal random variables with mean $\mu_i$ and variance $\sigma_i^2$, respectively, then the sum $\sum_{i=1}^nX_i$ is normally distributed with mean $\sum_{i=1}^n\mu_i$ and variance $\sum_{i=1}^n\sigma_i^2$.
+\end{theorem}
+
+
+\begin{example}
+    The number of candies in a standard bag of plain M\&M's is normally distributed with a mean of 55 candies and a standard deviation of 2 candies.
+    The number of candies in a sharing size bag of plain M\&M's is also normally distributed with a mean of 340 candies and a standard deviation of 3 candies.
+    What is the probability that six standard bags of M\&M's together contain more candies than one sharing bag?
+
+    Let $X_1, \ldots, X_6$ be the number of candies in the six standard bags and let $Y$ be the number of candies in the sharing sized bag.
+    Then we want the probability that $X_1 + \cdots + X_6 - Y > 0$.
+    By the above theorem, this sum is a normal random variable with mean $6\cdot 55 - 340 = -10$ candies and variance $6\cdot 2 + 3 = 15$.
+
+    We can compute the desired probability by using a $z$-table as follows.
+    If we let $W = X_1 + \cdots + X_6 - Y$, then
+    \[
+        \Pr[W > 0] = \Pr\left[\frac{W-(-10)}{\sqrt{15}} > \frac{0 - (-10)}{\sqrt{15}}\right].
+    \]
+    Now $Z = (W+10)/\sqrt{15}$ is a standard normal random variable, and a $z$-table lets us look up the probability that such a random variable is less that $t$ for many values of $t$.
+    Using table 5.1 in the textbook, we see that $\Pr[Z < 10/\sqrt{15}] \approx \Pr[Z< 2.58] \approx  .9951$.
+    Thus,
+    \[
+        \Pr[Z > 2.58] \approx 1- .9951 = .0049.
+    \]
 \end{example}
 
 

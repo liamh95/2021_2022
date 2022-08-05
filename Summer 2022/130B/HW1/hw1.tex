@@ -1,0 +1,141 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Homework 1}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+
+% sum two normals not indep
+% finish induction proof for normals
+% gamma
+
+\begin{enumerate}
+
+    \item Two fair dice are rolled.
+    Let $X$ be the smallest and $Y$ be the largest value obtained on the dice.
+    \begin{enumerate}
+        \item Find the probability mass functions of $X$ and $Y$.
+
+        \item Find the joint probability mass function of $X$ and $Y$.
+
+        \item Are $X$ and $Y$ independent?
+    \end{enumerate}
+
+    \item A box of 8 light bulbs is known to contain 2 that are defective.
+    The bulbs are tested one at a time until the defective ones are found.
+    Let $N_1$ be the number of tests done until the first defective bulb is found, and let $N_2$ be the same for the second bulb.
+    \begin{enumerate}
+        \item Find the joint probability mass function of $N_1$ and $N_2$.
+
+        \item Are $N_1$ and $N_2$ independent?
+    \end{enumerate}
+
+    \item Let $X_1, X_2, \ldots$ be a sequence of independent uniform $[0,1]$ random variables.
+    For a fixed constant $c\in [0,1]$, define the random variable $N$ by
+    \[
+        N = \min\{n: X_n > c\}.
+    \]
+    \begin{enumerate}
+        \item Explain in just a few words how $N$ relates to the $X_i$'s and $c$.
+
+        \item Is $N$ independent of $X_N$? Give an intuitive explanation as well as a rigorous one.
+    \end{enumerate}
+
+
+    \item The joint probability density function of $X$ and $Y$ is given by
+    \[
+        f(x,y) = c(y^2-x^2)e^{-y}\qquad -y\leq x\leq y,\ 0<y<\infty.
+    \]
+    \begin{enumerate}
+        \item Find $c$.
+        \item Find the marginal densities of $X$ and $Y$.
+        \item Are $X$ and $Y$ independent?
+        \item Find $\E[X]$.
+    \end{enumerate}
+
+
+    \item The joint density function of $X$ and $Y$ is
+    \[
+        f(x,y) = x+y\qquad 0<x<1,\ 0<y<1.
+    \]
+    \begin{enumerate}
+        \item Are $X$ and $Y$ independent?
+        \item Find $\Pr[X+Y<1]$.
+    \end{enumerate}
+
+
+    \item Consider a stick of unit length.
+    Break the stick at two points chosen uniformly and independently at random.
+    What is the probability that you can form a triangle from the three pieces that remain?
+
+
+    \item Consider independent trials, each of which results in outcome $i$, where $i$ can be $0, 1, \ldots, k$, with probability $p_i$.
+
+    Let $N$ denote the number of trials needed to obtain an outcome not equal to 0 and let $X$ be that outcome.
+
+    \begin{enumerate}
+        \item Find $\Pr[N = n]$, $n\geq 1$.
+        \item Find $\Pr[X = j]$, $j = 1, \ldots, k$.
+        \item Show that $\Pr[N= n, X=j] = \Pr[N=n]\Pr[X=j]$.
+        \item Is it intuitive that $X$ and $N$ are independent?
+    \end{enumerate}
+    
+
+    \item \begin{enumerate}
+        \item A biased coin with head probability $p$ is flipped $n$ times.
+        Let $X$ be the number of heads and $Y$ the number of tails.
+        Are $X$ and $Y$ independent?
+
+        \item Suppose instead that the coin is tossed a \emph{random} number of times $N$, where $N\sim Poisson(\lambda)$.
+        Show that $X$ and $Y$ are independent.
+    \end{enumerate}
+
+    \item Let $X_1$ and $X_2$ be independent exponential random variables with respective parameters $\lambda_1$ and $\lambda_2$.
+    \begin{enumerate}
+        \item Find the distribution of $Z=X_1/X_2$.
+        \item Compute $\Pr[X_1<X_2]$.
+    \end{enumerate}
+
+
+    \item Suppose that $P$ and $Q$ are independent random variables, both uniformly distributed on $(0,1)$.
+    \begin{enumerate}
+        \item What is the joint cumulative distribution function of $P$ and $Q$?
+
+        \item What is the probability that all of the roots of the equation $x^2 + Px+Q = 0$ are real?
+    \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
