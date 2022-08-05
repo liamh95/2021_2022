@@ -337,7 +337,7 @@ Here's the analogue for continuous random variables.
     The same idea gives the density function for $Y$.
 \end{proof}
 
-\begin{example}
+\begin{example}\label{triangle density}
     Let $X$ and $Y$ be random variables with joint pdf
     \[
         f(x,y) = \begin{cases}
@@ -354,9 +354,14 @@ Here's the analogue for continuous random variables.
     \]
     so we're just going to have to evaluate this integral and then solve for $k$.
     It's usually a good idea to draw the region in question when computing double integrals like this.
-    \begin{center}
+    % \begin{center}
+    %     \includegraphics[scale=1]{1-1region.png}
+    % \end{center}
+    \begin{figure}[h]
+    \centering        
         \includegraphics[scale=1]{1-1region.png}
-    \end{center}
+        \caption{The joint density function $f(x,y)$ is nonzero in the shaded region.}
+    \end{figure}
     As $x$ ranges from 0 to 1, $y$ ranges from 0 to $1-x$.
     To see this, draw a vertical slice upwards from any point on the $x$-axis until it intersects the line $x+y=1$.
     Our integral then becomes
@@ -366,7 +371,7 @@ Here's the analogue for continuous random variables.
         &= \frac{k}{2}\left[\frac{1}{4}x^4-\frac{2}{3}x^3 + \frac{1}{2}x^2\right]_{x=0}^{x=1}\\
         &= k/24.
     \end{align*}
-    Since this expression must be equal to 1, we have $k=12$.
+    Since this expression must be equal to 1, we have $k=24$.
 
     Now let's compute the marginal pdf's of $X$ and $Y$.
     To get the marginal for $X$, we ``integrate out the $y$.''
@@ -566,25 +571,208 @@ We can actually say more -- factoring into \emph{any} product of functions, each
 \end{proof}
 
 \begin{example}
+Suppose $X$ and $Y$ are jointly continuous random variables with joint density
     \[
         f(x,y) = \begin{cases}
             kxy,&\text{if }(x,y)\in [0,1]^2\\
             0,&\text{otherwise.}
         \end{cases}
     \]
-    Factors
+Are $X$ and $Y$ independent?
+They'd definitely be independent it we could factor the joint density, but how does the piecewise nature of the density play into this?
+Let's define the \emph{indicator function} for the set our density actually lives on.
+That is, let $I(x,y)$ be defined by
+\[
+    I(x,y) = \begin{cases}
+        1,&\text{if }(x,y)\in [0,1]^2\\
+        0,&\text{otherwise.}
+    \end{cases}
+\]
+That is, $I(x,y)$ indicates whether or not $(x,y)$ lives in the set $[0,1]^2$, the unit square in $\R^2$.
+We go through the trouble of defining this function because we can use it to write our density as
+\[
+    f(x,y) = kxy\cdot I(x,y).
+\]
+The $kxy$ part is clearly a product of a function of only $x$ with a function of only $y$.
+If we could factor the indicator function $I$ into functions of just $x$ and just $y$, then we will have shown independence.
+Our ability to do this is going to come down to the nature of the set $[0,1]^2$.
+Notice that $(x,y)\in [0,1]^2$ if and only if both coordinates live in $[0,1]$.
+That is, if we define $\tilde{I}(x)$ by
+\[
+    \tilde{I}(x) = \begin{cases}
+        1,&\text{if }x\in [0,1]\\
+        0,&\text{otherwise,}
+    \end{cases}
+\]
+then we have $I(x,y) = \tilde{I}(x)\tilde{I}(y)$, so our joint density factors as
+\[
+    f(x,y) = (kx\cdot \tilde{I}(x))(y\cdot \tilde{I}(y)),
+\]
+so $X$ and $Y$ are independent.
 \end{example}
 
 \begin{example}
+Suppose $X$ and $Y$ are jointly continuous random variables with joint density
     \[
         f(x,y) = \begin{cases}
             kxy,&\text{if }x,y\geq 0, x+y\leq 1\\
             0,&\text{otherwise.}
         \end{cases}
     \]
-    Doesn't look like we can factor it -- check using marginals.
+Are $X$ and $Y$ independent?
+This density looks a lot like the one from the previous exercise.
+The difference here is that $f(x,y)$ behaves like $kxy$ on a different set this time.
+Now $f$ lives on a triangle in the first quadrant rather than an axis-aligned square.
+Proceeding in the same way as before, if we define
+\[
+    I(x,y) = \begin{cases}
+        1,&\text{if }x,y\geq 0, x+y\leq 1\\
+        0,&\text{otherwise,}
+    \end{cases}
+\]
+Then we still have $f(x,y) = kxy\cdot I(x,y)$ like before.
+Can we still factor it?
+Well if we specify the $x$ coordinate to live between 0 and 1, then the $y$ coordinate needs to satisfy $0\leq y\leq 1-x$.
+If we define the functions $I_1$ and $I_2$ by
+\[
+    I_1(x) = \begin{cases}
+        1,&\text{if }x\in [0,1]\\
+        0,&\text{otherwise,}
+    \end{cases} \qquad
+    I_2(x,y) = \begin{cases}
+        1,&\text{if }0\leq y\leq 1-x\\
+        0,&\text{otherwise,}
+    \end{cases}
+\]
+then we do get the factorization
+\[
+    f(x,y) = kxy \cdot I_1(x)\cdot I_2(x,y),
+\]
+but this isn't helpful since $I_2(x,y)$ is a function of both $x$ and $y$.
+
+This is \emph{not} a proof that $X$ and $Y$ aren't independent.
+For all we know, there's some weird factorization of $f(x,y)$ we just haven't found yet.
+Let's approach it a bit differently.
+This is the same density from Example \ref{triangle density} and we found the marginal density functions to be
+\[
+    f_X(x) = \begin{cases}
+        (k/2)x(1-x)^2,&\text{if }0\leq x \leq 1\\
+        0,&\text{otherwise,}
+    \end{cases}\qquad
+    f_Y(y) = \begin{cases}
+        (k/2)y(1-y)^2,&\text{if }0\leq y \leq 1\\
+        0,&\text{otherwise.}
+    \end{cases}
+\]
+Notice that we do \emph{not} have that $f(x,y) = f_X(x)f_Y(y)$ for all $x,y$ where these three functions are defined, so $X$ and $Y$ are \emph{not} independent.
 \end{example}
 
+
+
+
+
+
+
+
+
+
+\subsection{Sums of Independent Random Variables}
+Say we have two real-valued random variables $X$ and $Y$.
+We'll assume they're discrete for now.
+Their sum $Z=X+Y$ is clearly a random variable as well.
+How do the mass functions of $X$ and $Y$, $p_X$ and $p_Y$, and the joint mass function $p$ relate to the mass function of $X+Y$?
+Well $p_Z(z) = \Pr[Z = z]$ and we can break the event $\{Z = z\}$ into the events
+\[
+    \{Z = z\} = \bigcup_{x}\{X = x, Y = z-x\}.
+\]
+To see this, note that in order for $X+Y = z$ to be true, $X$ can be anything so long as $Y = z-X$.
+Moreover, these events are clearly disjoint since $X$ and $Y$ can only take one value at a time.
+Since the probability of a \emph{disjoint} union is just the sum of the probabilities of the constituent events, we have
+\[
+    p_Z(z) = \sum_x \Pr[X = x, Y= z-x] = \sum_x p(x, z-x).
+\]
+Now if $X$ and $Y$ are independent, the joint density factors as $p(x,y) = p_X(x)p_Y(y)$ and we've proven the following proposition.
+\begin{proposition}
+    If $X$ and $Y$ are discrete random variables, then the probability mass function of $Z = X+Y$ is
+    \[
+        p_Z(z) = \sum_x p_X(x)p_Y(z-x).
+    \]
+\end{proposition}
+
+\begin{example}
+    Suppose $X$ and $Y$ are independent random variables, both taking values in $\{1, 2, \ldots, n\}$ uniformly at random (if $n=6$, then you can think $X$ and $Y$ as the outcomes of dice rolls).
+    If we set $Z = X+Y$, then the previous proposition tells us that
+    \[
+        p_Z(z) = \sum_{j = 1}^np_X(j)p_Y(z-j).
+    \]
+    Now it might be tempting to just set $p_X(j)$ and $p_Y(z-j)$ to $1/n$.
+    If this were the case, then we would have $p_Z(z) = 1/n$ for each $z$.
+    But this definitely doesn't line up with our intuition -- when we roll two dice, some outcomes are more likely than others (there's only one way to roll a 2, but six ways to roll a 7).
+    The problem is that $p_Y(z-j)$ isn't always $1/n$.
+    Indeed, if $z-j < 1$, then $Y$ never takes the value $z-j$.
+
+    We can fix this by looking at the conditions that make $p_X(j)$ and $p_Y(z-j)$ \emph{both} positive.
+    In order for this to happen, we need $1\leq j\leq n$ \emph{and} $1\leq z-j\leq n$ to both hold.
+    Isolating $j$ gives
+    \[
+        z-n \leq j\leq z-1 \qquad\text{and}\qquad 1\leq j\leq n.
+    \]
+    If $z$ is between $2$ and $n$ this becomes
+    \[
+        p_Z(z) = \sum_{j=1}^{z-1}p_X(j)p_Y(z-j) = \sum_{j=1}^{z-1}\frac{1}{n^2} = \frac{z-1}{n^2}. 
+    \]
+    On the other hand, if $z$ is between $n+1$ and $2n$ we have
+    \[
+        p_Z(z) = \sum_{j=z-n}^n p_X(j)p_Y(z-j) = \sum_{j=z-n}^n\frac{1}{n^2} = \frac{2n-z+1}{n^2}.
+    \]
+    So in total we have
+    \[
+        p_Z(z) = \begin{cases}
+            (z-1)/n^2,&\text{if }2\leq z \leq n\\
+            (2n-z+1)/n^2,&\text{if }n+1\leq z\leq 2n.
+        \end{cases}
+    \]
+\end{example}
+
+Let's look at the case of continuous random variables.
+The analogy (mass functions $\iff$ densities) and (sums $\iff$ integrals) leads us to the following proposition.
+\begin{proposition}
+    Suppose $X$ and $Y$ are jointly continuous real-valued random variables with joint density function $f$.
+    Then the variable $Z = X+Y$ has density function
+    \[
+        f_Z(z) = \int_\R f(x, z-x)\ dx = \int_\R f(z-y, y)\ dy.
+    \]
+    In particular, if $X$ and $Y$ are independent, then this becomes
+    \[
+        f_Z(z) = \int_\R f_X(x)f_Y(z-x)\ dx = \int_\R f_X(z-y)f_Y(y)\ dy.
+    \]
+\end{proposition}
+\begin{proof}
+    Let's look at the distribution function for $Z$.
+    That is, for any real $a$ we have
+    \[
+        F_Z(a) = \Pr[Z\leq a] = \Pr[X+Y \leq a] = \int_{x + y\leq a}f(x,y)\ dxdy.
+    \]
+    Upon looking at a diagram of this region, we turn this into an iterated integral.
+    \[
+        F_Z(a) = \int_\R \int_{-\infty}^{a-x}f(x, y)\ dxdy.
+    \]
+    Now if we do the substitution $y = z-x$, this becomes
+    \[
+        F_Z(a) = \int_\R\int_{-\infty}^af(x, z-x)\ dzdx = \int_{-\infty}^a\int_{-\infty}^\infty f(x, z-x)\ dxdz.
+    \]
+    We used Fubini's theorem to switch the order of integration at the end.
+    Now we can use the fundamental theorem of calculus to take the derivative of both sides with respect to $a$ to get the probability density function of $Z$,
+    \[
+        f_Z(z) = \int_\R f(x, z-x)\ dx.
+    \]
+    Now if $X$ and $Y$ are independent, we can factor the joint density function to get $f(x,z-x) = f_X(x)f_Y(z-x)$.
+\end{proof}
+
+\begin{example}
+    Let's do the continuous version of the previous example.
+    That is, suppose $X$ and $Y$ are independent random variables taking values in the interval $[0, 1]$ uniformly.
+\end{example}
 
 
 
