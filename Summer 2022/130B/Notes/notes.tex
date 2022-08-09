@@ -31,6 +31,7 @@
 \newtheorem{exercises}[theorem]{Exercises}
 
 \newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
+\newcommand{\Unif}{\ensuremath{\textrm{Unif}}}
  
  
 \newcommand{\N}{\mathbb{N}}
@@ -39,6 +40,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\F}{\mathbb{F}}
+
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
@@ -1121,7 +1123,120 @@ Just as in the case of discrete random variables, we can condition $X$ on $Y=y$ 
 
 \subsection{Joint Probability Distribution of Functions of Random Variables}
 
-Suppo
+Suppose $X\sim \Unif [0,1]$.
+What is the distribution of $Y = X^2?$
+The range of $Y$ is still $[0,1]$, but we shouldn't expect $Y$ to be a uniform random variable -- ``most'' numbers in $[0,1]$ have small squares.
+We can directly compute the distribution function.
+\begin{align*}
+    F_Y(t) &= \Pr[Y\leq t]\\
+    &= \Pr[X^2 \leq t]\\
+    &= \Pr[X \leq \sqrt{t}]\\
+    &= \sqrt{t}.
+\end{align*}
+Differentiating both sides gives the density of $Y$, $f_Y(t) = \frac{1}{2\sqrt{t}}$.
+In total, we inverted the function $y = x^2$ and then took a derivative.
+\begin{proposition}
+    Let $X$ be a continuous random variable and let $Y = g(X)$ for some continuously differentiable function $g$.
+    Then the density of $Y$ is given by
+    \[
+        f_Y(y) = \frac{f(x)}{|dg/dx|},
+    \]
+    where $x = g^{-1}(y)$.
+    (Technically, this holds for $x$ such that $|dg/dx|$ is nonzero)
+\end{proposition}
+\begin{proof}
+    We repeat the previous example, just in more generality.
+    Start by computing the distribution function.
+    \begin{align*}
+        F_Y(y) &= \Pr[Y\leq y]\\
+        &= \Pr[g(X)\leq y]\\
+        &= \Pr[X \leq g^{-1}(y)]\\
+        &= F_X(g^{-1}(y)).
+    \end{align*}
+    Now we differentiate both sides, recalling that $[g^{-1}(y)]' = 1/g'(x)$ and $x = g^{-1}(y)$.
+    \[
+        f_Y(y) = \frac{f_X(g^{-1}(y))}{g'(x)} = \frac{f_X(x)}{|dg/dx|}.
+    \]
+\end{proof}
+
+
+\begin{example}
+    Suppose $X\sim \mathcal{N}(0, 1)$.
+    Let's find the density function of $Y = X^2$.
+    In terms of the above proposition, $g(x) = x^2$ and we have
+    \[
+        f_Y(y) = \frac{f_X(x)}{g'(x)} = \frac{1}{2x}\cdot \frac{1}{\sqrt{2\pi}}e^{-x^2/2}.
+    \]
+    Now we should get the right-hand side in terms of $y$.
+    Since $y = x^2$ here, $x = \sqrt{y}$ and we have
+    \[
+        f_Y(y) = \frac{1}{2\sqrt{2\pi y}}e^{-y/2}.
+    \]
+    For those familiar with statistics, $Y$ is a $\chi^2$ random variable with one degree of freedom.
+\end{example}
+
+The multivariable version of the above proposition is spiritually the same and has pretty much the same proof.
+\begin{theorem}
+    Suppose $X_1$ and $X_2$ are continuous random variables with joint density function $f_{X_1, X_2}$.
+    Then if $g_1$ and $g_2$ are continuously differentiable functions $\R^2\to \R$, and
+    \[
+        Y_1 = g_1(X_1, X_2)\qquad\text{and}\qquad Y_2 = g_2(X_1, X_2),
+    \]
+    then the joint density of $Y_1$ and $Y_2$ is given by
+    \[
+        f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(x_1, x_2)|J(x_1, x_2)|^{-1},
+    \]
+    where $J$ is the Jacobian determinant,
+    \[
+        J(x_1, x_2) = \det \begin{bmatrix}
+            \partial g_1/\partial x_1 & \partial g_1/\partial x_2\\
+            \partial g_2/\partial x_1 & \partial g_2/\partial x_2
+        \end{bmatrix}.
+    \]
+\end{theorem}
+
+\begin{example}
+    Suppose $X_1$ and $X_2$ are independent $\Unif [0,1]$ random variables.
+    Let $Y_1 = X_1 + X_2$ and $Y_2 = X_1 - X_2$.
+    Let's find the joint density function of $Y_1$ and $Y_2$.
+
+    In the context of the theorem, $g_1(x_1, x_2) = x_1+x_2$ and $g_2(x_1, x_2) = x_1 - x_2$.
+    Our Jacobian determinant is
+    \[
+        J(x_1, x_2) = \det \begin{bmatrix}
+            1 & 1\\
+            1 & -1
+        \end{bmatrix} = -2.
+    \]
+    Consequently,
+    \[
+        f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(x_1, x_2)|J(x_1, x_2)|^{-1} = 1\cdot |-2|^{-1} = \frac{1}{2}.
+    \]
+    Now what values of $y_1$ and $y_2$ does this hold for?
+    To do this, we find $x_1$ and $x_2$ in terms of $y_1$ and $y_2$.
+    We can easily check that
+    \[
+        x_1 = \frac{y_1+y_2}{2}\qquad\text{and}\qquad x_2 = \frac{y_1-y_2}{2}.
+    \]
+    Since $0\leq x_1\leq 1$ and $0\leq x_2\leq 1$, we have
+    \[
+        0 \leq y_1+y_2 \leq 2\qquad\text{and}\qquad 0\leq y_1-y_2\leq 2.
+    \]
+\end{example}
+
+
+\begin{example}
+    Suppose we pick a random point $(X,Y)$ in the plane by choosing its coordinates one at a time, independently from a standard normal distribution.
+    Let's find the distribution of the point's polar coordinates.
+
+    Remember that the polar coordinates of $(X, Y)$ are
+    \[
+        R = \sqrt{X^2+Y^2},\qquad \Theta = \arctan (Y/X),
+    \]
+    when $X$ and $Y$ are both positive (we need to change $\Theta$ when we're in the other quadrants by adding the appropriate multiple of $\pi/2$).
+    In the context of the previous theorem, 
+
+\end{example}
 
 
 \begin{thebibliography}{13}
