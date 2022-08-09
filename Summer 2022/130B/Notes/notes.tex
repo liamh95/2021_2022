@@ -962,32 +962,32 @@ In particular, we can compute its expected value.
     E[X\mid Y=y] = \sum_x x\cdot p_{X\mid Y}(x\mid y).
 \]
 
-\begin{example}
-    You have two identical envelopes in front of you.
-    One contains twice as much money as the other.
-    You are asked to choose one of the envelopes for yourself.
-    You pick one at random, open it, and observe its contents.
-    Then you have the choice to switch your envelope for the other one.
-    What should you do?
+% \begin{example}
+%     You have two identical envelopes in front of you.
+%     One contains twice as much money as the other.
+%     You are asked to choose one of the envelopes for yourself.
+%     You pick one at random, open it, and observe its contents.
+%     Then you have the choice to switch your envelope for the other one.
+%     What should you do?
 
-    Let's go for a strategy that maximizes our \emph{expected} payoff.
-    Why this is the right thing to do is probably intuitive, but we'll hopefully go into this in more detail at another time.
-    Let $X$ be the amount of money in the envelop you \emph{didn't} pick and let $Y$ be the amount of money in the envelope you opened.
-    Since you had a 1/2 chance of picking the envelope with the larger amount, we have
-    \[
-        (X \mid Y=y) = \begin{cases}
-            2y,&\text{with probability }1/2\\
-            y/2,&\text{with probability }1/2.
-        \end{cases}
-    \]
-    Let's compute the expectation.
-    \begin{align*}
-        E[X\mid Y=y] &= 2y\cdot \frac{1}{2} + \frac{y}{2}\cdot \frac{1}{2}\\
-        &= y + \frac{y}{4}\\
-        &= \frac{5}{4}y.
-    \end{align*}
-    In other words, regardless of what you saw in the first envelope, we expect to see 25\% more money in the other envelope, so we should always switch envelopes according to this strategy.
-\end{example}
+%     Let's go for a strategy that maximizes our \emph{expected} payoff.
+%     Why this is the right thing to do is probably intuitive, but we'll hopefully go into this in more detail at another time.
+%     Let $X$ be the amount of money in the envelop you \emph{didn't} pick and let $Y$ be the amount of money in the envelope you opened.
+%     Since you had a 1/2 chance of picking the envelope with the larger amount, we have
+%     \[
+%         (X \mid Y=y) = \begin{cases}
+%             2y,&\text{with probability }1/2\\
+%             y/2,&\text{with probability }1/2.
+%         \end{cases}
+%     \]
+%     Let's compute the expectation.
+%     \begin{align*}
+%         E[X\mid Y=y] &= 2y\cdot \frac{1}{2} + \frac{y}{2}\cdot \frac{1}{2}\\
+%         &= y + \frac{y}{4}\\
+%         &= \frac{5}{4}y.
+%     \end{align*}
+%     In other words, regardless of what you saw in the first envelope, we expect to see 25\% more money in the other envelope, so we should always switch envelopes according to this strategy.
+% \end{example}
 
 
 
@@ -1110,6 +1110,18 @@ Just as in the case of discrete random variables, we can condition $X$ on $Y=y$ 
     for any $x\geq 0$.
 \end{example}
 
+
+
+
+
+
+
+
+
+
+\subsection{Joint Probability Distribution of Functions of Random Variables}
+
+Suppo
 
 
 \begin{thebibliography}{13}
