@@ -1176,7 +1176,7 @@ In total, we inverted the function $y = x^2$ and then took a derivative.
 \end{example}
 
 The multivariable version of the above proposition is spiritually the same and has pretty much the same proof.
-\begin{theorem}
+\begin{theorem}\label{change of variables}
     Suppose $X_1$ and $X_2$ are continuous random variables with joint density function $f_{X_1, X_2}$.
     Then if $g_1$ and $g_2$ are continuously differentiable functions $\R^2\to \R$, and
     \[
@@ -1196,11 +1196,11 @@ The multivariable version of the above proposition is spiritually the same and h
 \end{theorem}
 
 \begin{example}
-    Suppose $X_1$ and $X_2$ are independent $\Unif [0,1]$ random variables.
+    Suppose $X_1$ and $X_2$ are independent exponential random variables with parameter $\lambda = 1$.
     Let $Y_1 = X_1 + X_2$ and $Y_2 = X_1 - X_2$.
     Let's find the joint density function of $Y_1$ and $Y_2$.
 
-    In the context of the theorem, $g_1(x_1, x_2) = x_1+x_2$ and $g_2(x_1, x_2) = x_1 - x_2$.
+    In the context of Theorem \ref{change of variables}, $g_1(x_1, x_2) = x_1+x_2$ and $g_2(x_1, x_2) = x_1 - x_2$.
     Our Jacobian determinant is
     \[
         J(x_1, x_2) = \det \begin{bmatrix}
@@ -1210,8 +1210,9 @@ The multivariable version of the above proposition is spiritually the same and h
     \]
     Consequently,
     \[
-        f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(x_1, x_2)|J(x_1, x_2)|^{-1} = 1\cdot |-2|^{-1} = \frac{1}{2}.
+        f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(x_1, x_2)|J(x_1, x_2)|^{-1} = f_{X_1}(x_1)f_{X_2}(x_2)\cdot \frac{1}{2} = \frac{e^{-x_1-x_2}}{2} = \frac{e^{-y_1}}{2}.
     \]
+    We used the independence of $X_1$ and $X_2$ to split the joint density of $X_1$ and $X_2$.
     Now what values of $y_1$ and $y_2$ does this hold for?
     To do this, we find $x_1$ and $x_2$ in terms of $y_1$ and $y_2$.
     We can easily check that
@@ -1222,6 +1223,8 @@ The multivariable version of the above proposition is spiritually the same and h
     \[
         0 \leq y_1+y_2 \leq 2\qquad\text{and}\qquad 0\leq y_1-y_2\leq 2.
     \]
+
+    How would we find the marginal density functions of $Y_1$ and $Y_2$?
 \end{example}
 
 
@@ -1233,10 +1236,90 @@ The multivariable version of the above proposition is spiritually the same and h
     \[
         R = \sqrt{X^2+Y^2},\qquad \Theta = \arctan (Y/X),
     \]
-    when $X$ and $Y$ are both positive (we need to change $\Theta$ when we're in the other quadrants by adding the appropriate multiple of $\pi/2$).
-    In the context of the previous theorem, 
+    when $X$ and $Y$ are both positive (we need to change $\Theta$ when we're in the other quadrants).
+    In the context of Theorem \ref{change of variables}, we'll let $g_1(x,y) = \sqrt{x^2+y^2}$ and $g_2(x,y) = \arctan (y/x)$.
+    Our Jacobian determinant is then
+    \[
+        J(x,y) = \det \begin{bmatrix}
+            x/\sqrt{x^2+y^2} & y/\sqrt{x^2+y^2}\\
+            -y/(x^2+y^2) & x/(x^2+y^2)
+        \end{bmatrix} = 1/\sqrt{x^2+y^2}.
+    \]
+    Now the conditional joint density of $X$ and $Y$, \emph{given that $X$ and $Y$ are both positive}, is
+    \[
+        f(x,y\mid X>0, Y>0) = \frac{f(x,y)}{\Pr[X>0, Y>0]} = \frac{f(x,y)}{4} = \frac{2}{\pi}e^{-(x^2+y^2)/2},
+    \]
+    provided that $x,y>0$.
+    By our theorem, the conditional joint density of $R$ and $\Theta$, given that $X$ and $Y$ are both positive, is
+    \[
+        f_{R, \Theta}(r, \theta\mid X>0, Y>0) = f(x,y\mid X>0, Y>0)|J(x,y)|^{-1} = \frac{2}{\pi}\sqrt{x^2+y^2}e^{-(x^2+y^2)/2}.
+    \]
+    In terms of $r$ and $\theta$, this becomes
+    \[
+        f_{R, \Theta}(r, \theta\mid X>0, Y>0) = \frac{2}{\pi}re^{-r^2/2},
+    \]
+    provided that $x$ and $y$ are both positive, i.e., that $r>0$ and $0\leq \theta \leq \pi/2$.
+
+    The exact same argument gives us the conditional distributions for the other possible values of $X$ and $Y$.
+    The only difference is that in each quadrant, we have to slightly modify our expression for $\theta$.
+    For example, in quadrant II where $x<0$ and $y>0$, $\theta = \pi- \arctan (y/x)$.
+    Importantly, this doesn't change the value of $|J(x,y)|$.
+    In total, we have
+    \begin{align*}
+        f_{R, \Theta}(r, \theta\mid X<0, Y>0) &= \frac{2}{\pi}re^{-r^2/2}\\
+        f_{R, \Theta}(r, \theta\mid X<0, Y<0) &= \frac{2}{\pi}re^{-r^2/2}\\
+        f_{R, \Theta}(r, \theta\mid X>0, Y<0) &= \frac{2}{\pi}re^{-r^2/2}.
+    \end{align*}
+    Putting it all together, we see that
+    \[
+        f_{R, \Theta}(r,\theta) = \frac{1}{2\pi}re^{-r^2/2},\quad 0<\theta<2\pi,\ 0<r<\infty.
+    \]
+
+    In particular, since the joint density of $R$ and $\Theta$ factors into a product of functions, one depending on $r$ and the other on $\theta$ (really, there is no function of $\theta$ since the density doesn't depend on $\theta$ at all), we see that $R$ and $\Theta$ are independent!
+\end{example}
+
+\begin{example}
+    Suppose we really want to sample from a standard normal distribution, but we only know how to generate uniform $[0,1]$ random variables.
+    We'll use the previous example as our starting point.
+    If we could somehow generate the variables $R$ and $\Theta$ (as in the previous example), then since
+    \[
+        X = R\cos \Theta\qquad\text{and}\qquad Y = R\sin \Theta,
+    \]
+    we could generate $X$ and $Y$, which are independent standard normal random variables.
+    It's definitely easy to generate $\Theta$, since this variable is $\Unif (0, 2\pi)$.
+    Unfortunately, it's not super clear how to generate $R$.
+
+    If, in the previous example, we instead looked for the joint density of $R^2 = X^2+Y^2$ and $\Theta = \arctan (Y/X)$ (assuming for now that $X, Y\geq 0$), then we should take $d = g_1(x, y) = x^2+y^2$ and $\theta = g_2(x,y) = \arctan (y/x)$ in Theorem \ref{change of variables}.
+    In this case, our Jacobian becomes.
+    \[
+        J(x,y) = \det \begin{bmatrix}
+            2x & 2y\\
+            -y/(x^2+y^2) & x/(x^2+y^2)
+        \end{bmatrix} = 2.
+    \]
+    Following the same procedure as before, we get the joint density
+    \[
+        f_{R^2, \Theta}(d, \theta) = f(x,y)|J(x,y)|^{-1} = \frac{1}{2}e^{-d/2}\cdot \frac{1}{2\pi}.
+    \]
+    In particular, $R^2$ and $\Theta$ are independent and $R^2$ is an exponential random variable with parameter $1/2$.
+
+    Now we claim that we can easily generate $R^2$.
+    Suppose $U_1$ is a $\Unif [0,1]$ random variable and consider the quantity $-2\ln U_1$.
+    Since $U_1$ is a $\Unif [0,1]$ variable, its distribution function is $F_{U_1}(u_1) = u_1$ and we have
+    \begin{align*}
+        \Pr[-2\ln U_1 \leq u_1] &= \Pr[U_1 \geq e^{-u_1/2}]\\
+        &= 1-e^{-u_1/2}.
+    \end{align*}
+    If we differentiate both sides with respect to $u_1$, we see that the density of $-2 \ln U_1$ is $\frac{1}{2}e^{-U_1/2}$, so it's an exponential random variable with parameter $1/2$ -- just like $R^2$.
+    Putting it all together, if $U_2$ is a $\Unif [0,1]$ random variable independent from $U_1$, then
+    \[
+        X = \sqrt{-2 \ln U_1} \cos (2\pi U_2),\qquad Y = \sqrt{-2 \ln U_1}\sin(2\pi U_2)
+    \]
+    are independent standard normal random variables.
 
 \end{example}
+
+
 
 
 \begin{thebibliography}{13}
