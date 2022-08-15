@@ -32,6 +32,8 @@
 
 \newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
 \newcommand{\Unif}{\ensuremath{\textrm{Unif}}}
+\newcommand{\Var}{\ensuremath{\textrm{Var}}}
+\newcommand{\Cov}{\ensuremath{\textrm{Cov}}}
  
  
 \newcommand{\N}{\mathbb{N}}
@@ -1649,8 +1651,179 @@ One of the first uses of this idea was due to Szele in 1943.
         E[X] = n!2^{-(n-1)}.
     \]
     There must then be \emph{some} tournament with at least $n!/2^{n-1}$ Hamiltonian paths in it.
-
 \end{example}
+
+
+
+
+
+
+
+
+
+
+\subsection{Moments of the Number of Events that Occur}
+In the last section, we solved most of the examples by letting the random variable $X$ be the number of occurrences of something we cared about.
+That is, if $\{A_i\}_{i\geq 1}$ were some events and $X$ was the number of events that occurred, we reasoned about $X$ by letting $X_i$ be the variable that indicates whether or not $A_i$ happened, and writing $X = \sum X_i$.
+Then the linearity of expectation told us that
+\[
+    E[X] = E\left[ \sum X_i\right] = \sum E[X_i] = \sum \Pr[A_i].
+\]
+This is advantageous since it's usually a whole lot easier to compute $\Pr[A_i]$ than directly computing $E[X]$.
+
+We can actually get more out of this method.
+For example, if we wanted the number of \emph{pairs} of events $A_i$, $A_j$ that occur simultaneously, $\binom{X}{2} = \frac{X(X-1)}{2}$, then
+\[
+    \binom{X}{2} = \sum_{i<j}X_iX_j.
+\]
+If we take the expectation of both sides, we get
+\begin{equation}\label{pairs}
+    E\left[\binom{X}{2}\right] = \sum_{i<j}E[X_iX_j] = \sum_{i<j}\Pr[A_i, A_j].
+\end{equation}
+If we multiply both sides by 2, we get $E[X^2]-E[X]^2 = 2\sum_{i<j}\Pr[A_i, A_j]$.
+More generally, $\binom{X}{k}$ is the number of distinct subsets of $k$ events that all occur simultaneously and we have
+\[
+    \binom{X}{k} = \sum_{i_1 < \ldots < i_k}X_{i_1}\cdots X_{i_k},
+\]
+so the expected number of subsets of $k$ events that all happen simultaneously is
+\[
+E\left[\binom{X}{k}\right] = \sum_{i_1 < \ldots < i_k}\Pr[A_{i_1}, \ldots, A_{i_k}].
+\]
+
+\begin{example}
+    Let's return to the hats example from before.
+    There are $N$ people, each of whom tosses their hat into the center of the room.
+    Each person then selects a hat at random.
+
+    If $X$ is the number of people who select their own hat and $A_i$ is the event that the $i$-th person gets their own hat, then the expected number of pairs of people who simultaneously get their own hats is
+    \[
+        \sum_{1 \leq i<j\leq n}\Pr[A_i, A_j] = \sum_{1\leq i<j\leq n}\Pr[A_i \mid A_j]\Pr[A_j] = \sum_{1\leq i<j\leq n}\frac{1}{n-1}\cdot\frac{1}{n} = \binom{n}{2}\frac{1}{n-1}\frac{1}{n} = \frac{1}{2}.
+    \]
+
+    In particular, $E[X(X-1)] = 1$.
+    Since we calculated $E[X] = 1$ in the previous example, we conclude that $\Var[X] = 1$ as well.
+\end{example}
+
+\begin{example}
+    This famous example is sometimes called the coupon-collector problem.
+    The setup is that there are $n$ types of coupons and each box of cereal contains a single coupon, where coupon $i$ appears with probability $p_i$ and $\sum_i p_i = 1$.
+
+    Suppose we buy $T$ boxes of cereal.
+    Let's find the expected number of distinct coupons we get.
+    If we let $A_i$, $1\leq i \leq n$, be the event that we see coupon $i$ in any of our $T$ boxes, then
+    \[
+        E[X] = \sum_{i=1}^n \Pr[A_i] = N - \sum_{i=1}^n(1-p_i)^T.
+    \]
+    As for the variance, we have by (\ref{pairs})
+    \[
+        E[X(X-1)] = 2\sum_{1\leq i<j\leq n}\Pr[A_i,A_j].
+    \]
+    Now, arguably, the easiest way to proceed is to write
+    \[
+        \Pr[A_i, A_j] = 1-\Pr[A_i^C]-\Pr[A_j^C] + \Pr[A_i^C, A_j^C] = 1- (1-p_i)^T - (1-p_j)^T + (1-p_i-p_j)^T,
+    \]
+    but this will make the summation a lot uglier.
+    Our way out is to instead let $Y$ be the number of coupons we \emph{don't} see in any of our cereal boxes.
+    Then $X = N-Y$ and $\Var[X] = \Var[Y]$, so we can calculate the variance of this instead.
+    The expectation is easy since
+    \[
+        E[Y] = N - E[X] = \sum_{i=1}^n(1-p_i)^T.
+    \]
+    For the variance, we again use (\ref{pairs}) to get
+    \[
+        E[Y(Y-1)]= 2\sum_{1\leq i<j\leq n}^n\Pr[A_i^C, A_j^C] = 2\sum_{1\leq i<j\leq n}(1-p_i-p_j)^T.
+    \]
+    We then have
+    \begin{align*}
+        \Var[X] &= \Var[Y]\\
+        &= E[Y^2] - E[Y]^2\\
+        &= 2\sum_{i<j}(1-p_i-p_j)^T+ \sum_{i=1}^n(1-p_i)^T - \left(\sum_{i=1}^n(1-p_i)^T\right)^2.
+    \end{align*}
+    Let's look at the specific case where each coupon is equally likely to show up in each box, i.e. $p_i= 1/n$ for each $i$.
+    Then this all reduces to 
+    \[
+        E[X] = n\left[1- \left(1- \frac{1}{n}\right)^T\right],
+    \]
+    and
+    \[
+        \Var[X] = n(n-1)\left(1-\frac{2}{n}\right)^T + n\left(1-\frac{1}{n}\right)^T - n^2\left(1-\frac{1}{n}\right)^{2T}.
+    \]
+    Remember from calculus that
+    \[
+        \lim_{n\to \infty}\left(1 + \frac{x}{n}\right)^n = e^x.
+    \]
+    Using this, if we look at the more specific case where $T = n$, i.e. we open as many boxes as there are coupons, and let the number of coupons grow to infinity, then
+    \[
+        E[X]\to n\left(1 - \frac{1}{e}\right)
+    \]
+    and
+    \[
+        \Var[X] \to n\left(\frac{1}{e} - \frac{1}{e^2}\right).
+    \]
+\end{example}
+
+
+
+
+
+
+
+
+
+
+\subsection{Covariance, Variance of Sums, Correlations}
+Sometimes we care about random variables that aren't independent.
+Here's a definition that helps us quantify how close they are to being independent.
+
+\begin{definition}
+    If $X$ and $Y$ are random variables, then their \emph{covariance} is
+    \[
+        \Cov(X,Y) = E[(X-E[X])(Y - E[Y])].
+    \]
+\end{definition}
+Notice that $\Cov(X,X)$ just gives us the variance.
+Remember that we usually use the more convenient expression for variance,
+\[
+    \Var[X] = E[X^2] - E[X]^2.
+\]
+We have a similar expression for covariance.
+\begin{proposition}
+    For random variables $X$ and $Y$,
+    \[
+        \Cov(X,Y) = E[XY]-E[X]E[Y].
+    \]
+\end{proposition}
+\begin{proof}
+    It's pretty much just symbol pushing.
+    Remember that $E[X]$ and $E[Y]$ are just constants.
+    \begin{align*}
+        \Cov(X,Y) &= E\big[XY - E[X]Y - XE[Y] + E[X]E[Y]\big]\\
+        &= E[XY]-E[X]E[Y]-E[X]E[Y] + E[X]E[Y]\\
+        &= E[XY] - E[X]E[Y].
+    \end{align*}
+\end{proof}
+
+We advertised covariance as a measure of independence, so let's justify this.
+\begin{definition}
+    If $X$ and $Y$ are independent random variables, then
+    \[
+        E[XY] = E[X]E[Y],
+    \]
+    so $\Cov(X,Y) = 0$.
+\end{definition}
+\begin{proof}
+    If $X$ and $Y$ are continuous, remember that independence tells us that the density function splits:
+    \[
+        f(x,y) = f_X(x)f_Y(y).
+    \]
+    Then we have
+    \begin{align*}
+        E[XY] &= \int_{\R^2}xyf(x,y)\ dxdy\\
+        &= \int_{\R}xf_X(x)\ dx\int_{\R}yf_Y(y)\ dy\\
+        &= E[X]E[Y].
+    \end{align*}
+\end{proof}
+
 
 
 \begin{thebibliography}{13}
