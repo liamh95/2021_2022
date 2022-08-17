@@ -1,0 +1,56 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amssymb,amsfonts,color,graphicx,amsmath,enumerate}
+\usepackage{tikz}
+\usepackage{amsthm}
+
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\Lp}[2]{\left\|{#1}\right\|_{L^{#2}}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\affine}{\mathbb{A}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newenvironment{solution}
+{\begin{proof}[Solution]}
+{\end{proof}}
+
+\voffset=-3cm
+\hoffset=-2.25cm
+\textheight=24cm
+\textwidth=17.25cm
+\addtolength{\jot}{8pt}
+\linespread{1.3}
+
+\begin{document}
+\begin{center}
+{\bf \Large Math 130B - Homework 3}
+\vspace{0.2cm}
+\hrule
+\end{center}
+
+
+% sum two normals not indep
+% finish induction proof for normals
+% gamma
+
+\begin{enumerate}
+
+    \item Let $X$ be a normal random variable with mean $\mu_X$ and variance $\sigma_X^2$.
+    Also let $Z$ be another normal random variable, independent of $X$, with mean 0 and variance $\sigma_Z^2$.
+    Find the correlation between $X$ and $Y$, where
+    \[
+        Y = a + bX + Z.
+    \]
+    \emph{Think of $a+bX$ as being the ``signal,'' and $Z$ the ``noise'' that gets added on top.}
+
+\end{enumerate}
+
+\end{document}
