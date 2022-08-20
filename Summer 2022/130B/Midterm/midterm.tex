@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm, verbatim,enumerate,bbm, mathtools}
+\usepackage{indentfirst}
+
+
+
+\date{\today}
+\parindent 5mm
+\parskip 0.2mm
+\oddsidemargin  0pt \evensidemargin 0pt \marginparwidth 0pt
+\marginparsep 0pt \topmargin 0pt \headsep 0pt \textheight 8.8in
+\textwidth 6.6in
+\renewcommand{\baselinestretch}{1.03}
+
+\allowdisplaybreaks
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newcommand{\Bin}{\ensuremath{\textrm{Bin}}}
+\newcommand{\Unif}{\ensuremath{\textrm{Unif}}}
+\newcommand{\Var}{\ensuremath{\textrm{Var}}}
+\newcommand{\Cov}{\ensuremath{\textrm{Cov}}}
+\newcommand{\Exp}{\ensuremath{\textrm{Exp}}}
+ 
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+
+
+
+\title{Midterm -- Math 130B}
+\author{Instructor: Liam Hardiman}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+{\bf Instructions: } \begin{itemize} 
+\item You must show your work and clearly
+explain your line of reasoning.
+%\item You may use a calculator, but only for basic arithmetic. If you didn't bring a calculator, you may use your phone, but it must be set to airplane/flight mode and you must clear all notifications before you start.
+\item You have one hour and twenty minutes to complete the exam.
+\end{itemize}
+
+\medskip
+\medskip
+
+\center{{\bf GOOD LUCK!}}
+
+\newpage
+
+\begin{enumerate}
+    \item (10 points)
+    Suppose the measurement errors, $X_i$, from $n$ experiments are uniformly distributed on $[-1, 1]$.
+    Assume that the errors are independent.
+    \begin{enumerate}
+        \item (4 points)
+        Find the probability distribution function for $|X_i|$.
+
+        \vfill
+
+        \item (6 points)
+        Find the probability density function and probability distribution functions for the largest absolute error.
+        Be sure to clearly state the domains of the PDF and CDF.
+        \emph{[Hint: consider $Y = \max(|X_1|, \ldots, |X_n|)$.]}
+
+        \vfill
+    \end{enumerate}
+
+    \newpage
+
+    \item (10 points)
+    Let $X$ and $Y$ be independent random variables with $X\sim \Exp(\lambda)$ and $Y\sim \Unif [a,b]$.
+    Let $U = 2X-3Y$ and $V = 4X+Y$.
+    Find the joint probability density function for $(U, V)$.
+    Be sure to state the domain of this function.
+
+    \newpage
+
+    \item (10 points)
+    Let $X\sim \mathcal{N}(0, 1)$ and $Y\sim \mathcal{N}(0, 1)$ be independent.
+    Let $Z = X/Y$.
+    \begin{enumerate}
+    \item (5 points)
+    Find the conditional probability density $f_{Z\mid Y}(z\mid Y=y)$.
+    \vfill
+
+    \item (5 points)
+    Find the joint probability density $f_{Z, Y}(z, y)$ and use this to find the marginal density $f_Z(z)$.
+    What type of random variable is $Z$?
+    \vfill
+
+    \end{enumerate}
+
+    \newpage
+
+    \item (10 points)
+    Let $X$ and $Y$ be random variables with joint density
+    \[
+        f(x,y) = \begin{cases}
+            ce^{-(x+y)},&\text{if }0<x<y<\infty\\
+            0,&\text{otherwise.}
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item (2 points)
+        Find the value of $c$ such that $f$ is a density function.
+
+        \vfill
+
+        \item (5 points)
+        What is the conditional density of $X$ given that $Y = y$.
+        Be sure to state the domain of this function.
+
+        \vfill
+
+        \item (3 points)
+        Are $X$ and $Y$ independent? Why or why not?
+        \vfill
+    \end{enumerate}
+
+    \newpage
+
+    \item (10 points)
+    True or false?
+    Give a brief justification for each answer.
+
+    \begin{enumerate}
+        \item Suppose $X$ is a continuous random variable with distribution function $F_X$. 
+        Then there exists a random variable $Y$ with distribution $F_Y$ satisfying $F_Y(y) = 2F_X(y)$.
+
+        \vfill
+
+        \item Let $X$ and $Y$ be random variables such that $E[XY] = E[X]E[Y]$.
+        Then $X$ and $Y$ are independent.
+
+        \vfill
+
+        \item If $X$ and $Y$ are independent random variables, then $E[XY] = E[X]E[Y]$.
+
+        \vfill
+
+        \item If $X$ and $Y$ are independent random variables, then $\Var[X+Y] = \Var[X] + \Var[Y]$.
+        \vfill
+
+        \item If the events $E_1$ and $E_2$ are independent and the events $E_2$ and $E_3$ are independent, then the events $E_1$ and $E_3$ are independent.
+
+        \vfill
+    \end{enumerate}
+
+\end{enumerate}
+
+
+\end{document}

@@ -1932,6 +1932,93 @@ and the correlation is
 In particular, $X$ and $Y$ have a decent positive linear relationship.
 \end{example}
 
+
+
+
+
+
+
+
+
+
+\subsection{Conditional Expectation}
+If $X$ and $Y$ are discrete random variables, then
+\[
+E[X\mid Y = y] = \sum _x x \Pr[X = x\mid Y = y] = \sum_x x p_{X\mid Y}(x\mid y).
+\]
+If they're continuous, then
+\[
+    E[X\mid Y = y] = \int_\R xf_{X\mid Y}(x\mid y)\ dx.
+\]
+
+\begin{example}
+    Say $X$ and $Y$ are jointly continuous with joint density
+    \[
+        f(x,y) = \frac{e^{-x/y}e^{-y}}{y},\quad x\geq 0,\ y\geq 0.
+    \]
+    Let's compute $E[X\mid Y = y]$.
+
+    We get the conditional density $f_{X\mid Y}(x\mid y)$ by computing the marginal density $f_Y(y)$ and then
+    \[
+        f_{X\mid Y}(x\mid y) = \frac{f(x,y)}{f_Y(y)}.
+    \]
+\end{example}
+
+
+\begin{theorem}[The Law of Total Expectation]
+Let $X$ and $Y$ be random variables.
+Then
+\[
+    E_Y[E_X[X\mid Y = y]] = E[X].
+\]
+\end{theorem}
+\begin{proof}
+    If $X$ and $Y$ are discrete, then
+    \begin{align*}
+        E_Y[E_X[X\mid Y = y]] &= \sum_iE[X\mid Y = y_i]\Pr[Y = y_i]\\
+        &= \sum_i\sum_jx_j\Pr[X = x_j\mid Y = y_i]\Pr[Y = y_i]\\
+        &= \sum_{i,j} x_j \Pr[X = x_j, Y = y_i]\\
+        &= \sum_j x_j\Pr[X = x_j]\\
+        &= E[X].
+    \end{align*}
+    Like usual, replacing sums with integrals and mass functions with densities gives the proof for the continuous case.
+\end{proof}
+
+We can use this to compute expectations in the following way.
+Say we want the expectation of $X$, but this variable is kind of complicated.
+If $X$ conditioned on some outcome of \emph{another} random variable $Y$ is simpler, then we can use the law of total expectation to get the expectation of $X$.
+
+\begin{example}
+    Say we flip a coin with head probability $p$ until we get $k$ consecutive heads.
+    Let's find the expected number of flips we need in order for this to happen.
+
+    Let $N_k$ be the number of flips to get $k$ heads.
+    Let's condition $N_k$ on $N_{k-1}$.
+    Then
+    \[
+        E[N_k \mid N_{k-1}] = p(1+N_{k-1}) + (1-p)(1 + N_{k-1} + E[N_k]).
+    \]
+    The first term comes from the fact that if we have $k-1$ consecutive heads, then the next flip is heads with probability $p$ and we'll have $k$ consecutive heads.
+    On the other hand, the next flip will be tails with probability $1-p$, in which case we expect $E[N_k]$ flips for $k$ consecutive heads.
+
+    By the law of total expectation, we have
+    \[
+        E[N_k] = E[E[N_k\mid N_{k-1}]] = p(1 + E[N_k]) + (1-p)(1 + E[N_{k-1}] + E[N_k]).
+    \]
+    Rearranging terms, we get
+    \[
+        E[N_k] = \frac{1}{p} + \frac{1}{p}E[N_{k-1}].
+    \]
+    Applying the same logic to $E[N_{k-1}]$ gives
+    \[
+        E[N_k] = \frac{1}{p} + \frac{1}{p^2} + \frac{1}{p^2}E[N_{k-2}].
+    \]
+    Inductively, we have
+    \[
+        E[N_k] = \sum_{i=1}^k\frac{1}{p^i}.
+    \]
+\end{example}
+
 \begin{thebibliography}{13}
 
 \bibitem{Ross} Ross, Sheldon. \textit{A First Course in Probability}. Ninth Edition. Pearson. 2014.
