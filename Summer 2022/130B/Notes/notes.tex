@@ -2019,6 +2019,50 @@ If $X$ conditioned on some outcome of \emph{another} random variable $Y$ is simp
     \]
 \end{example}
 
+
+
+
+
+
+
+
+
+
+\subsection{Characteristic Functions}
+Recall that calculating the mean and variance of a random variable requires us to compute $E[X]$ and $E[X^2]$, respectively.
+These are the first two \emph{moments} of $X$, and in general we have the following definition.
+\begin{definition}
+    If $X$ is a random variable, then the $k$-th moment of $X$ is $E[X^k]$.
+\end{definition}
+
+\begin{example}
+    Let's calculate the third and fourth moments of $X\sim \mathcal{N}(0, 1)$.
+    The third moment is given by
+    \[
+        E[X^3] = \frac{1}{\sqrt{2\pi}}\int_\R x^3 e^{-x^2/2}dx.
+    \]
+    Now if this integral exists, it's equal to the sum of the integrals over the half-lines.
+    \[
+        \frac{1}{\sqrt{2\pi}}\int_\R x^3e^{-x^2/2}dx = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^0 x^3e^{-x^2/2}dx + \frac{1}{\sqrt{2\pi}}\int_0^\infty x^3e^{-x^2/2}dx.
+    \]
+    Since $x^3e^{-x^2/2}$ is an odd function, if one of these integrals is finite, then so is the other and they'll be equal in magnitude but opposite in sign.
+    These integrals are indeed finite since $x^3 \leq e^{x^2/4}$ for all $x$ sufficiently large, say $x>M$.
+    Then we have
+    \begin{align*}
+        \int_0^\infty x^3e^{-x^2/2}dx &= \int_0^M x^3e^{-x^2/2}dx + \int_M^\infty x^3e^{-x^2/2}dx\\
+        &\leq \int_0^Mx^3e^{-x^2/2}dx + \int_Me^{-x^2/4}dx\\
+        &<\infty.
+    \end{align*}
+    Thus, $E[X^3] = 0$ in this case.
+
+    
+\end{example}
+
+
+
+
+
+
 \begin{thebibliography}{13}
 
 \bibitem{Ross} Ross, Sheldon. \textit{A First Course in Probability}. Ninth Edition. Pearson. 2014.

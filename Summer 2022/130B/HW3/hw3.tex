@@ -42,6 +42,37 @@
 
 \begin{enumerate}
 
+    \item $n$ people arrive separately to a professional dinner.
+    Upon arrival, each person looks to see if he or she has any friends among those present.
+    That person then sits either at the table of a friend or at an unoccupied table if none of those present is a friend.
+    Assuming that each of the $\binom{n}{2}$ pairs of people is, independently, a pair of friends with probability $p$, find the expected number of occupied tables.
+
+    \item If $X_1, X_2, \ldots, X_n$ are independent and identically distributed random variables having uniform distribution on $(0,1)$, find
+    \begin{enumerate}
+        \item $E[\max(X_1, \ldots, X_n)]$;
+        \item $E[\min(X_1, \ldots, X_n)]$.
+    \end{enumerate}
+
+    \item The random variables $X$ and $Y$ have a joint density function given by
+    \[
+        f(x,y) = 2e^{-2x}/x,\qquad 0\leq x < \infty,\ 0\leq y\leq x.
+    \]
+    Compute $\Cov(X,Y)$.
+
+
+    \item Consider the following dice game.
+    Players 1 and 2 each roll a six-sided die.
+    The casino then rolls a die to determine the outcome according to the following rule:
+    Player $i$, where $i = 1,2$, wins if their roll is strictly greater than the casino's.
+    For $i = 1,2$, let $X_i$ be the random variable indicating whether or not player $i$ wins this game.
+
+    Are the variables $X_1$ and $X_2$ positively correlated, negatively correlated, or uncorrelated?
+    Give both a rigorous justification and an intuitive one.
+
+
+    \item Let $X$ and $Y$ be identically distributed, but not necessarily independent random variables.
+    Show that $X+Y$ and $X-Y$ are uncorrelated.
+
     \item Let $X$ be a normal random variable with mean $\mu_X$ and variance $\sigma_X^2$.
     Also let $Z$ be another normal random variable, independent of $X$, with mean 0 and variance $\sigma_Z^2$.
     Find the correlation between $X$ and $Y$, where
@@ -49,6 +80,68 @@
         Y = a + bX + Z.
     \]
     \emph{Think of $a+bX$ as being the ``signal,'' and $Z$ the ``noise'' that gets added on top.}
+
+
+    \item There are two coins in a box; their probabilities for landing on heads when they are flipped are .4 and .7, respectively. One of the coins is randomly chosen and flipped 10 times.
+    Given that two of the first three flips landed on heads, what is the conditional expected number of heads in the 10 flips.
+
+
+    \item You run a whale-watching business in San Diego.
+    Every day you are unable to operate your tour due to bad weather with probability $p$, independently of all other days.
+    You work every day except the bad-weather days.
+
+    Let $Y$ be the number of consecutive days you work between bad-weather days and let $X$ be the total number of customers who attend your tour in this period of $Y$ days.
+    Conditional on $Y$, suppose the distribution of $X$ is $\text{Pois}(\mu Y)$ for some positive $\mu$.
+
+    \begin{enumerate}
+        \item What kind of random variable is $Y$? What are its expectation and variance?
+
+        \item Find the expectation and variance of the number of customers you see between bad weather days.
+    \end{enumerate}
+
+
+
+    \item Remember that if $X$ is a random variable and $E[X] \geq a$, then $X\geq a$ with positive probability.
+    This is great, but how can we actually \emph{find} an instance of $X$ where $X\geq a$?
+
+    \begin{enumerate}[(a)]
+        \item Suppose $X$ is a random variable taking values in $\{1, 2, \ldots, k\}$ and that $f$ is some function with $E[f(X)] \geq a$.
+        One way to find an $x$ with $1\leq x\leq k$ and $f(x) \geq a$ is to just try all possibilities for $x$ and plug them into $f$.
+        How many times would you need to evaluate $f$ to use this method?
+
+        \item Say $X_1, \ldots, X_n$ are independent random variables, each taking values $\{1, 2, \ldots, k\}$ and now $f$ is some function with $E[f(X_1, \ldots, X_n)] \geq a$.
+        Using the same idea from part (a), how many evaluations of $f$ would you need in order to find $x_1, \ldots, x_n$ with $f(x_1, \ldots, x_n) \geq a$?
+    \end{enumerate}
+
+    Here's another strategy for finding $(x_1, \ldots, x_n)$ with $f(x_1, \ldots, x_n) \geq a$.
+
+    \begin{enumerate}[(a)]
+        \setcounter{enumii}{2}
+        \item Set $g_1(x)$ to be the conditional expectation
+        \[
+            g_1(x) = E[f(X_1, \ldots, X_n) \mid X_1 = x].
+        \]
+        Show that $E_{X_1}[g_1(X_1)] \geq a$ and determine how many evaluations of $g_1$ you need in order to find $x_1$ with $g(x_1) \geq a$.
+
+        \item Now let $g_2(x)$ be the conditional expectation
+        \[
+            g_2(x) = E[f(X_1, \ldots, X_n) \mid X_1 = x_1, X_2 = x],
+        \]
+        where $x_1$ is from part (c).
+        Argue that $E[g_2(X_2)] \geq a$ and determine how many evaluations of $g_2$ you need to find $x_2$ with $g(x_2) \geq a$.
+
+        \item Repeat the above process $n$ times.
+        On the $i$-th step, define the conditional expectation
+        \[
+            g_i(x) = E[f(X_1, \ldots, X_n) \mid X_1 = x_1, \ldots, X_{i-1} = x_{i-1}, X_i = x],
+        \]
+        where $x_j$ is such that $g_j(x_j) \geq a$ for each $j < i$.
+        Argue that $x_1, \ldots x_n$ satisfy $f(x_1, \ldots, x_n) \geq a$.
+        How many \emph{total} steps does it take to find $x_1, x_2, \ldots, x_n$?
+        Compare this to your answer in part (b).
+    \end{enumerate}
+
+
 
 \end{enumerate}
 
