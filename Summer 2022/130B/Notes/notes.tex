@@ -1934,10 +1934,138 @@ In particular, $X$ and $Y$ have a decent positive linear relationship.
 \end{example}
 
 
+Let's record some basic properties of covariance.
 
+\begin{proposition}
+    \begin{enumerate}[(i)]
+        \item If $X$ and $Y$ are random variables, then $\Cov(X, Y) = \Cov(Y,X)$.
+        \item If $X$ and $Y$ are random variables and $a$ and $b$ are real numbers, then $\Cov(aX, bY) = ab\Cov(X,Y)$.
+        \item If $X_1, \ldots, X_m$ and $Y_1, \ldots, Y_n$ are random variables, then
+        \[
+            \Cov\left(\sum_{i=1}^m X_i, \sum_{j=1}^nY_j\right) = \sum_{i=1}^m\sum_{j=1}^n\Cov(X_i, Y_j).
+        \]
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    Part (i) is immediate from the definition of covariance.
+    Part (ii) is similarly clear:
+    \[
+        \Cov(aX, bY) = E[(aX)(bY)] -E[aX]E[bY] = abE[XY]-abE[X]E[Y] = ab\Cov(X,Y).
+    \]
+    Part (iii) follows from just expanding the product and using the linearity of expectation:
+    \begin{align*}
+        \Cov\left(\sum_{i=1}^m X_i, \sum_{j=1}^nY_j\right) &= E\left[\left(\sum_{i=1}^m X_i\right)\left( \sum_{j=1}^nY_j\right)\right] - E\left[\left(\sum_{i=1}^m X_i\right)\right]E\left[\left(\sum_{j=1}^n Y_j\right)\right]\\
+        &= E\left[\sum_{i=1}^m\sum_{j=1}^nX_iY_j\right] - E\left[\left(\sum_{i=1}^m X_i\right)\right]E\left[\left(\sum_{j=1}^n Y_j\right)\right]\\
+        &= \sum_{i=1}^m\sum_{j=1}^n\big(E[X_iY_j] - E[X_i]E[Y_j]\big)\\
+        &= \sum_{i=1}^m\sum_{j=1}^n\Cov(X_i, Y_j).
+    \end{align*}
+\end{proof}
 
+This proposition basically says that covariance is \emph{bilinear}, that is, linear in both of its arguments -- kind of like the dot product from calculus/linear algebra.
+Since variance is just the covariance of a variable with itself, we can use this proposition to get something like a linearity of variance -- almost.
+\begin{corollary}
+    If $X_1, \ldots, X_n$ are random variables, then
+    \[
+        \Var\left[\sum_{i=1}^nX_i\right] = \sum_{i=1}^n\Var[X_i] + 2\sum_{1\leq i<j\leq n}\Cov(X_i, X_j).
+    \]
+    In particular, if $X_i$ and $X_j$ are uncorrelated for all $i\neq j$, then the variance of the sum is the sum of the variances.
+\end{corollary}
 
+We might have hoped that variance would be linear just like expectation, but this can't be the case if we try to think about it intuitively.
+Variance is a measure of how ``spread out'' a random variable is.
+It's possible that two relatively spread out random variables cancel each other out when we add them together in a way that the variance of their sum is small.
+For example, $X$ might have large variance.
+Consequently, $-X$ also has large variance, but $X+(-X) = 0$ has no variance.
 
+\begin{example}
+    Say we have $m$ balls that we throw at $n$ bins.
+    Each ball lands in a random bin, independent of each other ball.
+    Let's find the mean and variance of the number of empty bins.
+
+    Let $X$ be the number of empty bins.
+    We can compute $E[X]$ using the linearity of expectation.
+    Foe each bin $1\leq i \leq n$, we let $X_i$ be the random variable indicating whether or not bin $i$ is empty after we've thrown all our balls.
+    Each ball has a $1 - \frac{1}{n}$ chance of missing bin $i$, so we have
+    \[
+        E[X_i] = \left(1- \frac{1}{n}\right)^m,
+    \]
+    and therefore the expected number of empty bins is
+    \[
+        E[X] = n\left(1- \frac{1}{n}\right)^m.
+    \]
+    Now each $X_i$ is a Bernoulli random variable, so its variance is
+    \[
+        \Var[X_i] = \left(1- \frac{1}{n}\right)^m\left[1 - \left(1- \frac{1}{n}\right)^m\right].
+    \]
+    But variance isn't exactly linear, so we need to look at the covariance terms.
+    Intuitively, $X_i$ and $X_j$ shouldn't be uncorrelated -- if we know that bin $i$ is empty, then then it's less likely that bin $j$ is also empty since all those ball that miss bin $i$ have to go somewhere.
+    More quantitatively, the probability that bins $i$ and $j$ are both empty, $E[X_iX_j]$ is
+    \[
+        E[X_iX_j] = \left(1 - \frac{2}{n}\right)^m
+    \]
+    since each ball has a $1-\frac{2}{n}$ chance of missing bins $i$ and $j$.
+    Since $\Cov(X_i,X_j) = E[X_iX_j]-E[X_i]E[X_j]$, the variance of $X$ is
+    \begin{align*}
+        \Var[X] &= \sum_{i=1}^n\Var[X_i] + 2\sum_{i<j}\Cov(X_i, X_j)\\
+        &= n\left(1-\frac{1}{n}\right)^m\left[1-\left(1-\frac{1}{n}\right)^m\right] + n(n-1)\left[\left(1-\frac{2}{n}\right)^m - \left(1-\frac{1}{n}\right)^{2m}\right].
+    \end{align*}
+    Let's look at the specific case where there are just as many balls as there are bins, i.e. $m=n$.
+    In this case, we have
+    \begin{align*}
+        E[X] &\to \frac{n}{e}\\
+        \Var[X] &\to \frac{n}{e}\left(1-\frac{1}{e}\right).
+    \end{align*}
+\end{example}
+
+Here's an example that hopefully clarifies what the correlation coefficient really measures.
+\begin{example}
+    Let $X$ be a random variable with mean $\mu$ and variance $\sigma^2$.
+    Set $Y = a+bX$ for some real numbers $a$ and $b$.
+    Let's calculate the correlation between $X$ and $Y$.
+
+    First we calculate the covariance.
+    \begin{align*}
+        \Cov(X,Y) &= \Cov(X, a+bX)\\
+        &= \Cov(X, a) + \Cov(X, bX)\\
+        &= 0 + b\Var[X]\\
+        &= b\sigma^2.
+    \end{align*}
+
+    We also need the variance of $Y$.
+    Note that a constant is independent of any random variable, so
+    \begin{align*}
+        \Var[Y] = \Var[a+bX] = \Var[a] + \Var[bX] = 0+b^2\Var[X] = b^2\sigma^2.
+    \end{align*}
+
+    The correlation is then
+    \[
+        \rho_{X,Y} = \frac{\Cov(X,Y)}{\sqrt{\Var[X]\Var[Y]}} = \frac{b\sigma^2}{\sqrt{\sigma^2}\sqrt{b^2\sigma^2}} = \frac{b}{|b|} = \begin{cases}
+            1,&\text{if }b>0\\
+            -1,&\text{if }b<0.
+        \end{cases}
+    \]
+    In other words, a random variable is always perfectly correlated with a linear transformation of itself.
+\end{example}
+
+Let's justify a claim about correlation that we made earlier.
+\begin{proposition}
+    If $X$ and $Y$ are random variables, then $-1\leq \rho_{X,Y} \leq 1$.
+\end{proposition}
+\begin{proof}
+    For concreteness, let $\sigma_X = \sqrt{\Var[X]}$ and $\sigma_Y = \sqrt{\Var[Y]}$.
+    Now let's look at the variance of $(X/\sigma_X)+(Y/\sigma_Y)$.
+    \begin{align*}
+        \Var\left[\frac{X}{\sigma_X} + \frac{Y}{\sigma_Y}\right] &= \Var\left[\frac{X}{\sigma_X}\right] + \Var\left[\frac{Y}{\sigma_Y}\right] + 2\Cov\left(\frac{X}{\sigma_X}, \frac{Y}{\sigma_Y}\right)\\
+        &= \frac{1}{\sigma_X^2}\Var[X] + \frac{1}{\sigma_Y^2}\Var[Y] + \frac{2}{\sigma_X\sigma_Y}\Cov(X,Y)\\
+        &= 2 + 2\rho_{X,Y}.
+    \end{align*}
+    Now variance is always nonnegative (it's the expectation of the square of something), so we have
+    \[
+        0\leq 2+2\rho_{X,Y},
+    \]
+    and $\rho_{X,Y}$ is always at least $-1$.
+    If we use the same argument on the variable $(X/\sigma_X)-(Y/\sigma_Y)$ then we can show that $\rho_{X,Y}\leq 1$.
+\end{proof}
 
 
 
