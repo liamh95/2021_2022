@@ -2091,6 +2091,18 @@ If they're continuous, then
     \[
         f_{X\mid Y}(x\mid y) = \frac{f(x,y)}{f_Y(y)}.
     \]
+    To get the marginal density, we integrate the $x$ away.
+    \[
+        f_Y(y) = \int_\R f(x,y)\ dx= e^{-y},\quad y\geq 0.
+    \]
+    So we have
+    \[
+        f(x\mid y) = \frac{e^{-x/y}}{y},\quad x,y\geq 0.
+    \]
+    Now we can compute the expectation.
+    \[
+        E[X\mid Y = y] = \int_\R x f(x\mid y)\ dx = y.
+    \]
 \end{example}
 
 
@@ -2116,6 +2128,18 @@ Then
 We can use this to compute expectations in the following way.
 Say we want the expectation of $X$, but this variable is kind of complicated.
 If $X$ conditioned on some outcome of \emph{another} random variable $Y$ is simpler, then we can use the law of total expectation to get the expectation of $X$.
+
+\begin{example}
+    A coal miner is trapped in an underground room with three doors. Door 1 leads to the surface after two hours.
+    Door 2 leads back to the room after five hours, and Door 3 also leads back to the room after three hours.
+    Let's find the expected number of hours it takes for the miner to reach the surface.
+
+    If we were to just use the definition of expectation and no other technology, this problem appears hard.
+    It looks like we'd need to sum over all possible times and find the probability that it takes the miner exactly that long to leave.
+    Conditional expectation gives us another way thought.
+
+    If we let $X$ be the number of hours until we reach the surface, we 
+\end{example}
 
 \begin{example}
     Say we flip a coin with head probability $p$ until we get $k$ consecutive heads.
