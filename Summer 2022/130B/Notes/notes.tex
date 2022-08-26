@@ -2349,7 +2349,7 @@ Arguably the most important fact about moment generating functions is that they 
     If the moment generating functions $M_X(t)$ and $M_Y(t)$ agree on some open interval $(-\epsilon, \epsilon)$, then $X$ and $Y$ have the same distribution.
 \end{theorem}
 
-A rigorous proof of this statement isn't actually that difficult, but it requires some complex analysis, so we won't prove it here.
+A rigorous proof of this statement isn't actually that difficult, but it requires some complex analysis (``complex'' as in complex numbers), so we won't prove it here.
 This theorem is important because it lets us make statements about random variables by looking at their moment generating functions.
 
 \begin{example}
@@ -2373,6 +2373,300 @@ The above example gives us a recipe for how to prove the following proposition.
         \sum_{i=1}^nX_i \sim \mathcal{N}\left(\sum_{i=1}^n\mu_i, \sum_{i=1}^n\sigma_i^2\right).
     \]
 \end{proposition}
+
+We can also prove things that look obvious, but might be more annoying to prove without moment generating functions.
+\begin{proposition}
+    Let $X$, $Y$ and $Z$ be independent random variables.
+    If $X+Y$ has the same distribution as $X+Z$, then $Y$ and $Z$ must have the same distribution.
+\end{proposition}
+\begin{proof}
+    If $X+Y$ and $X+Z$ have the same distribution, then they have the same moment generating functions, i.e.
+    \[
+        M_{X+Y}(t) = M_{X+Z}(t).
+    \]
+    But we can split the moment generating function of a sum of independent random variables, so
+    \[
+        M_X(t)M_Y(t) = M_X(t)M_Z(t).
+    \]
+    Now since $e^x$ is positive for any $x$, the moment generating function $M_X(t)$ is positive for all $t$ and we can cancel it from both sides of the above equation to get $M_Y(t) =M_Z(t)$.
+    Since the moment generating function determines the distribution, we conclude that $Y$ and $Z$ have the same distribution.
+\end{proof}
+
+This class is all about looking at multiple random variables at the same time.
+This motivates us to define a moment generating function for joint distributions.
+\begin{definition}
+    The joint moment generating function for the random variables $X_1, \ldots, X_n$ is
+    \[
+        M(t_1, \ldots, t_n) = E[\exp(t_1X_1 + \cdots +t_nX_n)].
+    \]
+\end{definition}
+
+\begin{remark}
+    This is \emph{not} the same thing as the moment generating function of the sum $X_1 + \cdots + X_n$.
+    The joint moment generating function is a function of $n$ variables, but the MGF of the sum is just a single variable function:
+    \[
+        M_{X_1 + \cdots + X_n}(t) = E\big[\exp\big(t(X_1 + \cdots + X_n)\big)\big].
+    \]
+\end{remark}
+
+\begin{example}\label{two normals}
+    Let $Z_1$ and $Z_2$ be independent standard normal random variables.
+    Let's find the joint moment generating function for
+    \[
+        X_1 = Z_1 + 2Z_2,\quad X_2 = 2Z_1 + Z_2.
+    \]
+
+    By definition we have
+    \[
+        M(t_1, t_2) = E[\exp(t_1X_1+t_2X_2)].
+    \]
+    Now it might be tempting to split the exponential into a product and then split the expectation over that product, but $X_1$ and $X_2$ aren't independent (check the covariance).
+    But $Z_1$ and $Z_2$ are independent, so we do a little bit of algebra:
+    \begin{align*}
+        M(t_1, t_2) &= E\big[\exp\big( (t_1+2t_2)Z_1 + (2t_1+t_2)Z_2\big)\big]\\
+        &= E\big[\exp\big((t_1+2t_2)Z_1\big)\big]E\big[\exp\big((2t_1+t_2)Z_2\big)\big]\\
+        &= M_{Z_1}(t_1+2t_2)M_{Z_2}(2t_1+t_2).
+    \end{align*}
+    Of course, $Z_1$ and $Z_2$ have the same distribution, so they have the same MGF,
+    \[
+        M_{Z_1}(t) = M_{Z_2}(t) = \exp(t^2/2),
+    \]
+    so the joint MGF is then
+    \[
+        M(t_1,t_2) = \exp\left(\frac{(t_1+2t_2)^2 + (2t_1+t_2)^2}{2}\right).
+    \]
+\end{example}
+
+Let's record some basic facts about the joint MGF.
+\begin{proposition}
+    Let $X_1, \ldots, X_n$ be random variables. Then
+    \begin{enumerate}[(i)]
+        \item The joint MGF determines the joint distribution.
+        That is, if $Y_1, \ldots, Y_n$ have the same joint MGF as $X_1, \ldots, X_n$, then they have the same joint distribution.
+
+        \item $X_1, \ldots, X_n$ are independent if and only if
+        \[
+            M(t_1, \ldots, t_n)  = \prod_{i=1}^nM_{X_i}(t_i).
+        \]
+
+        \item We can recover the MGF of $X_i$ from the joint MGF:
+        \[
+            M_{X_i}(t_i) = M(0, \ldots, 0, t_i, 0, \ldots, 0),
+        \]
+        where $t_i$ appears in the $i$-th argument.
+    \end{enumerate}
+\end{proposition}
+
+The proof for part (i) is beyond the scope of this course, but it isn't too hard if you have the required machinery.
+Part (ii) is easy to prove: if the $X_i$'s are independent, then so are the $e^{t_iX_i}$'s, so we can split the expectation.
+Conversely, if the MGF factors, then it has the same MGF as a set of independent random variables.
+Since the MGF determines the distribution by part (i), the variables must be independent.
+Part (iii) is immediate.
+Moment generating functions will come in handy in the next section.
+
+
+
+
+
+
+
+
+
+\subsection{The Multivariate Normal Distribution}
+
+\begin{definition}
+    The random variables $X_1, \ldots, X_n$ have \emph{multivariate normal distribution} (sometimes we say they are \emph{jointly normal}) if we can write
+    \begin{align*}
+        X_1 &= \mu_1 + a_{1,1}Z_1 + a_{1,2}Z_2 + \cdots + a_{1,m}Z_m\\
+        X_2 &= \mu_2 + a_{2,1}Z_1 + a_{2,2}Z_2 + \cdots + a_{2,m}Z_m\\
+        \vdots &= \vdots\\
+        X_n &= \mu_n + a_{n,1}Z_1 + a_{n,2}Z_2 + \cdots + a_{n,m}Z_m
+    \end{align*}
+    for independent standard normal random variables $Z_1, \ldots Z_m$ and constants $\mu_i, a_{i,j}$ with $1\leq i\leq n$, $1\leq j\leq m$.
+\end{definition}
+In other words, $X_1, \ldots, X_n$ are jointly normal if the vector $\vec{X} = [X_1, \ldots, X_n]^T$ is an affine linear transformation of the vector $\vec{Z} = [Z_1, \ldots, Z_m]^T$, i.e.
+\[
+    \vec{X} = \vec{\mu} + A\vec{Z},
+\]
+where $\vec{\mu} = [\mu_1, \ldots, \mu_n]^T$ and $[A]_{i,j} = a_{i,j}$.
+The random variables $X_1$ and $X_2$ in Example \ref{two normals} are jointly normal.
+
+What information do we need in order to specify a multivariate normal distribution?
+For example, we need to know the number of trials $n$ and success probability $p$ to specify a binomial distribution.
+In order to specify a one-dimensional normal random variable, we need to know its mean and its variance.
+
+Are mean and variance enough to determine a multivariate normal distribution?
+If we go back to Example \ref{two normals}, then we can see that $X_1 \sim \mathcal{N}(0, 5)$ and $X_2\sim \mathcal{N}(0,5)$.
+But $X_1$ and $X_2$ aren't independent since
+\[
+    \Cov(X_1, X_2) = 2\Var[Z_1] + 5\Cov(Z_1, Z_2) + 2\Var[Z_2] = 4.
+\]
+On the other hand, the variables $Y_1 = \sqrt{5}Z_1$ and $Y_2 = \sqrt{5}Z_2$ are also jointly normal and $Y_1$, $Y_2$ both have distribution $\mathcal{N}(0,5)$.
+But $Y_1$ and $Y_2$ are independent unlike $X_1$ and $X_2$.
+So it looks like knowing all the means and variances isn't enough to determine a multivariate normal distribution.
+The solution is going to come from looking at the moment generating function.
+
+
+If $X_1, \ldots, X_n$ are jointly normal, then their joint moment generating function is given by
+\[
+    M(t_1, \ldots, t_n) = E[\exp(t_1X_1 + \cdots + t_nX_n)].
+\]
+Now if we fix $t_1, \ldots, t_n$, then $Y:= t_1X_1 + \cdots + t_nX_n$ is a normal random variable with mean $\mu$ and variance $\sigma^2$ given by
+\[
+    \mu = \sum_{i=1}^nt_i\mu_i,\quad \sigma^2 = \sum_{i,j}t_it_j\Cov(X_i,X_j).
+\]
+We could write $\Cov(X_i,X_j)$ in terms of the $a_{i,j}$'s, but let's not do that now.
+We know the moment generating function for $Y$ is given by
+\[
+    M_Y(t) = E[\exp(tY)] =  \exp\left(\mu t + \frac{\sigma^2t^2}{2}\right).
+\]
+But the joint MGF of $X_1, \ldots, X_n$ is
+\[
+    M(t_1, \ldots, t_n) = E[\exp(t_1X_1 + \cdots + t_nX_n)] = E[\exp Y],
+\]
+which is just $M_Y(1)$.
+We then have
+\[
+    M(t_1, \ldots, t_n) = \exp\left(\mu t + \frac{\sigma^2t^2}{2}\right)
+\]
+(remember, $\mu$ and $\sigma^2$ both depend on the $t_i$'s).
+Since the moment generating function determines the distribution, and the moment generating function is determined by $\mu$ and $\sigma^2$, we conclude that the multivariate normal distribution is determined by the means of the $X_i$'s and all of the pairwise covariances $\Cov(X_i, X_j)$.
+We record this in the following theorem.
+\begin{theorem}
+    The multivariate normal distribution is completely determined by $E[X_i]$ and $\Cov(X_i, X_j)$ for $i,j = 1, \ldots, n$.
+\end{theorem}
+
+\begin{example}
+    Suppose $X$ and $Y$ are jointly normal with $E[X] = \mu_X$, $E[Y] = \mu_Y$, $\Var[X] = \sigma_X^2$, $\Var[Y] = \sigma_Y^2$.
+    Suppose further that $X$ and $Y$ have correlation $\rho$.
+    Let's find $\Pr[X<Y]$.
+
+    The ``old'' way we have of doing this problem uses the fact that
+    \[
+        \Pr[X<Y] = \int_{\{x<y\}}f(x,y)\ dydx,
+    \]
+    where $f$ is the joint pdf of $X$ and $Y$.
+    The issue here is that we don't know what the joint density is (not yet at least, we'll find it later).
+
+    Note that $X-Y$ is a normal random variable.
+    This sounds obvious since it's the sum (or difference) of two normal random variables, but the complicating factor is that $X$ and $Y$ aren't independent.
+    The key here is that $X$ and $Y$ are \emph{jointly normal}, so $X$ and $Y$ are both linear combinations of independent normal random variables.
+    Consequently, their difference is also a linear combination of normal random variables, and is thus normal as well.
+
+    Since $X-Y$ is normal, it's determined by its mean and variance, so we'll need those
+    \begin{align*}
+        E[X-Y] &= E[X]-E[Y] = \mu_X-\mu_Y,\\
+        \Var[X-Y]&= \Var[X] + \Var[Y] - 2\Cov(X,Y) = \sigma_X^2 + \sigma_Y^2 - 2\rho_{X,Y}\sigma_X\sigma_Y.
+    \end{align*}
+
+    Recall that $\Phi(t) = \Pr[Z<t]$, where $Z$ is a standard normal random variable.
+    Since $\frac{(X-Y)-E[X-Y]}{\Var[X-Y]^{1/2}}$ is a standard normal random variable, we have
+    \begin{align*}
+        Pr[X-Y<0] &= \Pr\left[\frac{(X-Y)-(\mu_X-\mu_Y)}{\sqrt{\sigma_X^2+\sigma_Y^2-2\rho_{X,Y}\sigma_X\sigma_Y}} < \frac{-(\mu_X-\mu_Y)}{\sqrt{\sigma_X^2+\sigma_Y^2-2\rho_{X,Y}\sigma_X\sigma_Y}}\right]\\
+        &= \Phi\left(\frac{\mu_Y-\mu_X}{\sqrt{\sigma_X^2+\sigma_Y^2-2\rho_{X,Y}\sigma_X\sigma_Y}}\right).
+    \end{align*}
+
+\end{example}
+
+Remember that independent random variables are always uncorrelated, but the converse isn't necessarily true (take $X\sim \mathcal{N}(0,1)$ and $Y = X^2$ -- these are uncorrelated but not independent).
+It turns out to be true for jointly normal random variables though.
+
+\begin{proposition}
+If $X$ and $Y$ are jointly normal, then they are independent if and only if they are uncorrelated.
+\end{proposition}
+\begin{proof}
+    Say $E[X] = \mu_X$, $E[Y] = \mu_Y$, $\Var[X] = \sigma_X^2$ and $\Var[Y] = \sigma_Y^2$.
+    Independent always implies uncorrelated, so we just need to prove the converse.
+    The joint moment generating function of $X$ and $Y$ is given by
+    \[
+        M(t_1, t_2) = \exp\left((t_1\mu_1 + t_2\mu_2) + \frac{(\sigma_X^2t_1^2 + \sigma_Y^2t_2^2 + 2t_1t_2\Cov(X,Y))}{2}\right).
+    \]
+    If $X$ and $Y$ are uncorrelated, then $\Cov(X,Y) = 0$ and we can factor the MGF:
+    \[
+        M(t_1, t_2) = \exp\left(t_1\mu_1 + \frac{\sigma_X^2t_1^2}{2}\right)\exp\left(t_2\mu_2 + \frac{\sigma_Y^2t_2^2}{2}\right),
+    \]
+    which is the MGF of two independent normal random variables.
+    Since the MGF determines the distribution, we conclude that $X$ and $Y$ are independent.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+\subsection{Random Vectors}
+The technology we've developed so far sometimes looks a whole lot nice when it's written in terms of vectors.
+If $X_1, \ldots, X_n$ are random variables, we can encode them as a single vector in $\R^n$ as $\vec{X} = [X_1, \ldots, X_n]^T$ (we transpose to make it a column vector by convention).
+We can make sense of the expectation of a vector -- just take the expectation of each component.
+\[
+    \vec{\mu}= E[\vec{X}] := [E[X_1], E[X_2], \ldots, E[X_n]]^T.
+\]
+What about variance?
+We \emph{could} define the variance of $\vec{X}$ to just be the vector of variances, $[\Var[X_1], \ldots, \Var[X_n]]^T$, but as we saw with normal random variables, knowing the variance of each individual variable doesn't tell the whole story of joint distribution.
+The covariances of each pair of variables are important, but how should we encode them?
+\begin{definition}
+    If $X_1, \ldots, X_n$ are random variables, then their \emph{covariance matrix} is the $n\times n$ matrix $\Sigma$ whose entries are given by
+    \[
+        [\Sigma]_{i,j} = \Cov(X_i, X_j).
+    \]
+\end{definition}
+
+For example, if $n=2$, then
+\[
+    \Sigma = \begin{bmatrix}
+        \Var[X_1] & \Cov(X_1, X_2)\\
+        \Cov(X_2, X_1) & \Var[X_2]
+    \end{bmatrix}.
+\]
+
+\begin{example}
+    Say we flip a fair coin 30 times and let $X_1$ be the number of heads in the first 20 flips and let $X_2$ be the number of heads in the last 20 flips.
+    Let's find the covariance matrix of $X_1$ and $X_2$.
+
+    $X_1$ and $X_2$ are $\Bin(20, 1/2)$ random variables, so their variances are the same and equal to
+    \[
+        \Var[X_1] = \Var[X_2] = np(1-p) = 5
+    \]
+    $X_1$ and $X_2$ aren't independent since they have some flips in common.
+    If we let
+    \begin{align*}
+        Y_1 &= \text{number of heads in the first 10 flips}\\
+        Y_2 &= \text{number of heads in flips 11-20}\\
+        Y_3 &= \text{number of heads in flips 21-30}.
+    \end{align*}
+    Then the $Y_i$'s are all independent and $X_1 = Y_1+Y_2$ and $X_2 = Y_2+Y_3$.
+    The covariance is given by
+    \[
+        \Cov(X_1, X_2) = \Cov(Y_1+Y_2, Y_2+Y_3) = \Cov(Y_1,Y_2) + \Cov(Y_1,Y_3) + \Var[Y_2] + \Cov(Y_2, Y_3) = \Var[Y_2] = 5/2.
+    \]
+    So the covariance matrix is
+    \[
+        \Sigma = \begin{bmatrix}
+            5 & 5/2\\
+            5/2 & 5
+        \end{bmatrix}.
+    \]
+\end{example}
+
+Let's record some basic facts about the covariance matrix.
+\begin{proposition}
+    Suppose $\Sigma$ is the covariance matrix for the random variables $X_1, \ldots, X_n$.
+    \begin{enumerate}[(i)]
+        \item The matrix $\Sigma$ is positive semidefinite.
+        That is, for any $y\in \R^n$, we have $y^T\Sigma y \geq 0$.
+        Some elementary linear algebra shows that this is equivalent to all of $\Sigma$'s eigenvalues being nonnegative.
+
+        \item $\Sigma$ is diagonal if and only if the $X_i$'s are uncorrelated.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    
+\end{proof}
+
 
 
 \begin{thebibliography}{13}
