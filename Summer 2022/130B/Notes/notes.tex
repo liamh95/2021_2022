@@ -2527,10 +2527,9 @@ But the joint MGF of $X_1, \ldots, X_n$ is
 which is just $M_Y(1)$.
 We then have
 \[
-    M(t_1, \ldots, t_n) = \exp\left(\mu t + \frac{\sigma^2t^2}{2}\right)
+    M(t_1, \ldots, t_n) = \exp\left(\mu  + \frac{\sigma^2}{2}\right) = \exp\left(\sum_{i=1}^nt_i\mu_i + \sum_{i,j}t_it_j\Cov(X_i,X_j)\right). 
 \]
-(remember, $\mu$ and $\sigma^2$ both depend on the $t_i$'s).
-Since the moment generating function determines the distribution, and the moment generating function is determined by $\mu$ and $\sigma^2$, we conclude that the multivariate normal distribution is determined by the means of the $X_i$'s and all of the pairwise covariances $\Cov(X_i, X_j)$.
+Since the moment generating function determines the distribution, and the moment generating function is determined by the $\mu_i$'s and the $\Cov(X_i,X_j)$'s, we conclude that the multivariate normal distribution is determined by the means of the $X_i$'s and all of the pairwise covariances $\Cov(X_i, X_j)$.
 We record this in the following theorem.
 \begin{theorem}
     The multivariate normal distribution is completely determined by $E[X_i]$ and $\Cov(X_i, X_j)$ for $i,j = 1, \ldots, n$.
@@ -2655,7 +2654,9 @@ For example, if $n=2$, then
 Let's record some basic facts about the covariance matrix.
 \begin{proposition}
     Suppose $\Sigma$ is the covariance matrix for the random variables $X_1, \ldots, X_n$.
+    Let $\vec{X} = [X_1, \ldots, X_n]^T$ and let $\vec{\mu} = E[\vec X]$.
     \begin{enumerate}[(i)]
+        \item $\Sigma = E[(\vec{X}-\vec{\mu})(\vec{X} - \vec{\mu})^T]$.
         \item The matrix $\Sigma$ is positive semidefinite.
         That is, for any $y\in \R^n$, we have $y^T\Sigma y \geq 0$.
         Some elementary linear algebra shows that this is equivalent to all of $\Sigma$'s eigenvalues being nonnegative.
@@ -2664,9 +2665,359 @@ Let's record some basic facts about the covariance matrix.
     \end{enumerate}
 \end{proposition}
 \begin{proof}
-    
+    Part (i) looks a lot like the formula for covariance, $\Cov(X,Y) = E[(X-E[X])(Y-E[Y])]$.
+    In fact, that's what each entry in $E[(\vec{X}-\vec{\mu})(\vec{X} - \vec{\mu})^T]$ is.
+    \[
+        \big[E[(\vec{X}-\vec{\mu})(\vec{X} - \vec{\mu})^T]\big]_{i,j} = E[(\vec X- \vec \mu)_i(\vec X - \vec \mu)_j] = E[(X_i -E[X_i])(X_j-E[X_j])] = \Cov(X_i, X_j).
+    \]
+
+    Part (i) helps us prove part (ii).
+    If $y$ is any vector in $\R^n$, then
+    \[
+        y^T\Sigma y = y^TE[(\vec X - \vec \mu)(\vec X - \vec \mu)^T]y = E[y^T(\vec X - \vec \mu)(\vec X - \vec \mu)^Ty] = E\left[\left(y\cdot (\vec X - \vec \mu)\right)^2\right] \geq 0.
+    \]
+
+    Part (iii) follows immediately from the definition.
+    The non-diagonal entries of $\Sigma$ are $\Cov(X_i, X_j)$ with $i\neq j$ and if the $X_i$'s are uncorrelated, then these are all zero.
 \end{proof}
 
+Let's finish this off by using our new linear algebra notation to find the density function for the multivariate normal distribution.
+\begin{theorem}
+    Let $\vec X \sim \mathcal{N}(\vec \mu, \Sigma)$ (that is, $\vec X$ has multivariate normal distribution with $E[\vec X] = \vec \mu$ and the covariance matrix of $\vec X$ is $\Sigma$).
+    Then the pdf of $\vec X$ is
+    \[
+        f(\vec x) = \frac{1}{\sqrt{(2\pi)^n \det \Sigma}}\exp\left[ -\frac{1}{2}(\vec x - \vec \mu)^T\Sigma^{-1}(\vec x-\vec \mu)\right].
+    \]
+\end{theorem}
+\begin{proof}
+    By definition of the multivariate normal distribution, there is some matrix $A$ (which we can assume is $n\times n$) such that, for some independent standard normal random variables $Z_1, \ldots, Z_n$, we have
+    \[
+        \vec X = \vec \mu + A\vec Z.
+    \]
+    The pdf of $\vec X$, by the change of variables formula is then given by
+    \[
+        f_{\vec X}(\vec x) = f_{\vec Z}(\vec z)\cdot |J(\vec z)|^{-1}.
+    \]
+    Since the $Z_i$'s are independent, we can factor $f_{\vec Z}$ into
+    \[
+        f_{\vec Z}(\vec z) = f_{Z_1}(z_1)\cdots f_{Z_n}(z_n) = \frac{1}{\sqrt{(2\pi)^n}}\prod_{i=1}^ne^{-z_i^2/2} = \frac{1}{\sqrt{(2\pi)^n}}e^{-\vec z^T \vec z/2}.
+    \]
+    We also have the following relationship between the covariance matrix $\Sigma$ and $A$.
+    \begin{align*}
+        \Sigma &= \Cov(\vec X)\\
+        &= E[(\vec X - \vec \mu)(\vec X - \vec \mu)^T]\\
+        &= E[(A\vec Z)(A \vec Z)^T]\\
+        &= E[A\vec Z \vec Z^T A^T]\\
+        &= AE[\vec Z \vec Z^T]A^T\\
+        &= AA^T.
+    \end{align*}
+    The last line follows from the fact that the $Z_i$'s are independent, so $E[\vec Z\vec Z^T] = I$.
+    In particular, we have
+    \[
+        \det \Sigma = \det(AA^T) = \det(A)\det(A^T) = \det(A)^2
+    \]
+    The determinant of $A$ also happens to be the determinant of the Jacobian matrix.
+    To see this, notice that since $X_i = a_{i,1}Z_1 + \cdots + a_{i,n}Z_n$, we have
+    \[
+        \frac{\partial x_i}{\partial z_i} = a_{i,j}.
+    \]
+    The determinant of the Jacobian is then the determinant of $A$.
+    Finally, since $\vec Z = A^{-1}(\vec X - \vec \mu)$ and
+    \[
+        \vec z^T\vec z = [A^{-1}(\vec x - \vec \mu)]^T[A^{-1}(\vec x- \vec \mu)] = (\vec x - \vec\mu)^T(A^{-1})^TA^{-1}(\vec x - \vec \mu) = (\vec x - \vec \mu)^T\Sigma^{-1}(\vec x - \vec \mu),
+    \]
+    we have
+    \begin{align*}
+        f_{\vec X}(\vec x) &= f_{\vec Z}(\vec z)\cdot |J(\vec z)|^{-1}\\
+        &= \frac{1}{\sqrt{(2\pi)^n \det \Sigma}}\exp\left[ -\frac{1}{2}(\vec x - \vec \mu)^T\Sigma^{-1}(\vec x-\vec \mu)\right].
+    \end{align*}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+\section{Limit Theorems}
+
+People generally have a hard time connecting probability to reality.
+The tools we'll develop in this section, arguably, solidify some of the intuitions that we have.
+
+\subsection{Chebyshev's Inequality and the Weak Law of Large Numbers}
+
+The following theorem lets us estimate the probability that a nonnegative random variable is ``big.''
+
+\begin{theorem}[Markov's Inequality]
+    Let $X$ be a nonnegative random variable.
+    Then for any $t \geq 0$,
+    \[
+        \Pr[X \geq t] \leq \frac{E[X]}{t}.
+    \]
+\end{theorem}
+\begin{proof}
+    Consider the random variable $I$ that indicates whether or not $X$ is at least $t$.
+    Clearly $E[I] = \Pr[X \geq t]$.
+    We also have that $I \leq X/t$ with probability 1.
+    To see this, if $X \geq t$, then $I = 1 \leq X/t$.
+    If $X < t$, then $I = 0 \leq X/t$ since $X$ is nonnegative.
+    We then have
+    \[
+        \Pr[X \geq t] = E[I] \leq E[X/t] = \frac{E[X]}{t}.
+    \]
+\end{proof}
+
+In other words, the probability that $X$ is larger than $t$ falls off at least as fast as $1/t$.
+This is interesting because we don't need to know a whole lot about our distribution to apply Markov's inequality.
+we just need to know its mean.
+It turns out though that this bound usually isn't that great for solving problems involving real-world statistics.
+
+\begin{example}
+    Suppose the average college basketball player is six feet tall.
+    If we wanted to estimate the probability that the height of a randomly chosen player, $X$, was greater than twelve feet, Markov's inequality would tell us that
+    \[
+        \Pr[X \geq 12] \leq \frac{E[X]}{12} = \frac{6}{12} = \frac{1}{2}.
+    \]
+    Of course, our intuition tells us there's almost no chance that a person, basketball player or otherwise, is taller than twelve feet!
+\end{example}
+
+Markov is pretty good for more abstract results though.
+
+\begin{example}
+    A \emph{graph} $G = (V,E)$ consists of a set $V$ of \emph{vertices} and a set $E$ of \emph{edges}.
+    An edge $e = \{u, v\}\in E$ consists of a pair of vertices.
+    In graph theory, we like to investigate the properties of graphs.
+    For example, the \emph{diameter} of a graph is the longest distance between two vertices in the graph.
+    Here distance means exactly what you think it means -- it's the length of the shortest path between the vertices (again, path means exactly what you think).
+
+    Here are some examples.
+
+    Instead of looking at the diameter of some specific graph, let's pick a graph with $n$ vertices \emph{at random} in the following way.
+    For each pair of vertices $\{u, v\}$, include it as an edge with probability $p$ (independent of all other edges).
+    Call this graph (which is a random variable!) $G(n, p)$.
+    Let's investigate its diameter.
+    We'll prove the following:
+    \[
+        \lim_{n\to \infty}\Pr[G(n, p)\text{ has diameter }2]\to 1.
+    \]
+    This seems unintuitive: a graph with $n$ vertices could have diameter close to $n$, but this is saying that's exceptionally rare.
+    If the distance between two vertices is at least 3, then there's no path of length 2 between them.
+    If we fix two vertices $u$ and $v$, let $X_{u,v}$ indicate whether or not there's \emph{no} 2-path between them.
+    There are $n-2$ possible 2-paths between them -- one for each other vertex in the graph.
+    Each path appears with probability $p^2$ since it's made of two edges, so $E[X_{u,v}] = (1-p^2)^{n-2}$.
+    If $X$ is the number of pairs of vertices at distance at least 3 from each other, then 
+    \[
+        E[X] \leq \sum_{\{u,v\}\subseteq V}E[X_{u,v}] = \frac{n(n-1)}{2}(1-p^2)^{n-2}.
+    \]
+    This goes to zero as $n\to \infty$ since $(1-p^2)^{n-2}$ is exponentially small in $n$.
+    By Markov's inequality, we then have
+    \[
+        \Pr[X\geq 1] \leq E[X] \to 0,\text{ as }n\to \infty.
+    \]
+    So there no vertices at distance at least 3 from each other, which means the diameter is at most 2.
+    Now the diameter is 1 if and only if all $\binom{n}{2}$ possible edges appear.
+    This happens with probability $p^{\binom{n}{2}}$, which goes to zero as $n\to \infty$.
+    Thus, the diameter is exactly 2 with probability that approaches 1 as $n\to \infty$.
+\end{example}
+
+We can use Markov's inequality to build the following stronger result.
+\begin{theorem}[Chebyshev's Inequality]
+    Let $X$ be a random variable with mean $\mu$ and variance $\sigma^2$.
+    Then for any $t$,
+    \[
+        \Pr[|X-\mu| \geq t] \leq \frac{\sigma^2}{t^2}.
+    \]
+\end{theorem}
+\begin{proof}
+    Even though $X$ might not be nonnegative, $(X-\mu)^2$ definitely is, so we can apply Markov to it to get
+    \[
+        \Pr[|X-\mu| \geq t] = \Pr[(X-\mu)^2 \geq t^2] \leq \frac{E[(X-\mu)^2]}{t^2} = \frac{\sigma^2}{t^2}.
+    \]
+\end{proof}
+In a way, Chebyshev's inequality stronger than Markov's inequality.
+We need a little more information to use it -- we need both the mean and the variance, but it gives us a better estimate, with probability falling off like $1/t^2$ instead of $1/t$.
+
+\begin{example}
+    Letl's return to our basketball player example.
+    Suppose the average height is still six feet, and there's a standard deviation of 0.25 feet.
+    Then Chebyshev tells us that the probability that a randomly chosen player's height $X$, is taller than twelve feet with the following probability
+    \[
+        \Pr[X \geq 12] = \Pr[|X-6|\geq 6] \leq \frac{0.25^2}{6^2}\approx 0.0017.
+    \]
+    Much better than what Markov told us.
+\end{example}
+
+We can use Chebyshev's inequality to prove a version of one of the most well-known results in probability.
+
+\begin{theorem}[The Weak Law of Large Numbers]
+    Let $X_1, X_2, \ldots$ be a sequence of independent and identically distributed (iid) random variables, each with mean $\mu$.
+    Then for any $\epsilon>0$,
+    \[
+        \lim_{n\to \infty}\Pr\left[\left|\frac{X_1 + \cdots + X_n}{n}-\mu\right| >\epsilon \right] = 0.
+    \]
+\end{theorem}
+\begin{proof}
+    We'll prove this theorem under the additional assumption that the $X_i$'s have finite variance $\sigma^2$.
+    The idea is to just apply Chebyshev's inequality.
+    The variance of $X_i/n$ is $\sigma^2/n^2$ and since the $X_i$'s are independent, the variance of $(X_1 + \cdots + X_n)/n$ is $\sigma^2/n$ and we have
+    \[
+        \Pr\left[\left|\frac{X_1 + \cdots + X_n}{n}-\mu\right| >\epsilon \right]\leq \frac{\sigma^2/n}{\epsilon^2}\to 0\text{ as }n\to \infty.
+    \]
+\end{proof}
+
+In words, the weak law of large numbers says that, for any margin of error $\epsilon$, the sample mean is eventually likely to be within $\epsilon$ of the true average, $\mu$.
+
+\begin{example}
+    Flip a coin $n$ times and let $X_i$ indicate whether or not the $i$-th flip was heads.
+    Then the weak law says that the probability of seeing at least $0.501n$ heads is
+    \[
+        \Pr[X_1 + \cdots + X_n \geq .501n] \leq \Pr\left[\left|\frac{X_1 + \cdots + X_n}{n}- \frac{1}{2}\right| \geq .001\right] \to 0\text{ as }n\to \infty.
+    \]
+    In other words, as we flip more and more coins, it becomes less and less likely that the number of heads is far away from what we expect.
+\end{example}
+
+\begin{example}
+    Here's a geometric example that shows that our intuitions about geometry break down in higher dimensions.
+    We'll show that for any fixed $\epsilon>0$, at least a $(1-\epsilon)$ proportion of the volume of the cube $[-1,1]^n$ lives in the region $(1-\epsilon)\sqrt{n/3}\leq |x| \leq (1+\epsilon)\sqrt{n/3}$ for $n$ sufficiently large.
+    That is, we can fit a lot of volume in a small distance in high dimensions.
+
+    Let $X_1, \ldots, X_n$ be independent random variables uniformly sampled from $[-1,1]$.
+    This way, the vector $\vec X = (X_1, \ldots, X_n)$ is uniformly sampled on the cube $[-1, 1]^n$.
+    Let's apply the weak law to the variables $X_i^2$.
+    We have
+    \[
+        E[X_i^2] = \int_{-1}^1x^2 \cdot \frac{1}{2}\ dx = \frac{1}{3}.
+    \]
+    By the weak law, for $n$ sufficiently large, $\frac{X_1^2 + \cdots + X_n^2}{n}$ is close to $1/3$.
+    Taking square roots, $|\vec X|/\sqrt{n}$ is within, say, $\epsilon/\sqrt{3}$ with probability approaching 1, i.e.
+    \[
+    \Pr\left[ \left|\frac{\sqrt{X_1 + \cdots + X_n}}{\sqrt{n}} - \frac{1}{\sqrt{3}}\right| \leq \frac{\epsilon}{\sqrt{3}}\right] = \Pr[(1-\epsilon)\sqrt{n/3}\leq |\vec X| \leq (1+\epsilon)\sqrt{n/3} ] \to 1
+    \]
+    as $n\to \infty$.
+    But this is the fraction of the volume of the cube inside the annulus $(1-\epsilon)\sqrt{n/3}<|x|<(1+\epsilon)\sqrt{n/3}$.
+\end{example}
+
+
+
+
+
+
+
+
+
+
+
+\section{The Central Limit Theorem}
+The central limit theorem is one of the most important theorems in statistics.
+It's also one of the most important uses of moment generating functions as we'll see.
+It basically answers the question ``what's so 'normal' about the normal distribution?''
+\begin{theorem}[The Central Limit Theorem]
+    Let $X_1, X_2, \ldots$ be a sequence of iid random variables with mean $\mu$ and variance $\sigma^2$.
+    Then for any $t$,
+    \[
+        \Pr\left[ \frac{X_1 + \cdots+ X_n - n\mu}{\sigma \sqrt{n}} \leq t\right] \to \Phi(t) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^te^{-x^2/2}\ dx,
+    \]
+    as $n\to \infty$.
+\end{theorem}
+\begin{remark}
+    Maybe it's clear that we subtract off $n\mu$ because this makes the numerator in the above expression have mean zero, but where's the $\sigma \sqrt{n}$ coming from?
+    Since the $X_i$'s are iid, the variance of $X_1 + \cdots + X_n$ is $n\sigma^2$.
+    Dividing by $\sigma \sqrt{n}$ then makes $\frac{X_1 + \cdots + X_n - n\mu}{\sigma \sqrt{n}}$ have variance 1.
+
+    So in other words, centering and dividing by the variance makes a sum of iid random variables approach a standard normal random variable.
+\end{remark}
+
+The main technical tool we'll use to prove this is a result about moment generating functions.
+\begin{lemma}
+    Let $Z_1, Z_2, \ldots$ be a sequence of random variables, where $Z_n$ has distribution function $F_n$ and moment generating function $M_n$.
+    Moreover, let $Z$ be a random variable with distribution function $F$ and moment generating function $M$.
+    If for all $t$,
+    \[
+        \lim_{n\to \infty}M_n(t) = M(t),
+    \]
+    then
+    \[
+        \lim_{n\to \infty}F_n(t) \to F(t)
+    \]
+    for all $t$ at which $F(t)$ is continuous.
+\end{lemma}
+So basically, to show that a family of distributions converges to some distribution, it suffices to show that the moment generating functions converge to the corresponding mgf.
+
+\begin{proof}[Proof of the Central Limit Theorem]
+    Let $S_n = X_1 + \cdots + X_n$.
+    To make the notation a bit cleaner, we'll assume that $\mu= 0$ and $\sigma = 1$.
+    The above lemma tells us that it's enough to prove that the mgf of $\frac{S_n}{\sqrt{n}}$ converges to that of a standard normal random variable, which is $e^{t^2/2}$.
+    To this end, let $M(t)$ be the mgf of $X_i$.
+    Then the mgf of $X_i/\sqrt{n}$ is $M(t/\sqrt{n})$.
+    Since the $X_i$'s are independent, the mgf of their sum is the product of the mgf's so the mgf of $S_n/\sqrt{n}$ is
+    \[
+        M\left(\frac{t}{\sqrt{n}}\right)^n.
+    \]
+    So our goal is to show that $M(t/\sqrt{n})^n \to e^{t^2/2}$ for all $t$.
+    If we let $L(t) = \ln M(t)$, then this is equivalent to showing that $n M(t/\sqrt n) \to t^2/2$.
+    Now as $n\to \infty$, $t/\sqrt{n}\to 0$ for any $t$.
+
+    We then have
+    \[
+        \lim_{n\to \infty}L(t/\sqrt{n}) = L(0) = \ln M(0) = \ln 1 = 0.
+    \]
+    This gives
+    \[
+        \lim_{n\to \infty}nL(t/\sqrt{n}) = \lim_{n\to \infty}\frac{L(t/\sqrt{n})}{1/n} = \frac{0}{0}.
+    \]
+    Looks like we'll need L'Hopital's rule.
+    We have that
+    \[
+        L'(t) = \frac{M'(t)}{M(t)} \to \frac{M'(0)}{M(0)} = \frac{E[X_i]}{1} = 0
+    \]
+    as $t\to 0$.
+    L'Hopital then says
+    \[
+        \lim_{n\to \infty}\frac{L(t/\sqrt{n})}{1/n} = \lim_{n\to \infty}\frac{-(1/2)tn^{-3/2}L'(t/\sqrt{n})}{-1/n^2} = \frac{0}{0}.
+    \]
+    Let's try L'Hopital's rule one more time.
+    The quotient rule says
+    \[
+        L''(t) = \frac{M(t)M''(t) - M'(t)^2}{M(t)^2} \to M''(0)-M'(0)^2  = E[X_i]^2-E[X_i]^2 = \Var[X_i] = 1.
+    \]
+    This gives
+    \[
+        \lim_{n\to \infty}\frac{L(t/\sqrt{n})}{1/n} = \lim_{n\to \infty}\frac{tL(t/\sqrt n)}{2\cdot 1/n^{1/2}} = \lim_{n\to \infty}\frac{-(1/2)t^2n^{-3/2}L''(t/\sqrt n)}{2\cdot (-1/2)n^{-3/2}} = t^2/2.
+    \]
+    Hence, $M(t/\sqrt n)^n \to e^{t^2/2}$, so by our lemma, $S_n/\sqrt n$ approaches a standard normal random variable in distribution.
+\end{proof}
+
+\begin{example}
+    Let $X\sim \Pois(100)$.
+    Let's estimate $\Pr[X \geq 120]$ using the central limit theorem.
+    The central limit theorem looks like it needs a sum of random variables though, and we don't have a sum.
+    We can turn $X$ into a sum though.
+    Recall that if $Y_1\sim \Pois(\lambda_1)$ and $Y_2\sim \Pois(\lambda_2)$ are independent, then $Y_1+Y_2\sim\Pois(\lambda_1+\lambda_2)$ (try to prove this if you don't remember it).
+    Then we can write $X = X_1 + \cdots + X_{100}$, where $X_i\sim \Pois(1)$.
+    Now we can apply the central limit theorem.
+    Since $E[X_i] = \Var[X_i] = 1$, we have
+    \[
+        \Pr[X \geq 120] = \Pr[X_1 + \cdots + X_{100} \geq 120] = \Pr\left[\frac{X_1 + \cdots + X_{100}- 100}{10} \geq \frac{120-100}{10}\right] \approx 1-\Phi(2) \approx .02275.
+    \]
+\end{example}
+
+
+\begin{example}
+    Roll ten dice.
+    Let's estimate the probability that their sum is between 30 and 40.
+
+    Let $X_i$ be the value shown on the $i$-th die.
+    Then $E[X_i] = 7/2$ and $\Var[X_i] = 35/12$.
+    We then have
+    \begin{align*}
+        \Pr[30 \leq X_1 + \cdots + X_{10} \leq 40] &= \Pr\left[\frac{30-35}{\sqrt{350/12}} \leq \frac{X_1 + \cdots + X_{10}-35}{\sqrt{350/12}} \leq \frac{40-35}{\sqrt{350/12}}\right]\\
+        &\approx \Phi(0.926)-\Phi(-0.926)\\
+        &\approx .64555.
+    \end{align*}
+\end{example}
 
 
 \begin{thebibliography}{13}
